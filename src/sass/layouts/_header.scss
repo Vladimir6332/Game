@@ -1,0 +1,13 @@
+.header {
+  box-sizing: border-box;
+  display: flex;
+  width: $content-width;
+  padding: 1rem 1rem;
+  justify-content: space-between;
+  align-items: center;
+  color: $color-text;
+  font-family: $font-primary;
+  background-color: $color-background1;
+  height: 7vh;
+  min-height: 5rem;
+}
