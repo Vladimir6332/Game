@@ -29,7 +29,11 @@ module.exports = (env, options) => {
     devtool: isProduction ? false : 'source-map',
     watch: !isProduction,
 
-    entry: ['./src/js/index.js', './src/sass/style.scss'],
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    },
+
+    entry: ['./src/js/index.tsx', './src/sass/style.scss'],
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
@@ -47,6 +51,15 @@ module.exports = (env, options) => {
 
     module: {
       rules: [
+        {
+          test: /\.ts(x?)$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'ts-loader',
+            },
+          ],
+        },
         {
           test: /\.m?js$/,
           exclude: /(node_modules|bower_components)/,
@@ -156,7 +169,9 @@ module.exports = (env, options) => {
       }),
 
       new MiniCssExtractPlugin({ filename: 'style.css' }),
-      new ESLintPlugin(),
+      new ESLintPlugin({
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      }),
     ],
   };
 

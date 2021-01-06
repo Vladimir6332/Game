@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+      "target": "es5",
+      "jsx": "react",
+      "noEmitOnError": true,
+      "noUnusedLocals": true,
+      "removeComments": true,
+      "noImplicitAny": true,
+      "esModuleInterop": true,
+      "baseUrl": "./",
+      // Указываем ссылки до директорий в проекте, чтобы каждый раз в импортах не писать относительные пути
+      // "paths": { 
+      //     "App": ["src/js"],          
+      // }
+  },
+  "include": ["./src/**/*"],
+  
+}
