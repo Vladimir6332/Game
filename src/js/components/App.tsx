@@ -1,15 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Menu from './Menu';
 
-interface fn {
-  str: string;
-  arr: number[];
-}
 const App: React.FC = () => {
-  const d: fn = {
-    str: 'ddddddcsdd',
-    arr: [1, 2],
-  };
-  return <div className="app">{d.str}</div>;
+  const [isMenuActive, setMenuActive] = useState<boolean>(true);
+  console.log(setMenuActive);
+  return <div className="app">{isMenuActive ? <Menu /> : null}</div>;
 };
 
 export default App;
