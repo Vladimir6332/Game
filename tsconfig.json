@@ -8,11 +8,15 @@
       "noImplicitAny": true,
       "esModuleInterop": true,
       "baseUrl": "./",
+      "typeRoots": [
+        "node_modules/@types",
+        "./src/js/custom_typings/"
+      ], 
       // Указываем ссылки до директорий в проекте, чтобы каждый раз в импортах не писать относительные пути
        "paths": { 
            "App": ["src/js"]         
        }
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*"]
   
 }
