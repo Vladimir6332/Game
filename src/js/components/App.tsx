@@ -1,15 +1,8 @@
 import React from 'react';
+import Garage from './garage/garage';
 
-interface fn {
-  str: string;
-  arr: number[];
-}
 const App: React.FC = () => {
-  const d: fn = {
-    str: 'ddddddcsdd',
-    arr: [1, 2],
-  };
-  return <div className="app">{d.str}</div>;
+  return <div className="app" />;
 };
 
 export default App;
