@@ -10,7 +10,12 @@ interface PropsType {
 }
 const Weapon: React.FC<PropsType> = (props) => {
   const { path, name, callback, setMinusPoints, points } = props;
-  const click = (): void => {
+  const click = (event: React.MouseEvent<HTMLImageElement>): void => {
+    console.log(event.target);
+    const { target } = event;
+
+    const { classList } = target as Element;
+    classList.add('choisedWeapon');
     callback([path, name]);
     setMinusPoints(points);
   };

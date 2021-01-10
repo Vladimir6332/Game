@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 interface propsType {
   minusPoints: number;
+  allPoints: number;
 }
 const Points: React.FC<propsType> = (props) => {
-  const { minusPoints } = props;
-  const allPoints = 100;
+  const { minusPoints, allPoints } = props;
 
   return (
     <div className="garage__points-wrapper">
@@ -19,6 +19,7 @@ const Points: React.FC<propsType> = (props) => {
 
 Points.propTypes = {
   minusPoints: PropTypes.number.isRequired,
+  allPoints: PropTypes.number.isRequired,
 };
 
 export default Points;

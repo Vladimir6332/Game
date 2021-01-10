@@ -14,7 +14,8 @@
       grid-template-rows: max-content;
       grid-template-areas: 
       'points points points'
-      'tank weapon-list statistics';
+      'tank weapon-list statistics'
+      'tank weapon-list button';
       grid-gap: 5px;
       width: 100%;
       height: 100%;
@@ -67,20 +68,16 @@
     &__statistics-li {
       text-align: center;
     }
-}
 
-.bigBOOM {
-  top: -12%;
+    &__button {
+      width: 60%;
+      height: 30%;
+      margin: 5px;
+      align-self: end;
+      justify-self: end;
+      grid-area: button;
+    }
 }
-.rockets {
-  top: -20%;
-}
-.sniper {
-  top: -38%;
-}
-.speed {
-  top: -25%;
-}
-.standart {
-  top: -32%;
+.choisedWeapon {
+  border: 1px solid #fff;
 }
