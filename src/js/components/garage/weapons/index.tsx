@@ -6,10 +6,11 @@ import { weapons, objWeapon } from './weapons';
 interface PropsType {
   setProperties(arr: Array<string>): void;
   setMinusPoints(num: number): void;
+  allPoints: number;
 }
 
 const Weapons: React.FC<PropsType> = (props) => {
-  const { setProperties, setMinusPoints } = props;
+  const { setProperties, setMinusPoints, allPoints } = props;
   const list: Array<JSX.Element> = weapons.map((item: objWeapon) => {
     return (
       <Weapon
@@ -19,6 +20,8 @@ const Weapons: React.FC<PropsType> = (props) => {
         name={item.name}
         points={item.points}
         setMinusPoints={setMinusPoints}
+        allPoints={allPoints}
+        choisedFirst={item.choised}
       />
     );
   });
@@ -29,5 +32,6 @@ const Weapons: React.FC<PropsType> = (props) => {
 Weapons.propTypes = {
   setProperties: PropTypes.func.isRequired,
   setMinusPoints: PropTypes.func.isRequired,
+  allPoints: PropTypes.number.isRequired,
 };
 export default Weapons;

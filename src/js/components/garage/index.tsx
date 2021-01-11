@@ -11,7 +11,7 @@ const Garage: React.FC = () => {
     weaponStandart,
     'standart',
   ]);
-  const [points, setPoints] = useState<number>(20);
+  const [points, setPoints] = useState<number>(50);
   const statisticsPropertiesTemplate: {
     kills: number;
     deaths: number;
@@ -26,17 +26,22 @@ const Garage: React.FC = () => {
   const funcTemplate1 = (str: string, num: number): void => {
     console.log(str, num);
   };
+
   return (
     <section className="garage">
       <div className="garage__wrapper">
-        <Points minusPoints={points} allPoints={20} />
+        <Points allPoints={points} />
         <Tank properties={properties} />
-        <Weapons setProperties={setProperties} setMinusPoints={setPoints} />
+        <Weapons
+          setProperties={setProperties}
+          setMinusPoints={setPoints}
+          allPoints={50}
+        />
         <Statistics properties={statisticsPropertiesTemplate} />
         <StartButton
           callback={funcTemplate1}
           choisedWeapon={properties[1]}
-          restPoints={20 - points}
+          restPoints={points}
         />
       </div>
     </section>

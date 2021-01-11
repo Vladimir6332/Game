@@ -10,7 +10,13 @@ const StartButton: React.FC<propsType> = (props) => {
   const { callback, choisedWeapon, restPoints } = props;
 
   const start = (): void => {
-    callback(choisedWeapon, restPoints);
+    if (restPoints >= 0) {
+      callback(choisedWeapon, restPoints);
+    } else {
+      alert(
+        `Stop! You need ${restPoints - restPoints - restPoints} for start game!`
+      );
+    }
   };
   return (
     <button type="button" className="garage__button" onClick={start}>
