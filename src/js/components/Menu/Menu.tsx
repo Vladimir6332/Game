@@ -1,28 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import clip from '../../assets/sounds/clip_menu_1.mp3';
+import SoundControl from './SoundControl';
+import clipUrl from '../../../assets/sounds/clip_menu_1.mp3';
+import menuSelectedSoundUrl from '../../../assets/sounds/menu_select.mp3';
 
-const audio = new Audio(clip);
+const audioClip = new Audio(clipUrl);
+const audioMenuSelected = new Audio(menuSelectedSoundUrl);
+const defaultVolume = +localStorage.getItem('menuVolume');
+const defaultMode = localStorage.getItem('menuMode');
 
 const Menu: React.FC = () => {
   const menuItems: { id: number; value: string }[] = [
     { id: 1, value: 'single player' },
     { id: 2, value: 'multiplayer' },
   ];
-  const [mode, setMode] = useState<string>('single player');
+  const [mode, setMode] = useState<string>(defaultMode || 'single player');
+
+  const [volume, setVolume] = useState<number>(
+    defaultVolume === 0 ? 0 : defaultVolume || 50
+  );
+
+  const handleVolume = (newVolume: number): void => {
+    setVolume(newVolume);
+    localStorage.setItem('menuVolume', newVolume.toString());
+    audioClip.volume = newVolume / 100;
+  };
 
   const handleClick = (newMode: string) => {
     setMode(newMode);
-  };
-  const handleKeyDown = (newMode: string) => {
-    console.log(newMode);
+    localStorage.setItem('menuMode', newMode);
+    menuSelectedSoundPlay();
   };
 
-  useEffect(() => {
-    if (audio.paused) {
-      audio.muted = false;
-      audio.autoplay = true;
+  const clipPlay = () => {
+    if (audioClip.paused) {
+      audioClip.muted = false;
+      audioClip.autoplay = true;
+      audioClip.play();
     }
-  });
+    audioClip.volume = volume / 100;
+  };
+
+  const menuSelectedSoundPlay = () => {
+    if (audioMenuSelected.paused) {
+      audioMenuSelected.play();
+    }
+  };
+
+  useEffect(clipPlay);
 
   return (
     <div className="menu-wrapper">
@@ -32,7 +56,6 @@ const Menu: React.FC = () => {
             return (
               <li
                 onClick={() => handleClick(element.value)}
-                onKeyDown={() => handleKeyDown(element.value)}
                 role="presentation"
                 key={element.id}
                 className={`menu__item${
@@ -55,6 +78,7 @@ const Menu: React.FC = () => {
           Play
         </button>
       </nav>
+      <SoundControl onChange={handleVolume} defaultVolume={defaultVolume} />
     </div>
   );
 };
