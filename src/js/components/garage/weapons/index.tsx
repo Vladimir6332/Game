@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Weapon from './weapon';
 import { weapons, objWeapon } from './weapons';
+import PropertyStandart from '../interfacePropertyStandart';
 
 interface PropsType {
-  setProperties(arr: Array<string>): void;
+  setProperties(obj: PropertyStandart): void;
   setMinusPoints(num: number): void;
   allPoints: number;
 }
@@ -22,6 +23,7 @@ const Weapons: React.FC<PropsType> = (props) => {
         setMinusPoints={setMinusPoints}
         allPoints={allPoints}
         choisedFirst={item.choised}
+        statistics={item.statistics}
       />
     );
   });

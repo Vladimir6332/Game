@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import tankPaths from './tankImg';
 
 interface PropsTankRules {
-  properties: Array<string>;
+  name: string;
 }
-const Tank: React.FC<PropsTankRules> = (props) => {
-  const { properties } = props;
-  const name: string = properties[1];
-
+const Tank: React.FC<PropsTankRules> = ({ name }) => {
   const tank: string = tankPaths[name];
   return (
     <div className="garage__tank-wrapper">
@@ -18,6 +15,6 @@ const Tank: React.FC<PropsTankRules> = (props) => {
 };
 
 Tank.propTypes = {
-  properties: PropTypes.arrayOf(PropTypes.string).isRequired,
+  name: PropTypes.string.isRequired,
 };
 export default Tank;

@@ -9,6 +9,12 @@ interface objWeapon {
   name: string;
   path: string;
   points: number;
+  statistics: {
+    damage: number;
+    speedGun: number;
+    speedBullet: number;
+    range: number;
+  };
   choised?: boolean;
 }
 
@@ -19,6 +25,12 @@ interface ruleWeapons extends Array<objWeapon> {
     name: string;
     points: number;
     choised: boolean;
+    statistics: {
+      damage: number;
+      speedGun: number;
+      speedBullet: number;
+      range: number;
+    };
   };
 }
 const weapons: ruleWeapons = [
@@ -28,6 +40,12 @@ const weapons: ruleWeapons = [
     name: 'standart',
     points: 0,
     choised: true,
+    statistics: {
+      damage: 10,
+      speedBullet: 2,
+      speedGun: 5,
+      range: 15,
+    },
   },
   {
     id: '2w',
@@ -35,6 +53,12 @@ const weapons: ruleWeapons = [
     name: 'bigBOOM',
     points: 50,
     choised: false,
+    statistics: {
+      damage: 95,
+      speedBullet: 5,
+      speedGun: 3,
+      range: 80,
+    },
   },
   {
     id: '3w',
@@ -42,6 +66,12 @@ const weapons: ruleWeapons = [
     name: 'rockets',
     points: 70,
     choised: false,
+    statistics: {
+      damage: 40,
+      speedBullet: 3,
+      speedGun: 10,
+      range: 40,
+    },
   },
   {
     id: '4w',
@@ -49,6 +79,12 @@ const weapons: ruleWeapons = [
     name: 'sniper',
     points: 80,
     choised: false,
+    statistics: {
+      damage: 20,
+      speedBullet: 7,
+      speedGun: 5,
+      range: 100,
+    },
   },
   {
     id: '5w',
@@ -56,6 +92,12 @@ const weapons: ruleWeapons = [
     name: 'speed',
     points: 100,
     choised: false,
+    statistics: {
+      damage: 5,
+      speedBullet: 10,
+      speedGun: 10,
+      range: 30,
+    },
   },
 ];
 

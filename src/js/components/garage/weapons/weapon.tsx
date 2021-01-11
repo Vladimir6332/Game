@@ -1,14 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import PropertyStandart from '../interfacePropertyStandart';
 
 interface PropsType {
-  callback(arr: Array<string>): void;
+  callback(obj: PropertyStandart): void;
   setMinusPoints(num: number): void;
   path: string;
   name: string;
   points: number;
   allPoints: number;
   choisedFirst: boolean;
+  statistics: {
+    [x: string]: number;
+  };
 }
 const Weapon: React.FC<PropsType> = (props) => {
   const {
@@ -19,6 +23,7 @@ const Weapon: React.FC<PropsType> = (props) => {
     points,
     allPoints,
     choisedFirst,
+    statistics,
   } = props;
 
   const clearAllClassName = () => {
@@ -38,20 +43,33 @@ const Weapon: React.FC<PropsType> = (props) => {
     clearAllClassName();
     classList.add('choisedWeapon');
     setMinusPoints(allPoints - points);
-    callback([path, name]);
+    callback({
+      path,
+      name,
+      options: {
+        damage: statistics.damage,
+        speedGun: statistics.speedGun,
+        speedBullet: statistics.speedBullet,
+        range: statistics.range,
+      },
+    });
   };
 
+  const statistic = `Урон: ${statistics.damage}, скорость снаряда: ${statistics.speedBullet}, скорость выстрелов: ${statistics.speedGun}  дальность: ${statistics.range}`;
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={click}
-      onKeyPress={(): void => {
-        console.log(name);
-      }}
-      className={`garage__weapon ${choisedFirst ? 'choisedWeapon' : ''}`}
-    >
-      <img src={path} alt="weapon" className="garage__weapon-img" />
+    <div style={{ height: '100%', margin: '5px' }}>
+      <p className="garage__weapon-text">{statistic}</p>
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={click}
+        onKeyPress={(): void => {
+          console.log(name);
+        }}
+        className={`garage__weapon ${choisedFirst ? 'choisedWeapon' : ''}`}
+      >
+        <img src={path} alt="weapon" className="garage__weapon-img" />
+      </div>
     </div>
   );
 };
@@ -64,6 +82,7 @@ Weapon.propTypes = {
   points: PropTypes.number.isRequired,
   allPoints: PropTypes.number.isRequired,
   choisedFirst: PropTypes.bool.isRequired,
+  statistics: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
 export default Weapon;
