@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SoundControl from './SoundControl';
 import clipUrl from '../../../assets/sounds/clip_menu_1.mp3';
 import menuSelectedSoundUrl from '../../../assets/sounds/menu_select.mp3';
@@ -13,6 +14,7 @@ const Menu: React.FC = () => {
     { id: 1, value: 'single player' },
     { id: 2, value: 'multiplayer' },
   ];
+  const history = useHistory();
   const [mode, setMode] = useState<string>(defaultMode || 'single player');
 
   const [volume, setVolume] = useState<number>(
@@ -74,7 +76,11 @@ const Menu: React.FC = () => {
             );
           })}
         </ul>
-        <button type="button" className="menu__play">
+        <button
+          type="button"
+          className="menu__play"
+          onClick={() => history.push('/login')}
+        >
           Play
         </button>
       </nav>
