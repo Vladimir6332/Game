@@ -6,5 +6,6 @@ export default interface propertiesStandart {
     speedGun: number;
     speedBullet: number;
     range: number;
+    countBullets: number;
   };
 }

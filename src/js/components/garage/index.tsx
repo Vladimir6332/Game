@@ -6,8 +6,10 @@ import StartButton from './startButton';
 import Points from './points';
 import weaponStandart from '../../../assets/images/weapons/brown/standart/standart.png';
 import PropertiesStandart from './interfacePropertyStandart';
+import InfoBullet from './infoBullet';
 
 const Garage: React.FC = () => {
+  const ALL_POINTS = 200;
   const [properties, setProperties] = useState<PropertiesStandart>({
     path: weaponStandart,
     name: 'standart',
@@ -16,9 +18,10 @@ const Garage: React.FC = () => {
       speedBullet: 2,
       speedGun: 5,
       range: 15,
+      countBullets: 10,
     },
   });
-  const [points, setPoints] = useState<number>(200);
+  const [points, setPoints] = useState<number>(ALL_POINTS);
   const statisticsPropertiesTemplate: {
     kills: number;
     deaths: number;
@@ -30,6 +33,9 @@ const Garage: React.FC = () => {
     lastTime: 0,
     hitPercentage: 15,
   };
+  const [count, setCount] = useState(1);
+  console.log('---Render', `cost bullet: ${count * 10}`);
+  const COST_BULLETS = count * 10;
   const funcTemplate1 = (
     str: string,
     num: number,
@@ -38,6 +44,8 @@ const Garage: React.FC = () => {
       speedGun: number;
       speedBullet: number;
       range: number;
+      bulletPacs: number;
+      cost: number;
     }
   ): void => {
     console.log(str, num, JSON.stringify(options));
@@ -51,7 +59,8 @@ const Garage: React.FC = () => {
         <Weapons
           setProperties={setProperties}
           setMinusPoints={setPoints}
-          allPoints={200}
+          COST_BULLETS={COST_BULLETS}
+          allPoints={ALL_POINTS}
         />
         <Statistics properties={statisticsPropertiesTemplate} />
         <StartButton
@@ -62,6 +71,17 @@ const Garage: React.FC = () => {
           speedBullet={properties.options.speedBullet}
           speedGun={properties.options.speedGun}
           range={properties.options.range}
+          bulletPacs={count}
+          cost={COST_BULLETS}
+          countBullets={properties.options.countBullets}
+        />
+        <InfoBullet
+          setPoints={setPoints}
+          allPoints={ALL_POINTS}
+          nameWeapon={properties.name}
+          setCount={setCount}
+          count={count}
+          COST_BULLETS={COST_BULLETS}
         />
       </div>
     </section>

@@ -8,10 +8,11 @@ interface PropsType {
   setProperties(obj: PropertyStandart): void;
   setMinusPoints(num: number): void;
   allPoints: number;
+  COST_BULLETS: number;
 }
 
 const Weapons: React.FC<PropsType> = (props) => {
-  const { setProperties, setMinusPoints, allPoints } = props;
+  const { setProperties, setMinusPoints, allPoints, COST_BULLETS } = props;
   const list: Array<JSX.Element> = weapons.map((item: objWeapon) => {
     return (
       <Weapon
@@ -24,6 +25,8 @@ const Weapons: React.FC<PropsType> = (props) => {
         allPoints={allPoints}
         choisedFirst={item.choised}
         statistics={item.statistics}
+        COST_BULLETS={COST_BULLETS}
+        countBullets={item.statistics.countBullets}
       />
     );
   });
@@ -35,5 +38,6 @@ Weapons.propTypes = {
   setProperties: PropTypes.func.isRequired,
   setMinusPoints: PropTypes.func.isRequired,
   allPoints: PropTypes.number.isRequired,
+  COST_BULLETS: PropTypes.number.isRequired,
 };
 export default Weapons;

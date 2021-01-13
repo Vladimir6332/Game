@@ -10,6 +10,9 @@ interface propsType {
       speedGun: number;
       speedBullet: number;
       range: number;
+      bulletPacs: number;
+      cost: number;
+      countBullets: number;
     }
   ) => void;
   choisedWeapon: string;
@@ -18,6 +21,9 @@ interface propsType {
   speedGun: number;
   speedBullet: number;
   range: number;
+  bulletPacs: number;
+  countBullets: number;
+  cost: number;
 }
 const StartButton: React.FC<propsType> = (props) => {
   const {
@@ -28,6 +34,9 @@ const StartButton: React.FC<propsType> = (props) => {
     speedGun,
     speedBullet,
     range,
+    bulletPacs,
+    cost,
+    countBullets,
   } = props;
 
   const start = (): void => {
@@ -37,6 +46,9 @@ const StartButton: React.FC<propsType> = (props) => {
         speedGun,
         speedBullet,
         range,
+        bulletPacs,
+        cost,
+        countBullets,
       });
     } else {
       alert(
@@ -59,6 +71,9 @@ StartButton.propTypes = {
   speedGun: PropTypes.number.isRequired,
   speedBullet: PropTypes.number.isRequired,
   range: PropTypes.number.isRequired,
+  bulletPacs: PropTypes.number.isRequired,
+  cost: PropTypes.number.isRequired,
+  countBullets: PropTypes.number.isRequired,
 };
 
 export default StartButton;

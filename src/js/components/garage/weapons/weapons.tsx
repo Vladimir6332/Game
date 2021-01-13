@@ -14,6 +14,7 @@ interface objWeapon {
     speedGun: number;
     speedBullet: number;
     range: number;
+    countBullets: number;
   };
   choised?: boolean;
 }
@@ -30,6 +31,7 @@ interface ruleWeapons extends Array<objWeapon> {
       speedGun: number;
       speedBullet: number;
       range: number;
+      countBullets: number;
     };
   };
 }
@@ -45,6 +47,7 @@ const weapons: ruleWeapons = [
       speedBullet: 2,
       speedGun: 5,
       range: 15,
+      countBullets: 10,
     },
   },
   {
@@ -58,6 +61,7 @@ const weapons: ruleWeapons = [
       speedBullet: 5,
       speedGun: 3,
       range: 80,
+      countBullets: 5,
     },
   },
   {
@@ -71,6 +75,7 @@ const weapons: ruleWeapons = [
       speedBullet: 3,
       speedGun: 10,
       range: 40,
+      countBullets: 8,
     },
   },
   {
@@ -84,6 +89,7 @@ const weapons: ruleWeapons = [
       speedBullet: 7,
       speedGun: 5,
       range: 100,
+      countBullets: 5,
     },
   },
   {
@@ -97,6 +103,7 @@ const weapons: ruleWeapons = [
       speedBullet: 10,
       speedGun: 10,
       range: 30,
+      countBullets: 20,
     },
   },
 ];

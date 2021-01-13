@@ -10,6 +10,8 @@ interface PropsType {
   points: number;
   allPoints: number;
   choisedFirst: boolean;
+  COST_BULLETS: number;
+  countBullets: number;
   statistics: {
     [x: string]: number;
   };
@@ -24,6 +26,8 @@ const Weapon: React.FC<PropsType> = (props) => {
     allPoints,
     choisedFirst,
     statistics,
+    COST_BULLETS,
+    countBullets,
   } = props;
 
   const clearAllClassName = () => {
@@ -42,7 +46,7 @@ const Weapon: React.FC<PropsType> = (props) => {
     const { classList } = parentElement;
     clearAllClassName();
     classList.add('choisedWeapon');
-    setMinusPoints(allPoints - points);
+    setMinusPoints(allPoints - points - COST_BULLETS);
     callback({
       path,
       name,
@@ -51,6 +55,7 @@ const Weapon: React.FC<PropsType> = (props) => {
         speedGun: statistics.speedGun,
         speedBullet: statistics.speedBullet,
         range: statistics.range,
+        countBullets,
       },
     });
   };
@@ -83,6 +88,8 @@ Weapon.propTypes = {
   allPoints: PropTypes.number.isRequired,
   choisedFirst: PropTypes.bool.isRequired,
   statistics: PropTypes.objectOf(PropTypes.number).isRequired,
+  COST_BULLETS: PropTypes.number.isRequired,
+  countBullets: PropTypes.number.isRequired,
 };
 
 export default Weapon;
