@@ -60,35 +60,48 @@
     }
     &__statistics {
       grid-area: statistics;
+      display: flex;
+      justify-content: center;
     }
     &__statistics-title {
       font-size: 3em;
       text-align: center;
     }
-    &__statistics-ul {
-      margin: 0;
-      padding: 0;
-      font-size: 3em;
-      list-style: none;
-      text-align: center;
+    &__statistics-table {
+      font-size: 2em;
     }
-    &__statistics-li {
-      text-align: center;
+     &__statistics-table-tbody {
     }
 
     &__button {
       width: 100%;
-      height: 100%;
+      height: 30%;
+      margin: 5px;
       align-self: end;
-      justify-self: end;
+      justify-self: center;
       grid-area: button;
     }
     &__bullet-info {
+      justify-self: center;
+      align-self: center;
       grid-area: infoBullet;
+    }
+    &__bullet-info-title {
+      font-size: 3em!important;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+    &__bullet-info-title {
+      font-size: 2em;
     }
     &__bullet-change {
       justify-self: center;
+      align-self: center;
       grid-area: changeBullet;
+    } 
+    &__bullet-buttons {
+      text-align: center;
     }
 }
 .choisedWeapon {

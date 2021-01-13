@@ -27,31 +27,42 @@ const InfoBullet: React.FC<PropertiesBullet> = (props) => {
     return false;
   });
   const { countBullets } = currentWeapon.statistics;
+  const { name } = currentWeapon;
   const { points } = currentWeapon;
 
   const plus = (): void => {
-    setCount(count + 1);
-    setPoints(allPoints - (COST_BULLETS + 10 + points));
+    if (nameWeapon !== 'standart') {
+      setCount(count + 1);
+      setPoints(allPoints - (COST_BULLETS + 10 + points));
+    }
   };
   const minus = (): void => {
-    if (count > 1) {
+    if (count > 1 && nameWeapon !== 'standart') {
       setCount(count - 1);
       setPoints(allPoints - (COST_BULLETS + points - 10));
     }
   };
   return (
     <>
-      <p className="garage__bullet-info">
-        {`Cost: 10, amount:${countBullets}`}
-      </p>
+      <div className="garage__bullet-info">
+        <h2 className="garage__bullet-info-title">Bullet cost</h2>
+        <span className="garage__bullet-info-subtitle">
+          {`Cost: ${name === 'standart' ? 0 : 10}, amount:${
+            name === 'standart' ? 0 : countBullets
+          }`}
+        </span>
+      </div>
       <div className="garage__bullet-change">
-        <button type="button" onClick={minus}>
-          -
-        </button>
-        <span>{count}</span>
-        <button type="button" onClick={plus}>
-          +
-        </button>
+        <span>Bullet packs</span>
+        <div className="garage__bullet-buttons">
+          <button type="button" onClick={minus}>
+            -
+          </button>
+          <span>{count}</span>
+          <button type="button" onClick={plus}>
+            +
+          </button>
+        </div>
       </div>
     </>
   );

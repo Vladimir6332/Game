@@ -5,6 +5,7 @@ import PropertyStandart from '../interfacePropertyStandart';
 interface PropsType {
   callback(obj: PropertyStandart): void;
   setMinusPoints(num: number): void;
+  setCount(num: number): void;
   path: string;
   name: string;
   points: number;
@@ -28,6 +29,7 @@ const Weapon: React.FC<PropsType> = (props) => {
     statistics,
     COST_BULLETS,
     countBullets,
+    setCount,
   } = props;
 
   const clearAllClassName = () => {
@@ -41,12 +43,16 @@ const Weapon: React.FC<PropsType> = (props) => {
   };
   const click = (event: React.MouseEvent<HTMLImageElement>): void => {
     const { target } = event;
-
     const { parentElement } = target as Element;
     const { classList } = parentElement;
     clearAllClassName();
     classList.add('choisedWeapon');
-    setMinusPoints(allPoints - points - COST_BULLETS);
+    if (name === 'standart') {
+      setMinusPoints(allPoints);
+      setCount(1);
+    } else {
+      setMinusPoints(allPoints - points - (COST_BULLETS || 10));
+    }
     callback({
       path,
       name,
@@ -90,6 +96,7 @@ Weapon.propTypes = {
   statistics: PropTypes.objectOf(PropTypes.number).isRequired,
   COST_BULLETS: PropTypes.number.isRequired,
   countBullets: PropTypes.number.isRequired,
+  setCount: PropTypes.func.isRequired,
 };
 
 export default Weapon;

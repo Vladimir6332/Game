@@ -13,13 +13,29 @@ const Statistics: React.FC<PropsStatistics> = (props) => {
 
   return (
     <div className="garage__statistics">
-      <h2 className="garage__statistics-title">Statistics</h2>
-      <ul className="garage__statistics-ul">
-        <li className="garage__statistics-li">{`Your kills: ${kills}`}</li>
-        <li className="garage__statistics-li">{`Your deaths: ${deaths}`}</li>
-        <li className="garage__statistics-li">{`Hit percentage : ${hitPercentage}`}</li>
-        <li className="garage__statistics-li">{`You were not in the game for ${lastTime} hours`}</li>
-      </ul>
+      <div>
+        <h2 className="garage__statistics-title">Statistics</h2>
+        <table className="garage__statistics-table">
+          <tbody className="garage__statistics-table-tbody">
+            <tr>
+              <td>Your kills: </td>
+              <td>{kills}</td>
+            </tr>
+            <tr>
+              <td>Your deaths: </td>
+              <td>{deaths}</td>
+            </tr>
+            <tr>
+              <td>Hit percentage: </td>
+              <td>{hitPercentage}</td>
+            </tr>
+            <tr>
+              <td>Last visit: </td>
+              <td>{`1${lastTime}.10.20: 10:50`}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

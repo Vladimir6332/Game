@@ -7,12 +7,19 @@ import PropertyStandart from '../interfacePropertyStandart';
 interface PropsType {
   setProperties(obj: PropertyStandart): void;
   setMinusPoints(num: number): void;
+  setCount(num: number): void;
   allPoints: number;
   COST_BULLETS: number;
 }
 
 const Weapons: React.FC<PropsType> = (props) => {
-  const { setProperties, setMinusPoints, allPoints, COST_BULLETS } = props;
+  const {
+    setProperties,
+    setMinusPoints,
+    allPoints,
+    COST_BULLETS,
+    setCount,
+  } = props;
   const list: Array<JSX.Element> = weapons.map((item: objWeapon) => {
     return (
       <Weapon
@@ -27,6 +34,7 @@ const Weapons: React.FC<PropsType> = (props) => {
         statistics={item.statistics}
         COST_BULLETS={COST_BULLETS}
         countBullets={item.statistics.countBullets}
+        setCount={setCount}
       />
     );
   });
@@ -39,5 +47,6 @@ Weapons.propTypes = {
   setMinusPoints: PropTypes.func.isRequired,
   allPoints: PropTypes.number.isRequired,
   COST_BULLETS: PropTypes.number.isRequired,
+  setCount: PropTypes.func.isRequired,
 };
 export default Weapons;

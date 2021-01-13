@@ -34,8 +34,8 @@ const Garage: React.FC = () => {
     hitPercentage: 15,
   };
   const [count, setCount] = useState(1);
-  console.log('---Render', `cost bullet: ${count * 10}`);
-  const COST_BULLETS = count * 10;
+  const COST_BULLETS = properties.name === 'standart' ? 0 : count * 10;
+  console.log('index cost bullets: ', COST_BULLETS);
   const funcTemplate1 = (
     str: string,
     num: number,
@@ -59,6 +59,7 @@ const Garage: React.FC = () => {
         <Weapons
           setProperties={setProperties}
           setMinusPoints={setPoints}
+          setCount={setCount}
           COST_BULLETS={COST_BULLETS}
           allPoints={ALL_POINTS}
         />

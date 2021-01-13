@@ -12,7 +12,7 @@ interface propsType {
       range: number;
       bulletPacs: number;
       cost: number;
-      countBullets: number;
+      countBullets: number | string;
     }
   ) => void;
   choisedWeapon: string;
@@ -22,7 +22,7 @@ interface propsType {
   speedBullet: number;
   range: number;
   bulletPacs: number;
-  countBullets: number;
+  countBullets: number | string;
   cost: number;
 }
 const StartButton: React.FC<propsType> = (props) => {
