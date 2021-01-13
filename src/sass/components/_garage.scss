@@ -15,7 +15,7 @@
       grid-template-areas: 
       'points points points points'
       'tank weapon-list statistics statistics'
-      'tank weapon-list infoBullets infoBullets'
+      'tank weapon-list infoBullet infoBullet'
       'tank weapon-list changeBullet button';
       grid-gap: 5px;
       width: 100%;
@@ -83,8 +83,8 @@
       justify-self: end;
       grid-area: button;
     }
-    &__bulletInfo {
-      grid-area: infoBullets;
+    &__bullet-info {
+      grid-area: infoBullet;
     }
     &__bullet-change {
       justify-self: center;
