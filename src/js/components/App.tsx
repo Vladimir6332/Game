@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Menu from './Menu/Menu';
-import Login from './Login';
+import Login from './Login/Login';
 import Garage from './garage';
 import saveStatistics from '../servise/saveStatistics';
 

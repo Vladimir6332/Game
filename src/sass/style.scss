@@ -13,6 +13,7 @@
 @import 'base/logo';
 @import 'base/navigation';
 @import 'base/sound_control';
+@import 'base/button';
 
 //Layouts
 @import 'layouts/header';
@@ -22,3 +23,4 @@
 @import 'components/app';
 @import 'components/garage';
 @import 'components/menu';
+@import 'components/login';
