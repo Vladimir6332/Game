@@ -55,11 +55,19 @@ const InfoBullet: React.FC<PropertiesBullet> = (props) => {
       <div className="garage__bullet-change">
         <span>Bullet packs</span>
         <div className="garage__bullet-buttons">
-          <button type="button" onClick={minus}>
+          <button
+            type="button"
+            onClick={minus}
+            className="garage__bullet-button"
+          >
             -
           </button>
           <span>{count}</span>
-          <button type="button" onClick={plus}>
+          <button
+            type="button"
+            onClick={plus}
+            className="garage__bullet-button"
+          >
             +
           </button>
         </div>

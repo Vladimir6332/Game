@@ -68,7 +68,7 @@ const Weapon: React.FC<PropsType> = (props) => {
 
   const statistic = `Урон: ${statistics.damage}, скорость снаряда: ${statistics.speedBullet}, скорость выстрелов: ${statistics.speedGun}  дальность: ${statistics.range}`;
   return (
-    <div style={{ height: '100%', margin: '5px' }}>
+    <div className="garage__weapon-wrapper">
       <p className="garage__weapon-text">{statistic}</p>
       <div
         role="presentation"
