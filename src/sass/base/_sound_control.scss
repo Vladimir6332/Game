@@ -1,0 +1,26 @@
+.sound-control {
+  position: absolute;
+  top: 10rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sound-control__icon {
+  width: 2rem;
+  fill: firebrick;
+}
+
+.sound-control__volume {
+  .MuiSlider-rail,
+  .MuiSlider-track,
+  .MuiSlider-thumb {
+    background-color: firebrick;
+  }
+
+  .MuiSlider-valueLabel {
+    color: firebrick;
+  }
+}
