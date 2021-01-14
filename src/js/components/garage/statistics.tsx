@@ -3,7 +3,10 @@ import PropsType from 'prop-types';
 
 interface PropsStatistics {
   properties: {
-    [x: string]: number;
+    kills: number;
+    deaths: number;
+    lastTime: string;
+    hitPercentage: number;
   };
 }
 
@@ -27,11 +30,11 @@ const Statistics: React.FC<PropsStatistics> = (props) => {
             </tr>
             <tr>
               <td>Hit percentage: </td>
-              <td>{hitPercentage}</td>
+              <td>{`${hitPercentage}%`}</td>
             </tr>
             <tr>
               <td>Last visit: </td>
-              <td>{`1${lastTime}.10.20: 10:50`}</td>
+              <td>{lastTime}</td>
             </tr>
           </tbody>
         </table>
@@ -41,6 +44,11 @@ const Statistics: React.FC<PropsStatistics> = (props) => {
 };
 
 Statistics.propTypes = {
-  properties: PropsType.objectOf(PropsType.number).isRequired,
+  properties: PropsType.exact({
+    kills: PropsType.number.isRequired,
+    deaths: PropsType.number.isRequired,
+    lastTime: PropsType.string.isRequired,
+    hitPercentage: PropsType.number.isRequired,
+  }).isRequired,
 };
 export default Statistics;

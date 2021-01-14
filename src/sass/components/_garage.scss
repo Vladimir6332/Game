@@ -1,3 +1,14 @@
+@keyframes popUp {
+  0% {
+    transform: scale(0) translate(0%, 0%);
+    top: 0;
+    right: 0;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    top: 50%;
+  }
+}
 %img {
   object-fit: contain;
   height: 100%;
@@ -103,6 +114,21 @@
     &__bullet-buttons {
       text-align: center;
     }
+}
+.noPoints {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 10%;
+  top: 50%;
+  left: 50%;
+  z-index: 15;
+  border-radius: 5px;
+  animation: popUp 1s;
+  transform: scale(1) translate(-50%, -50%);
+  background-color: #1e1e1e;
 }
 .choisedWeapon {
   border: 1px solid #fff;

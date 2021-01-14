@@ -24,6 +24,7 @@ interface propsType {
   bulletPacs: number;
   countBullets: number | string;
   cost: number;
+  setSwitchNoPoints: (noPoints: boolean) => void;
 }
 const StartButton: React.FC<propsType> = (props) => {
   const {
@@ -37,6 +38,7 @@ const StartButton: React.FC<propsType> = (props) => {
     bulletPacs,
     cost,
     countBullets,
+    setSwitchNoPoints,
   } = props;
 
   const start = (): void => {
@@ -51,9 +53,10 @@ const StartButton: React.FC<propsType> = (props) => {
         countBullets,
       });
     } else {
-      alert(
-        `Stop! You need ${restPoints - restPoints - restPoints} for start game!`
-      );
+      setSwitchNoPoints(true);
+      setTimeout(() => {
+        setSwitchNoPoints(false);
+      }, 2500);
     }
   };
   return (
@@ -74,6 +77,7 @@ StartButton.propTypes = {
   bulletPacs: PropTypes.number.isRequired,
   cost: PropTypes.number.isRequired,
   countBullets: PropTypes.number.isRequired,
+  setSwitchNoPoints: PropTypes.func.isRequired,
 };
 
 export default StartButton;

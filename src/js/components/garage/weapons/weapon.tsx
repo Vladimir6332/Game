@@ -71,12 +71,8 @@ const Weapon: React.FC<PropsType> = (props) => {
     <div style={{ height: '100%', margin: '5px' }}>
       <p className="garage__weapon-text">{statistic}</p>
       <div
-        role="button"
-        tabIndex={0}
+        role="presentation"
         onClick={click}
-        onKeyPress={(): void => {
-          console.log(name);
-        }}
         className={`garage__weapon ${choisedFirst ? 'choisedWeapon' : ''}`}
       >
         <img src={path} alt="weapon" className="garage__weapon-img" />
