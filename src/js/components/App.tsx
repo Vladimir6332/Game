@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Menu from './Menu/Menu';
-import Login from './Login';
+import Login from './Login/Login';
 
 const App: React.FC = () => {
   const [isMenuActive, setMenuActive] = useState<boolean>(true);
