@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
-import Menu from './Menu';
+import React from 'react';
+import PixiApp from './Proba';
 
-const App: React.FC = () => {
-  const [isMenuActive, setMenuActive] = useState<boolean>(true);
-  console.log(setMenuActive);
-  return <div className="app">{isMenuActive ? <Menu /> : null}</div>;
+const App = () => {
+  const canvasRef = React.createRef<HTMLDivElement>();
+  const app = PixiApp;
+
+  React.useEffect(() => {
+    canvasRef.current.appendChild(app.view);
+    return () => {
+      app.stop();
+    };
+  });
+
+  return (
+    <div className="App">
+      <div ref={canvasRef} />
+    </div>
+  );
 };
 
 export default App;
