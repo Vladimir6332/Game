@@ -19,22 +19,27 @@ app.loader
 
 function onAssetsLoaded() {
   const reelContainer = new PIXI.Container();
-  const tank = new PIXI.Sprite(
-    PIXI.Texture.from('assets/images/brown/tank.png')
-  );
-  const gan = new PIXI.Sprite(
-    PIXI.Texture.from('assets/images/brown/bigBOOM/bigBOOM.png')
-  );
+  const tank = {
+    sprite: new PIXI.Sprite(PIXI.Texture.from('assets/images/brown/tank.png')),
+    health: 600,
+    fullHealth: 600,
+    aim: 400,
+    x: 0,
+    y: 0,
+    gan: new PIXI.Sprite(
+      PIXI.Texture.from('assets/images/brown/bigBOOM/bigBOOM.png')
+    ),
+    angleX: 0,
+    angleY: 0,
+  };
   const tankBad = new PIXI.Sprite(
     PIXI.Texture.from('assets/images/red/tank.png')
   );
   const ganBad = new PIXI.Sprite(
     PIXI.Texture.from('assets/images/red/bigBOOM/bigBOOM.png')
   );
-  let y = 0;
-  let x = 0;
-  let angleX: number;
-  let angleY: number;
+  const aim = new PIXI.Graphics();
+  aim.lineStyle(4, 0x00ff00, 0.5, 0.5, true);
   const xBadStart = app.screen.width;
   const yBadStart = app.screen.height;
   tankBad.pivot.y = tankBad.height / 2;
@@ -51,62 +56,71 @@ function onAssetsLoaded() {
   ganBad.width *= 0.1;
   ganBad.height *= 0.1;
   ganBad.rotation = Math.PI;
-  tank.y = y;
-  tank.x = x;
-  tank.pivot.y = tank.height / 2;
-  tank.pivot.x = tank.width / 2;
-  tank.width = 100;
-  tank.height = 50;
-  tank.y = y + tank.height / 2;
-  tank.x = x + tank.width / 2;
-  gan.y = y + tank.height / 2;
-  gan.x = x + tank.width / 2;
-  gan.pivot.y = gan.height / 2;
-  gan.pivot.x = gan.width * 0.3;
-  gan.width *= 0.1;
-  gan.height *= 0.1;
+  tank.sprite.y = tank.y;
+  tank.sprite.x = tank.x;
+  tank.sprite.pivot.y = tank.sprite.height / 2;
+  tank.sprite.pivot.x = tank.sprite.width / 2;
+  tank.sprite.width = 100;
+  tank.sprite.height = 50;
+  tank.sprite.y = tank.y + tank.sprite.height / 2;
+  tank.sprite.x = tank.x + tank.sprite.width / 2;
+  aim.drawCircle(tank.sprite.x, tank.sprite.y, 400);
+  tank.gan.y = tank.y + tank.sprite.height / 2;
+  tank.gan.x = tank.x + tank.sprite.width / 2;
+  tank.gan.pivot.y = tank.gan.height / 2;
+  tank.gan.pivot.x = tank.gan.width * 0.3;
+  tank.gan.width *= 0.1;
+  tank.gan.height *= 0.1;
   app.view.addEventListener('mousemove', (e) => {
-    angleX = e.offsetX;
-    angleY = e.offsetY;
-    gan.rotation = anglee(tank.x, tank.y, angleX, angleY);
+    tank.angleX = e.offsetX;
+    tank.angleY = e.offsetY;
+    tank.gan.rotation = anglee(tank.x, tank.y, tank.angleX, tank.angleY);
   });
   window.addEventListener('keypress', (e) => {
     if (e.code === 'KeyW') {
-      if (y < tank.height) {
+      if (tank.y < tank.sprite.height) {
         return;
       }
-      tank.rotation = Math.PI / 2;
-      y -= 10;
+      tank.sprite.rotation = Math.PI / 2;
+      tank.y -= 10;
     } else if (e.code === 'KeyS') {
-      if (y > app.view.height) {
+      if (tank.sprite.y > app.view.height) {
         return;
       }
-      tank.rotation = (Math.PI * 3) / 2;
-      y += 10;
+      tank.sprite.rotation = (Math.PI * 3) / 2;
+      tank.y += 10;
     } else if (e.code === 'KeyA') {
-      if (x < 0) {
+      if (tank.x < 0) {
         return;
       }
-      tank.rotation = Math.PI;
-      x -= 10;
+      tank.sprite.rotation = Math.PI;
+      tank.x -= 10;
     } else if (e.code === 'KeyD') {
-      if (x > app.view.width) {
+      if (tank.x > app.view.width) {
         return;
       }
-      tank.rotation = 0;
-      x += 10;
+      tank.sprite.rotation = 0;
+      tank.x += 10;
     } else {
       return;
     }
-    tank.y = y + tank.height / 2;
-    tank.x = x + tank.width / 2;
-    gan.y = y + tank.height / 2;
-    gan.x = x + tank.width / 2;
-    if (hitTank(tank, tankBad)) {
+    aim.clear();
+    tank.sprite.y = tank.y + tank.sprite.height / 2;
+    tank.sprite.x = tank.x + tank.sprite.width / 2;
+    tank.gan.y = tank.y + tank.sprite.height / 2;
+    tank.gan.x = tank.x + tank.sprite.width / 2;
+    aim.lineStyle(4, 0x00ff00, 0.5, 0.5, true);
+    aim.drawCircle(tank.sprite.x, tank.sprite.y, 400);
+    if (hitTank(tank.sprite, tankBad)) {
       console.log('Taran');
     }
-    if (angleY !== undefined && angleX !== undefined) {
-      gan.rotation = anglee(tank.x, tank.y, angleX, angleY);
+    if (tank.angleY !== 0 && tank.angleX !== 0) {
+      tank.gan.rotation = anglee(
+        tank.sprite.x,
+        tank.sprite.y,
+        tank.angleX,
+        tank.angleY
+      );
     }
   });
 
@@ -115,10 +129,12 @@ function onAssetsLoaded() {
     const my = e.offsetY;
     const dy = createNaprv(mx, my, tank.x, tank.y);
     const dx = Math.sin(anglee(tank.x, tank.y, mx, my) + Math.PI / 2) * 10;
-    let startX = tank.x + (dx * gan.width * 0.7) / 10;
+    let startX = tank.x + (dx * tank.gan.width * 0.7) / 10;
     let startY =
       tank.y -
-      Math.cos(anglee(tank.x, tank.y, mx, my) + Math.PI / 2) * gan.width * 0.7;
+      Math.cos(anglee(tank.x, tank.y, mx, my) + Math.PI / 2) *
+        tank.gan.width *
+        0.7;
     const r = new PIXI.Graphics();
     function paint() {
       r.clear();
@@ -215,7 +231,7 @@ function onAssetsLoaded() {
       }
     }
     stepBad -= 7;
-    if (!hitTank(tankBad, tank)) {
+    if (!hitTank(tankBad, tank.sprite)) {
       console.log('Тоби пизда!');
       setTimeout(findAss, 50);
     } else {
@@ -223,7 +239,7 @@ function onAssetsLoaded() {
     }
   }
   computer();
-  reelContainer.addChild(tank, gan, tankBad, ganBad);
+  reelContainer.addChild(aim, tank.sprite, tank.gan, tankBad, ganBad);
   app.stage.addChild(reelContainer);
 }
 
