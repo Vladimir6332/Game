@@ -112,6 +112,9 @@ function TankComputer(
       (100 * this.health) / this.fullHealth,
       4
     );
+    if (this.health <= 0) {
+      this.dead();
+    }
     this.healthRender.endFill();
   };
   this.moveTank = () => {
@@ -244,6 +247,10 @@ function TankComputer(
         hit = false;
       }
     }
+    if (hit) {
+      r2.health -= 300;
+      this.health -= 300;
+    }
     return hit;
   };
   this.moveGan = () => {
@@ -280,9 +287,6 @@ function TankComputer(
         r.clear();
         clonConteiner.removeChild(r);
         tankBund.health -= 100;
-        if (tankBund.health <= 0) {
-          tankBund.dead();
-        }
         return;
       }
       startX += dx;

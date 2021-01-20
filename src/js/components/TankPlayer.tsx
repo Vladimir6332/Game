@@ -115,6 +115,9 @@ function TankPlayer(
       4
     );
     this.healthRender.endFill();
+    if (this.health <= 0) {
+      this.dead();
+    }
     setTimeout(this.render, 50);
   };
   this.moveTank = (keyCode: string) => {
@@ -147,15 +150,17 @@ function TankPlayer(
     }
     this.renderGan();
   };
-  this.batter = (r2: {
+  this.batter = (r: {
     x: number;
     y: number;
     width: number;
     height: number;
     rotation: number;
+    health: number;
   }) => {
     let hit = false;
     const r1 = this.sprite;
+    const r2 = r;
     if (r1.rotation % Math.PI === 0 && r2.rotation % Math.PI === 0) {
       if (
         (r2.x - r2.width / 2 >= r1.x - r1.width / 2 &&
@@ -249,6 +254,10 @@ function TankPlayer(
         hit = false;
       }
     }
+    if (hit) {
+      r2.health -= 300;
+      this.health -= 300;
+    }
     return hit;
   };
   this.moveGan = (offsetX: number, offsetY: number) => {
@@ -295,9 +304,6 @@ function TankPlayer(
         r.clear();
         tankBund.health -= 100;
         clonConteiner.removeChild(r);
-        if (tankBund.health <= 0) {
-          tankBund.dead();
-        }
         if (!tankBund.checkFind) {
           tankBund.checkFind = true;
           tankBund.findPlayer();
