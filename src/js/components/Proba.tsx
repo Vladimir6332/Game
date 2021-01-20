@@ -50,7 +50,7 @@ function onAssetsLoaded() {
   window.addEventListener('keypress', (e) => {
     tank.moveTank(e.code);
     if (tank.batter(tankBad.sprite)) {
-      console.log('Taran');
+      console.log(tankBad.health);
     }
   });
 

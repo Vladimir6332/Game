@@ -36,6 +36,8 @@ function TankComputer(
   this.count = 0;
   this.naprv = false;
   this.checkDead = false;
+  this.check = false;
+  this.time = 0;
 
   this.init = () => {
     this.renderStart();
@@ -142,9 +144,12 @@ function TankComputer(
         this.gan.rotation = 0;
       }
     }
-    if (checkLenght(this.player.sprite, this.sprite)) {
-      this.checkAss = true;
-      this.findPlayer();
+    if (
+      checkLenght(this.player.sprite, this.sprite) &&
+      !this.player.checkDead
+    ) {
+      this.checkFind = true;
+      this.time = setInterval(this.findPlayer, 50);
       return;
     }
     setTimeout(this.moveTank, 50);
@@ -313,7 +318,15 @@ function TankComputer(
     setTimeout(paint, 0);
   };
   this.findPlayer = () => {
-    if (this.checkDead) return;
+    if (this.checkDead || !this.checkFind) return;
+    if (this.player.checkDead) {
+      this.checkFind = false;
+      clearInterval(this.time);
+      this.sprite.rotation = 0;
+      this.gan.rotation = 0;
+      this.moveTank();
+      return;
+    }
     const dx = this.player.sprite.x - this.sprite.x;
     const dy = this.player.sprite.y - this.sprite.y;
     if (this.stepBad <= 0) {
@@ -346,16 +359,10 @@ function TankComputer(
       }
     }
     this.stepBad -= 7;
-    this.shut();
     this.moveGan();
     this.render();
     this.renderGan();
-    if (!this.batter()) {
-      console.log('Тоби пизда!');
-      setTimeout(this.findPlayer, 50);
-    } else {
-      console.log('You were checked! LOL!');
-    }
+    this.shut();
   };
   this.dead = () => {
     this.conteiner.removeChild(this.sprite, this.gan, this.healthRender);

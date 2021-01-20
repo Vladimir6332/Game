@@ -118,9 +118,11 @@ function TankPlayer(
     if (this.health <= 0) {
       this.dead();
     }
+    this.renderGan();
     setTimeout(this.render, 50);
   };
   this.moveTank = (keyCode: string) => {
+    if (this.checkDead) return;
     if (keyCode === 'KeyW') {
       if (this.y < this.sprite.height) {
         return;
@@ -145,10 +147,7 @@ function TankPlayer(
       }
       this.sprite.rotation = 0;
       this.x += 10;
-    } else {
-      return;
     }
-    this.renderGan();
   };
   this.batter = (r: {
     x: number;
