@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js-legacy';
 
 function TankPlayer(
   this: any,
@@ -30,10 +30,12 @@ function TankPlayer(
   this.appHeigth = appHeigth;
   this.appWidth = appWidth;
   this.conteiner = conteiner;
+  this.checkDead = false;
 
   this.init = () => {
     this.renderStart();
     this.renderGan();
+    this.render();
   };
   this.renderStart = () => {
     this.aimRender.clear();
@@ -113,19 +115,20 @@ function TankPlayer(
       4
     );
     this.healthRender.endFill();
+    setTimeout(this.render, 50);
   };
   this.moveTank = (keyCode: string) => {
     if (keyCode === 'KeyW') {
       if (this.y < this.sprite.height) {
         return;
       }
-      this.sprite.rotation = Math.PI / 2;
+      this.sprite.rotation = (Math.PI * 3) / 2;
       this.y -= 10;
     } else if (keyCode === 'KeyS') {
       if (this.sprite.y > appHeigth) {
         return;
       }
-      this.sprite.rotation = (Math.PI * 3) / 2;
+      this.sprite.rotation = Math.PI / 2;
       this.y += 10;
     } else if (keyCode === 'KeyA') {
       if (this.x < 0) {
@@ -142,7 +145,6 @@ function TankPlayer(
     } else {
       return;
     }
-    this.render();
     this.renderGan();
   };
   this.batter = (r2: {
@@ -265,7 +267,7 @@ function TankPlayer(
       findPlayer: any;
     }
   ) => {
-    if (this.callDown) return;
+    if (this.callDown || this.checkDead) return;
     this.callDown = true;
     const tankBund = tankBad;
     setTimeout(() => {
@@ -332,6 +334,7 @@ function TankPlayer(
       this.aimRender,
       this.healthRender
     );
+    this.checkDead = true;
   };
 }
 

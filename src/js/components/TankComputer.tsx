@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import * as PIXI from 'pixi.js-legacy';
 
 function TankComputer(
   this: any,
@@ -35,6 +35,7 @@ function TankComputer(
   this.stepBad = 0;
   this.count = 0;
   this.naprv = false;
+  this.checkDead = false;
 
   this.init = () => {
     this.renderStart();
@@ -251,7 +252,7 @@ function TankComputer(
     this.renderGan();
   };
   this.shut = () => {
-    if (this.callDown) return;
+    if (this.callDown || this.checkDead) return;
     this.callDown = true;
     const tankBund = this.player;
     const clonConteiner = this.conteiner;
@@ -308,6 +309,7 @@ function TankComputer(
     setTimeout(paint, 0);
   };
   this.findPlayer = () => {
+    if (this.checkDead) return;
     const dx = this.player.sprite.x - this.sprite.x;
     const dy = this.player.sprite.y - this.sprite.y;
     if (this.stepBad <= 0) {
@@ -353,6 +355,7 @@ function TankComputer(
   };
   this.dead = () => {
     this.conteiner.removeChild(this.sprite, this.gan, this.healthRender);
+    this.checkDead = true;
   };
 }
 
