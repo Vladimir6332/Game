@@ -14,8 +14,10 @@ interface PropertyIndex {
   statisticsPerson: {
     kills: number;
     deaths: number;
-    lastTime: string;
-    hitPercentage: number;
+    lastVisit: Date;
+    accuracy: number;
+    nickName: string;
+    timeInGame: number;
   };
   startTrigger(
     str: string,
@@ -50,12 +52,18 @@ const Garage: React.FC<PropertyIndex> = (props) => {
   const [count, setCount] = useState(1);
   const [switchNoPoints, setSwitchNoPoints] = useState(false);
   const COST_BULLETS = properties.name === 'standart' ? 0 : count * 10;
-
+  const statistics = {
+    kills: statisticsPerson.kills,
+    deaths: statisticsPerson.deaths,
+    lastVisit: statisticsPerson.lastVisit,
+    accuracy: statisticsPerson.accuracy,
+    timeInGame: statisticsPerson.timeInGame,
+  };
   return (
     <section className="garage">
       {switchNoPoints ? <NoWindowPoints pointsNeed={points} /> : false}
       <div className="garage__wrapper">
-        <Points allPoints={points} />
+        <Points allPoints={points} name={statisticsPerson.nickName} />
         <Tank name={properties.name} />
         <Weapons
           setProperties={setProperties}
@@ -64,7 +72,7 @@ const Garage: React.FC<PropertyIndex> = (props) => {
           COST_BULLETS={COST_BULLETS}
           allPoints={ALL_POINTS}
         />
-        <Statistics properties={statisticsPerson} />
+        <Statistics properties={statistics} />
         <StartButton
           callback={startTrigger}
           choisedWeapon={properties.name}
@@ -95,8 +103,10 @@ Garage.propTypes = {
   statisticsPerson: PropTypes.exact({
     kills: PropTypes.number.isRequired,
     deaths: PropTypes.number.isRequired,
-    lastTime: PropTypes.string.isRequired,
-    hitPercentage: PropTypes.number.isRequired,
+    lastVisit: PropTypes.instanceOf(Date),
+    accuracy: PropTypes.number.isRequired,
+    nickName: PropTypes.string.isRequired,
+    timeInGame: PropTypes.number.isRequired,
   }).isRequired,
   startTrigger: PropTypes.func.isRequired,
   ALL_POINTS: PropTypes.number.isRequired,

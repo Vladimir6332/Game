@@ -12,13 +12,17 @@ if (!localStorage.getItem('_statistics')) {
 const statisticsPropertiesTemplate: {
   kills: number;
   deaths: number;
-  lastTime: string;
-  hitPercentage: number;
+  lastVisit: Date;
+  accuracy: number;
+  nickName: string;
+  timeInGame: number;
 } = {
-  kills: 50,
-  deaths: 14,
-  lastTime: new Date().toLocaleString(),
-  hitPercentage: 15,
+  kills: 10,
+  deaths: 21,
+  lastVisit: new Date(),
+  accuracy: 10,
+  nickName: 'Boba',
+  timeInGame: 125251,
 };
 
 const funcTemplate1 = (

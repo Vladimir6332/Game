@@ -1,18 +1,20 @@
 import React from 'react';
 import PropsType from 'prop-types';
+import getTimeInGame from './getTimeInGame';
 
 interface PropsStatistics {
   properties: {
     kills: number;
     deaths: number;
-    lastTime: string;
-    hitPercentage: number;
+    lastVisit: Date;
+    accuracy: number;
+    timeInGame: number;
   };
 }
 
 const Statistics: React.FC<PropsStatistics> = (props) => {
   const { properties } = props;
-  const { kills, deaths, lastTime, hitPercentage } = properties;
+  const { kills, deaths, lastVisit, accuracy, timeInGame } = properties;
 
   return (
     <div className="garage__statistics">
@@ -30,11 +32,15 @@ const Statistics: React.FC<PropsStatistics> = (props) => {
             </tr>
             <tr>
               <td>Hit percentage: </td>
-              <td>{`${hitPercentage}%`}</td>
+              <td>{`${accuracy}%`}</td>
             </tr>
             <tr>
               <td>Last visit: </td>
-              <td>{lastTime}</td>
+              <td>{lastVisit.toLocaleString()}</td>
+            </tr>
+            <tr>
+              <td>Time in game</td>
+              <td>{getTimeInGame(timeInGame)}</td>
             </tr>
           </tbody>
         </table>
@@ -47,8 +53,9 @@ Statistics.propTypes = {
   properties: PropsType.exact({
     kills: PropsType.number.isRequired,
     deaths: PropsType.number.isRequired,
-    lastTime: PropsType.string.isRequired,
-    hitPercentage: PropsType.number.isRequired,
+    lastVisit: PropsType.instanceOf(Date),
+    accuracy: PropsType.number.isRequired,
+    timeInGame: PropsType.number.isRequired,
   }).isRequired,
 };
 export default Statistics;
