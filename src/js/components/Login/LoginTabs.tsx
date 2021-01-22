@@ -2,10 +2,12 @@ import React from 'react';
 
 interface Props {
   setType: (type: string) => void;
+  disabled: boolean;
 }
 
-const LoginTabs: React.FC<Props> = ({ setType }: Props) => {
+const LoginTabs: React.FC<Props> = ({ setType, disabled }: Props) => {
   const clickHandler = (event: React.SyntheticEvent<EventTarget>): void => {
+    if (!disabled) return;
     const element = event.target as HTMLElement;
     if (element.tagName === 'LI') {
       setType(element.id);
@@ -22,7 +24,7 @@ const LoginTabs: React.FC<Props> = ({ setType }: Props) => {
         Login
       </li>
       <li id="signUp">Register</li>
-      <li id="reset">Reset Password</li>
+      <li id="reset">Reset Profile</li>
     </ul>
   );
 };

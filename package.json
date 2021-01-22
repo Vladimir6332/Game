@@ -76,6 +76,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "ts-react-google-login-component": "^1.1.8"
+    "ts-react-google-login-component": "^1.1.8",
+    "use-async-effect": "^2.2.2"
   }
 }
