@@ -31,11 +31,12 @@ function TankPlayer(
   this.appWidth = appWidth;
   this.conteiner = conteiner;
   this.checkDead = false;
+  this.time = 0;
 
   this.init = () => {
     this.renderStart();
     this.renderGan();
-    this.render();
+    this.time = setInterval(this.render, 17);
   };
   this.renderStart = () => {
     this.aimRender.clear();
@@ -119,7 +120,6 @@ function TankPlayer(
       this.dead();
     }
     this.renderGan();
-    setTimeout(this.render, 50);
   };
   this.moveTank = (keyCode: string) => {
     if (this.checkDead) return;
@@ -333,6 +333,7 @@ function TankPlayer(
     setTimeout(paint, 0);
   };
   this.dead = () => {
+    clearInterval(this.time);
     this.conteiner.removeChild(
       this.sprite,
       this.gan,

@@ -10,7 +10,8 @@ function TankComputer(
   appWidth: number,
   appHeigth: number,
   conteiner: any,
-  player: any
+  player: any,
+  map: Array<{ arr: any }>
 ) {
   this.x = x;
   this.y = y;
@@ -38,11 +39,14 @@ function TankComputer(
   this.checkDead = false;
   this.check = false;
   this.time = 0;
+  this.timeRender = 0;
+  this.map = map;
 
   this.init = () => {
     this.renderStart();
     this.renderGan();
-    this.moveTank();
+    this.time = setInterval(this.moveTank, 50);
+    this.timeRender = setInterval(this.render, 17);
   };
   this.renderStart = () => {
     this.healthRender.clear();
@@ -144,21 +148,25 @@ function TankComputer(
         this.gan.rotation = 0;
       }
     }
+    this.turn();
     if (
       checkLenght(this.player.sprite, this.sprite) &&
       !this.player.checkDead
     ) {
       this.checkFind = true;
+      clearInterval(this.time);
       this.time = setInterval(this.findPlayer, 50);
-      return;
     }
-    setTimeout(this.moveTank, 50);
-    this.render();
   };
-  this.batter = () => {
+  this.batter = (r2: {
+    rotation: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }) => {
     let hit = false;
     const r1 = this.sprite;
-    const r2 = this.player.sprite;
     if (r1.rotation % Math.PI === 0 && r2.rotation % Math.PI === 0) {
       if (
         (r2.x - r2.width / 2 >= r1.x - r1.width / 2 &&
@@ -252,10 +260,6 @@ function TankComputer(
         hit = false;
       }
     }
-    if (hit) {
-      r2.health -= 300;
-      this.health -= 300;
-    }
     return hit;
   };
   this.moveGan = () => {
@@ -324,7 +328,7 @@ function TankComputer(
       clearInterval(this.time);
       this.sprite.rotation = 0;
       this.gan.rotation = 0;
-      this.moveTank();
+      this.time = setInterval(this.moveTank, 50);
       return;
     }
     const dx = this.player.sprite.x - this.sprite.x;
@@ -359,14 +363,37 @@ function TankComputer(
       }
     }
     this.stepBad -= 7;
+    if (this.batter(this.player.sprite)) {
+      this.health -= 300;
+      this.player.health -= 300;
+    }
     this.moveGan();
-    this.render();
     this.renderGan();
     this.shut();
   };
   this.dead = () => {
     this.conteiner.removeChild(this.sprite, this.gan, this.healthRender);
     this.checkDead = true;
+    clearInterval(this.time);
+    clearInterval(this.timeRender);
+  };
+  this.turn = () => {
+    const musMap = this.map;
+    musMap.forEach(
+      (mapI: {
+        x: number;
+        y: number;
+        rotation: number;
+        width: number;
+        height: number;
+      }) => {
+        if (this.batter(mapI)) {
+          console.log(1);
+          this.sprite.rotation += Math.PI / 2;
+          this.gan.rotation = this.sprite.rotation;
+        }
+      }
+    );
   };
 }
 
