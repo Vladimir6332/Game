@@ -19,6 +19,10 @@ function TankComputer(
     PIXI.Texture.from('assets/images/red/tank.png')
   );
   this.gan = new PIXI.Sprite(PIXI.Texture.from(gan));
+  this.bullet = `${gan
+    .split('/')
+    .slice(0, gan.split('/').length - 1)
+    .join('/')}/bullet.png`;
   this.healthRender = new PIXI.Graphics();
   this.health = 600;
   this.fullHealth = 600;
@@ -286,14 +290,18 @@ function TankComputer(
       Math.cos(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
         this.gan.width *
         0.7;
-    const r = new PIXI.Graphics();
+    const r = new PIXI.Sprite(PIXI.Texture.from(this.bullet));
     let final = this.aim - this.gan.width * 0.7;
+    r.pivot.x = r.width / 2;
+    r.pivot.y = r.height / 2;
+    const { width } = r;
+    r.width = 30;
+    r.height *= r.width / width;
+    r.rotation = anglee(this.sprite.x, this.sprite.y, mx, my);
     function paint() {
-      r.clear();
-      r.beginFill(0x000000, 1);
-      r.drawCircle(startX, startY, 2);
+      r.x = startX;
+      r.y = startY;
       if (hitBill(tankBund.sprite, startX, startY)) {
-        r.clear();
         clonConteiner.removeChild(r);
         tankBund.health -= 100;
         return;
@@ -306,12 +314,10 @@ function TankComputer(
         startY < 0 ||
         startX < 0
       ) {
-        r.clear();
         clonConteiner.removeChild(r);
         return;
       }
       if (final <= 0) {
-        r.clear();
         clonConteiner.removeChild(r);
         return;
       }
