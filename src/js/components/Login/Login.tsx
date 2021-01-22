@@ -21,7 +21,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     const password = (document.getElementById('password') as HTMLInputElement)
       .value;
     const data = { login: userName, password };
-    const url = `http://localhost:3000/${type}Auth`;
+    const url = `https://rs-clone-wars-be.herokuapp.com/${type}Auth`;
 
     const res = await fetch(url, {
       method: 'POST',
@@ -33,6 +33,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     });
 
     const userProfile = await res.json();
+    console.log(userProfile);
     setProfileOfUser(userProfile);
   };
 
@@ -71,7 +72,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     const googleId = googleUser.getId();
     const name = googleUser.getBasicProfile();
     console.log(idToken, googleId, name);
-    const url = `http://localhost:3000/googleAuth`;
+    const url = `https://rs-clone-wars-be.herokuapp.com/googleAuth`;
     const propToken = { token: idToken };
     const userProfile = await getUserByGoogleAuth(url, propToken);
     setProfileOfUser(userProfile);
