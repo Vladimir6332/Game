@@ -5,7 +5,11 @@ import LoginTabs from './LoginTabs';
 import FormLogin from './FormLogin';
 import Button from '../../utils/Button';
 
-const Login: React.FC = () => {
+interface Props {
+  onLogin: (profile: ProfileOfUser) => void;
+}
+
+const Login: React.FC<Props> = ({ onLogin }: Props) => {
   const [type, setType] = useState<string>('login');
   const [continueDisabled, setContinueDisabled] = useState<boolean>(true);
 
@@ -29,10 +33,7 @@ const Login: React.FC = () => {
     });
 
     const userProfile = await res.json();
-    console.log(userProfile);
-    if (userProfile && userProfile.nickName) {
-      setContinueDisabled(false);
-    } else setContinueDisabled(true);
+    setProfileOfUser(userProfile);
   };
 
   const continueHandler = () => {
@@ -65,24 +66,24 @@ const Login: React.FC = () => {
 
   const responseGoogle = async (
     googleUser: gapi.auth2.GoogleUser
-  ): Promise<any> => {
+  ): Promise<void> => {
     const idToken = googleUser.getAuthResponse(true).id_token;
     const googleId = googleUser.getId();
     const name = googleUser.getBasicProfile();
     console.log(idToken, googleId, name);
     const url = `http://localhost:3000/googleAuth`;
     const propToken = { token: idToken };
-    const user: { [key: string]: any } = await getUserByGoogleAuth(
-      url,
-      propToken
-    );
+    const userProfile = await getUserByGoogleAuth(url, propToken);
+    setProfileOfUser(userProfile);
+  };
 
-    if (user && user.googleID) {
+  const setProfileOfUser = (profileOfUser: ProfileOfUser) => {
+    if (profileOfUser && profileOfUser.id) {
+      const copyProfileOfUser = { ...profileOfUser };
+      copyProfileOfUser.lastVisit = new Date(copyProfileOfUser.lastVisit);
+      onLogin(copyProfileOfUser);
       setContinueDisabled(false);
-    }
-
-    // Make user login in your system
-    // login success tracking...
+    } else setContinueDisabled(true);
   };
 
   const clientConfig = {

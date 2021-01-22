@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Tank from './tank';
 import Weapons from './weapons';
 import Statistics from './statistics';
@@ -11,14 +10,7 @@ import InfoBullet from './infoBullet';
 import NoWindowPoints from './noPointsWindow';
 
 interface PropertyIndex {
-  statisticsPerson: {
-    kills: number;
-    deaths: number;
-    lastVisit: Date;
-    accuracy: number;
-    nickName: string;
-    timeInGame: number;
-  };
+  statisticsPerson: ProfileOfUser;
   startTrigger(
     str: string,
     num: number,
@@ -33,7 +25,7 @@ interface PropertyIndex {
   ): void;
   readonly ALL_POINTS: number;
 }
-const Garage: React.FC<PropertyIndex> = (props) => {
+const Garage: React.FC<PropertyIndex> = (props: PropertyIndex) => {
   const { statisticsPerson } = props;
   const { startTrigger } = props;
   const { ALL_POINTS } = props;
@@ -99,16 +91,4 @@ const Garage: React.FC<PropertyIndex> = (props) => {
   );
 };
 
-Garage.propTypes = {
-  statisticsPerson: PropTypes.exact({
-    kills: PropTypes.number.isRequired,
-    deaths: PropTypes.number.isRequired,
-    lastVisit: PropTypes.instanceOf(Date),
-    accuracy: PropTypes.number.isRequired,
-    nickName: PropTypes.string.isRequired,
-    timeInGame: PropTypes.number.isRequired,
-  }).isRequired,
-  startTrigger: PropTypes.func.isRequired,
-  ALL_POINTS: PropTypes.number.isRequired,
-};
 export default Garage;
