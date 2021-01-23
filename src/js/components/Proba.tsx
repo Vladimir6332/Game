@@ -58,6 +58,7 @@ app.loader
 
 function onAssetsLoaded() {
   const reelContainer = new PIXI.Container();
+  const musTankBad: Array<any> = [];
   const tank = new (TankPlayer as any)(
     0,
     app.screen.height / 2,
@@ -66,34 +67,74 @@ function onAssetsLoaded() {
     500,
     app.screen.width,
     app.screen.height,
-    reelContainer
-  );
-  const musMap: Array<any> = [];
-  const tankBad = new (TankComputer as any)(
-    app.screen.width,
-    app.screen.height,
-    'assets/images/red/bigBOOM/bigBOOM.png',
-    400,
-    500,
-    app.screen.width,
-    app.screen.height,
     reelContainer,
-    tank,
-    musMap
+    musTankBad
   );
-  const first = new PIXI.Graphics();
-  const second = new PIXI.Graphics();
-  const trird = new PIXI.Graphics();
-  musMap.push(first, second, trird);
-  musMap.forEach((map: any, index: number) => {
-    const clonMap = map;
-    clonMap.beginFill(0x000000, 1);
-    const x1 = app.screen.width - 50 * (index + 1);
-    const y1 = app.screen.height - 100 * (index + 1);
-    clonMap.x = x1;
-    clonMap.y = y1;
-    clonMap.drawRect(0, 0, 10, 10);
-  });
+  const arrImages = [
+    'assets/images/red/bigBOOM/bigBOOM.png',
+    'assets/images/red/speed/speed.png',
+    'assets/images/red/standart/standart.png',
+    'assets/images/red/sniper/sniper.png',
+  ];
+  const musMap: Array<any> = [];
+  for (let i = 0; i < 1; i += 1) {
+    let x = randomeNumber(app.screen.width);
+    let y = randomeNumber(app.screen.height);
+    if (x > app.screen.width - (app.screen.width * 0.1) / 2) {
+      x -= (app.screen.width * 0.1) / 2;
+    } else if (x < (app.screen.width * 0.1) / 2) {
+      x += (app.screen.width * 0.1) / 2;
+    }
+    if (y > app.screen.height - (app.screen.height * 0.1) / 2) {
+      y -= (app.screen.height * 0.1) / 2;
+    } else if (y < (app.screen.height * 0.1) / 2) {
+      y += (app.screen.height * 0.1) / 2;
+    }
+    const tankBad = new (TankComputer as any)(
+      x,
+      y,
+      arrImages[randomeNumber(arrImages.length)],
+      400,
+      500,
+      app.screen.width,
+      app.screen.height,
+      reelContainer,
+      tank,
+      musMap
+    );
+    musTankBad.push(tankBad);
+  }
+  const arrOptionMap = [
+    'assets/images/blocks/break.png',
+    'assets/images/blocks/hidden.png',
+    'assets/images/blocks/immortal.png',
+  ];
+  for (let i = 0; i < 10; i += 1) {
+    const block = new PIXI.Sprite(
+      PIXI.Texture.from(arrOptionMap[randomeNumber(arrOptionMap.length)])
+    );
+    block.pivot.x = block.width / 2;
+    block.pivot.y = block.height / 2;
+    block.width = 40;
+    block.height = 40;
+    const x = randomeNumber(app.screen.width);
+    const y = randomeNumber(app.screen.height);
+    if (x > app.screen.width - block.width / 2) {
+      block.x = x - block.width / 2;
+    } else if (x < block.width / 2) {
+      block.x = x + block.width / 2;
+    } else {
+      block.x = x;
+    }
+    if (y > app.screen.height - block.height / 2) {
+      block.y = y - block.height / 2;
+    } else if (y < block.height / 2) {
+      block.y = y + block.height / 2;
+    } else {
+      block.y = y;
+    }
+    musMap.push(block);
+  }
 
   app.view.addEventListener('mousemove', (e) => {
     tank.moveGan(e.offsetX, e.offsetY);
@@ -101,28 +142,33 @@ function onAssetsLoaded() {
 
   window.addEventListener('keypress', (e) => {
     tank.moveTank(e.code);
-    if (tank.batter(tankBad.sprite)) {
-      console.log(tankBad.health);
-    }
   });
 
   app.view.addEventListener('click', (e) => {
-    tank.shut(e.offsetX, e.offsetY, tankBad);
+    musTankBad.forEach((tankBad) => {
+      tank.shut(e.offsetX, e.offsetY, tankBad);
+    });
+  });
+  const musRender: Array<any> = [];
+  musTankBad.forEach((tankBad) => {
+    tankBad.init();
+    musRender.push(tankBad.sprite, tankBad.gan, tankBad.healthRender);
   });
 
-  tankBad.init();
   tank.init();
   reelContainer.addChild(
     ...musMap,
     tank.aimRender,
     tank.sprite,
     tank.gan,
-    tankBad.sprite,
-    tankBad.gan,
-    tankBad.healthRender,
-    tank.healthRender
+    tank.healthRender,
+    ...musRender
   );
   app.stage.addChild(reelContainer);
 }
 
 export default app;
+
+function randomeNumber(x: number) {
+  return Math.floor(Math.random() * x);
+}

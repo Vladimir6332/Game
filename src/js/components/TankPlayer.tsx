@@ -9,7 +9,8 @@ function TankPlayer(
   timeCallDown: number,
   appWidth: number,
   appHeigth: number,
-  conteiner: any
+  conteiner: any,
+  evil: Array<{ arr: any }>
 ) {
   this.x = x;
   this.y = y;
@@ -36,6 +37,7 @@ function TankPlayer(
   this.conteiner = conteiner;
   this.checkDead = false;
   this.time = 0;
+  this.arrEvil = evil;
 
   this.init = () => {
     this.renderStart();
@@ -47,8 +49,8 @@ function TankPlayer(
     this.healthRender.clear();
     this.sprite.pivot.y = this.sprite.height / 2;
     this.sprite.pivot.x = this.sprite.width / 2;
-    this.sprite.width = 100;
-    this.sprite.height = 50;
+    this.sprite.width = this.appWidth * 0.1;
+    this.sprite.height = this.sprite.width / 2;
     this.sprite.y = this.y + this.sprite.height / 2;
     this.sprite.x = this.x + this.sprite.width / 2;
     this.aimRender.lineStyle(4, 0x00ff00, 1, 0.5, true);
@@ -64,7 +66,7 @@ function TankPlayer(
     this.healthRender.drawRect(
       this.sprite.x - this.sprite.width / 2,
       this.sprite.y - this.sprite.height / 2 - 20,
-      100,
+      this.sprite.width,
       4
     );
     this.healthRender.endFill();
@@ -78,7 +80,7 @@ function TankPlayer(
     this.healthRender.drawRect(
       this.sprite.x - this.sprite.width / 2,
       this.sprite.y - this.sprite.height / 2 - 20,
-      (100 * this.health) / this.fullHealth,
+      (this.sprite.width * this.health) / this.fullHealth,
       4
     );
     this.healthRender.endFill();
@@ -102,7 +104,7 @@ function TankPlayer(
     this.healthRender.drawRect(
       this.sprite.x - this.sprite.width / 2,
       this.sprite.y - this.sprite.height / 2 - 20,
-      100,
+      this.sprite.width,
       4
     );
     this.healthRender.endFill();
@@ -116,7 +118,7 @@ function TankPlayer(
     this.healthRender.drawRect(
       this.sprite.x - this.sprite.width / 2,
       this.sprite.y - this.sprite.height / 2 - 20,
-      (100 * this.health) / this.fullHealth,
+      (this.sprite.width * this.health) / this.fullHealth,
       4
     );
     this.healthRender.endFill();
@@ -256,10 +258,6 @@ function TankPlayer(
       } else {
         hit = false;
       }
-    }
-    if (hit) {
-      r2.health -= 300;
-      this.health -= 300;
     }
     return hit;
   };
