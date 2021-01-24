@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 interface propsType {
@@ -41,6 +42,8 @@ const StartButton: React.FC<propsType> = (props) => {
     setSwitchNoPoints,
   } = props;
 
+  const history = useHistory();
+
   const start = (): void => {
     if (restPoints >= 0) {
       callback(choisedWeapon, restPoints, {
@@ -52,6 +55,7 @@ const StartButton: React.FC<propsType> = (props) => {
         cost,
         countBullets,
       });
+      history.push('/play');
     } else {
       setSwitchNoPoints(true);
       setTimeout(() => {

@@ -3,27 +3,18 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Menu from './Menu/Menu';
 import Login from './Login/Login';
 import Garage from './garage';
+import Game from './Game/Game';
 
-const funcTemplate1 = (
-  str: string,
-  num: number,
-  options: {
-    damage: number;
-    speedGun: number;
-    speedBullet: number;
-    range: number;
-    bulletPacs: number;
-    cost: number;
-  }
-): void => {
-  console.log(str, num, JSON.stringify(options));
-};
-const ALL_POINTS = 30;
+const ALL_POINTS = 100;
 
 const App: React.FC = () => {
   const [currentProfile, setCurrentProfile] = useState<ProfileOfUser | null>(
     null
   );
+  const [playOptions, setPlayOptions] = useState<PlayOptions | null>(null);
+  const start: PlayOptionsCallback = (str, num, options) => {
+    setPlayOptions({ str, num, options });
+  };
 
   return (
     <BrowserRouter>
@@ -39,11 +30,15 @@ const App: React.FC = () => {
             render={() => (
               <Garage
                 statisticsPerson={currentProfile}
-                startTrigger={funcTemplate1}
+                startTrigger={start}
                 ALL_POINTS={ALL_POINTS}
               />
             )}
             path="/garage"
+          />
+          <Route
+            render={() => <Game startOptions={playOptions} />}
+            path="/play"
           />
         </Switch>
       </div>
