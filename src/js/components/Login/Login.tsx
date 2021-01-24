@@ -11,6 +11,10 @@ interface Props {
 
 const Login: React.FC<Props> = ({ onLogin }: Props) => {
   const [type, setType] = useState<string>('login');
+  const [
+    currentUserProfile,
+    setCurrentUserProfile,
+  ] = useState<ProfileOfUser | null>(null);
   const [continueDisabled, setContinueDisabled] = useState<boolean>(true);
 
   const history = useHistory();
@@ -22,7 +26,6 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
       .value;
     const data = { login: userName, password };
     const url = `https://rs-clone-wars-be.herokuapp.com/${type}Auth`;
-
     const res = await fetch(url, {
       method: 'POST',
       mode: 'cors',
@@ -31,9 +34,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
       },
       body: JSON.stringify(data),
     });
-
     const userProfile = await res.json();
-    console.log(userProfile);
     setProfileOfUser(userProfile);
   };
 
@@ -45,7 +46,6 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     console.log('Attemp to login with google');
   };
   const errorHandler = (error: string): void => {
-    // handle error if login got failed...
     console.error(error);
   };
 
@@ -69,9 +69,6 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     googleUser: gapi.auth2.GoogleUser
   ): Promise<void> => {
     const idToken = googleUser.getAuthResponse(true).id_token;
-    const googleId = googleUser.getId();
-    const name = googleUser.getBasicProfile();
-    console.log(idToken, googleId, name);
     const url = `https://rs-clone-wars-be.herokuapp.com/googleAuth`;
     const propToken = { token: idToken };
     const userProfile = await getUserByGoogleAuth(url, propToken);
@@ -82,6 +79,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     if (profileOfUser && profileOfUser.id) {
       const copyProfileOfUser = { ...profileOfUser };
       copyProfileOfUser.lastVisit = new Date(copyProfileOfUser.lastVisit);
+      setCurrentUserProfile(profileOfUser);
       onLogin(copyProfileOfUser);
       setContinueDisabled(false);
     } else setContinueDisabled(true);
@@ -93,7 +91,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
   };
 
   const getTitle = (activeTab: string): string => {
-    const START_MESSAGE = 'Press Continue to start the game:';
+    const START_MESSAGE = 'You have successfully logged in.';
     const LOGIN_MESSAGE = 'Login for continuing game:';
     const REGISTER_MESSAGE = 'Register new user:';
     const RESET_MESSAGE = 'Reset profile of user:';
@@ -114,20 +112,24 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
           type={type}
           onLogin={submitHandler}
           disabled={continueDisabled}
+          nickname={currentUserProfile?.nickName}
         />
       </div>
 
-      <GoogleLoginButton
-        responseHandler={responseGoogle}
-        clientConfig={clientConfig}
-        preLogin={preLoginTracking}
-        failureHandler={errorHandler}
-        singInOptions={signInOptions}
-        classNames="login__google"
-      >
-        <div className="google__icon" />
-        <span className="google__title">Sign in</span>
-      </GoogleLoginButton>
+      {continueDisabled && (
+        <GoogleLoginButton
+          responseHandler={responseGoogle}
+          clientConfig={clientConfig}
+          preLogin={preLoginTracking}
+          failureHandler={errorHandler}
+          singInOptions={signInOptions}
+          classNames="login__google"
+        >
+          <div className="google__icon" />
+          <span className="google__title">Sign in</span>
+        </GoogleLoginButton>
+      )}
+
       <Button disabled={continueDisabled} onClick={continueHandler}>
         Continue
       </Button>
