@@ -4,8 +4,15 @@ interface Props {
   type: string;
   onLogin: () => void;
   disabled: boolean;
+  nickname?: string;
 }
-const FormLogin: React.FC<Props> = ({ type, onLogin, disabled }: Props) => {
+
+const FormLogin: React.FC<Props> = ({
+  type,
+  onLogin,
+  disabled,
+  nickname,
+}: Props) => {
   interface PropsOfButtonValue {
     [key: string]: string;
   }
@@ -23,7 +30,7 @@ const FormLogin: React.FC<Props> = ({ type, onLogin, disabled }: Props) => {
   const getClassesOfAuthField = (isDisable: boolean): string =>
     `auth__field${disabled ? '' : ' auth__field_active'}`;
 
-  return (
+  return disabled ? (
     <form className="auth__form">
       <fieldset className={getClassesOfAuthField(disabled)}>
         <label className="auth__label" htmlFor="username">
@@ -55,7 +62,17 @@ const FormLogin: React.FC<Props> = ({ type, onLogin, disabled }: Props) => {
         />
       </fieldset>
     </form>
+  ) : (
+    <span className="login__title">
+      {`Hello, ${nickname}!`}
+      <br />
+      Press continue to start the game!
+    </span>
   );
+};
+
+FormLogin.defaultProps = {
+  nickname: 'Player',
 };
 
 export default FormLogin;

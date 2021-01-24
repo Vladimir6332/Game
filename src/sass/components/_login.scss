@@ -57,12 +57,22 @@
 }
 
 .login-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   box-sizing: border-box;
   width: 100%;
+  min-height: 305px;
   padding: 1rem;
 }
 .login__title {
   margin: 1rem;
+}
+
+.auth__form {
+  width: 100%;
+  max-width: 500px;
 }
 
 .auth__field {
