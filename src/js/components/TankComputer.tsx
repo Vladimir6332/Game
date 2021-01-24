@@ -67,9 +67,9 @@ function TankComputer(
     this.gan.y = this.y + this.sprite.height / 2;
     this.gan.x = this.x + this.sprite.width / 2;
     this.gan.pivot.y = this.gan.height / 2;
-    this.gan.pivot.x = this.gan.width * 0.3;
-    this.gan.width = dWidth * this.sprite.width * 0.6;
-    this.gan.height = dHeight * this.sprite.height * 0.6;
+    this.gan.pivot.x = this.gan.width * 0.353;
+    this.gan.width = dWidth * this.sprite.width;
+    this.gan.height = dHeight * this.sprite.height;
     this.gan.rotation = this.angleGan;
     this.healthRender.lineStyle(4, 0x000000, 1, 0.5, true);
     this.healthRender.drawRect(

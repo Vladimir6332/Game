@@ -59,16 +59,18 @@ app.loader
 function onAssetsLoaded() {
   const reelContainer = new PIXI.Container();
   const musTankBad: Array<any> = [];
+  const musMap: Array<any> = [];
   const tank = new (TankPlayer as any)(
     0,
     app.screen.height / 2,
-    'assets/images/brown/bigBOOM/bigBOOM.png',
+    'assets/images/brown/sniper/sniper.png',
     400,
     500,
     app.screen.width,
     app.screen.height,
     reelContainer,
-    musTankBad
+    musTankBad,
+    musMap
   );
   const arrImages = [
     'assets/images/red/bigBOOM/bigBOOM.png',
@@ -76,10 +78,11 @@ function onAssetsLoaded() {
     'assets/images/red/standart/standart.png',
     'assets/images/red/sniper/sniper.png',
   ];
-  const musMap: Array<any> = [];
-  for (let i = 0; i < 1; i += 1) {
-    let x = randomeNumber(app.screen.width);
+
+  for (let i = 0; i < 3; i += 1) {
+    let x = randomeNumber(app.screen.width / 2 - 100);
     let y = randomeNumber(app.screen.height);
+    x += app.screen.width / 2 + 100;
     if (x > app.screen.width - (app.screen.width * 0.1) / 2) {
       x -= (app.screen.width * 0.1) / 2;
     } else if (x < (app.screen.width * 0.1) / 2) {
@@ -145,9 +148,7 @@ function onAssetsLoaded() {
   });
 
   app.view.addEventListener('click', (e) => {
-    musTankBad.forEach((tankBad) => {
-      tank.shut(e.offsetX, e.offsetY, tankBad);
-    });
+    tank.shut(e.offsetX, e.offsetY);
   });
   const musRender: Array<any> = [];
   musTankBad.forEach((tankBad) => {
@@ -157,12 +158,12 @@ function onAssetsLoaded() {
 
   tank.init();
   reelContainer.addChild(
-    ...musMap,
     tank.aimRender,
     tank.sprite,
     tank.gan,
     tank.healthRender,
-    ...musRender
+    ...musRender,
+    ...musMap
   );
   app.stage.addChild(reelContainer);
 }

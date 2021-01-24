@@ -10,7 +10,8 @@ function TankPlayer(
   appWidth: number,
   appHeigth: number,
   conteiner: any,
-  evil: Array<{ arr: any }>
+  evil: Array<{ arr: any }>,
+  map: Array<{ arr: any }>
 ) {
   this.x = x;
   this.y = y;
@@ -38,6 +39,7 @@ function TankPlayer(
   this.checkDead = false;
   this.time = 0;
   this.arrEvil = evil;
+  this.arrMap = map;
 
   this.init = () => {
     this.renderStart();
@@ -47,6 +49,8 @@ function TankPlayer(
   this.renderStart = () => {
     this.aimRender.clear();
     this.healthRender.clear();
+    const dWidth = this.gan.width / this.sprite.width;
+    const dHeight = this.gan.height / this.sprite.height;
     this.sprite.pivot.y = this.sprite.height / 2;
     this.sprite.pivot.x = this.sprite.width / 2;
     this.sprite.width = this.appWidth * 0.1;
@@ -58,9 +62,9 @@ function TankPlayer(
     this.gan.y = this.y + this.sprite.height / 2;
     this.gan.x = this.x + this.sprite.width / 2;
     this.gan.pivot.y = this.gan.height / 2;
-    this.gan.pivot.x = this.gan.width * 0.3;
-    this.gan.width *= 0.1;
-    this.gan.height *= 0.1;
+    this.gan.pivot.x = this.gan.width * 0.353;
+    this.gan.width = dWidth * this.sprite.width;
+    this.gan.height = dHeight * this.sprite.height;
     this.gan.rotation = this.angleGan;
     this.healthRender.lineStyle(4, 0x000000, 1, 0.5, true);
     this.healthRender.drawRect(
@@ -130,29 +134,33 @@ function TankPlayer(
   this.moveTank = (keyCode: string) => {
     if (this.checkDead) return;
     if (keyCode === 'KeyW') {
-      if (this.y < this.sprite.height) {
-        return;
-      }
+      if (this.y < this.sprite.width / 2 - 10) return;
       this.sprite.rotation = (Math.PI * 3) / 2;
       this.y -= 10;
-    } else if (keyCode === 'KeyS') {
-      if (this.sprite.y > appHeigth) {
-        return;
+      if (this.turn()) {
+        this.y += 10;
       }
+    } else if (keyCode === 'KeyS') {
+      if (this.y > appHeigth - this.sprite.width + 10) return;
       this.sprite.rotation = Math.PI / 2;
       this.y += 10;
-    } else if (keyCode === 'KeyA') {
-      if (this.x < 0) {
-        return;
+      if (this.turn()) {
+        this.y -= 10;
       }
+    } else if (keyCode === 'KeyA') {
+      if (this.x < 10) return;
       this.sprite.rotation = Math.PI;
       this.x -= 10;
-    } else if (keyCode === 'KeyD') {
-      if (this.x > appWidth) {
-        return;
+      if (this.turn()) {
+        this.x += 10;
       }
+    } else if (keyCode === 'KeyD') {
+      if (this.x > appWidth - this.sprite.width - 10) return;
       this.sprite.rotation = 0;
       this.x += 10;
+      if (this.turn()) {
+        this.x -= 10;
+      }
     }
   };
   this.batter = (r: {
@@ -266,26 +274,16 @@ function TankPlayer(
     this.angleY = offsetY;
     this.renderGan();
   };
-  this.shut = (
-    posX: number,
-    posY: number,
-    tankBad: {
-      sprite: any;
-      dead: any;
-      health: number;
-      checkFind: boolean;
-      findPlayer: any;
-    }
-  ) => {
+  this.shut = (posX: number, posY: number) => {
     if (this.callDown || this.checkDead) return;
     this.callDown = true;
-    const tankBund = tankBad;
     setTimeout(() => {
       this.callDown = false;
     }, this.timeCallDown);
     const mx = posX;
     const my = posY;
     const clonConteiner = this.conteiner;
+    const clonArrEvil = this.arrEvil;
     const dy = createNaprv(mx, my, this.sprite.x, this.sprite.y);
     const dx =
       Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) * 10;
@@ -304,17 +302,29 @@ function TankPlayer(
     r.height *= r.width / width;
     r.rotation = anglee(this.sprite.x, this.sprite.y, mx, my);
     function paint() {
+      let checkHit = false;
       r.x = startX;
       r.y = startY;
-      if (hitBill(tankBund.sprite, startX, startY)) {
-        tankBund.health -= 100;
-        clonConteiner.removeChild(r);
-        if (!tankBund.checkFind) {
-          tankBund.checkFind = true;
-          tankBund.findPlayer();
+      clonArrEvil.forEach(
+        (tankBund: {
+          sprite: any;
+          health: number;
+          checkFind: boolean;
+          findPlayer: any;
+        }) => {
+          if (hitBill(tankBund.sprite, startX, startY)) {
+            const tank = tankBund;
+            tank.health -= 100;
+            clonConteiner.removeChild(r);
+            if (!tank.checkFind) {
+              tank.checkFind = true;
+              tank.findPlayer();
+            }
+            checkHit = true;
+          }
         }
-        return;
-      }
+      );
+      if (checkHit) return;
       startX += dx;
       startY = dy(startX);
       if (
@@ -345,6 +355,115 @@ function TankPlayer(
       this.healthRender
     );
     this.checkDead = true;
+  };
+  this.turn = () => {
+    const musMap = this.arrMap;
+    return musMap.some(
+      (mapI: { x: number; y: number; width: number; height: number }) => {
+        return this.checkWall(mapI);
+      }
+    );
+  };
+  this.checkWall = (wall2: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }) => {
+    let wall = false;
+    const width = wall2.width < this.sprite.width;
+    const widthSprite = this.sprite.width / 2;
+    const heightSprite = this.sprite.height / 2;
+    if (this.sprite.rotation % Math.PI === 0) {
+      if (width) {
+        if (
+          (wall2.x - wall2.width / 2 >= this.sprite.x - widthSprite &&
+            wall2.x - wall2.width / 2 <= this.sprite.x + widthSprite &&
+            wall2.y - wall2.height / 2 >= this.sprite.y - heightSprite &&
+            wall2.y - wall2.height / 2 <= this.sprite.y + heightSprite) ||
+          (wall2.x - wall2.width / 2 >= this.sprite.x - widthSprite &&
+            wall2.x - wall2.width / 2 <= this.sprite.x + widthSprite &&
+            wall2.y + wall2.height / 2 >= this.sprite.y - heightSprite &&
+            wall2.y + wall2.height / 2 <= this.sprite.y + heightSprite) ||
+          (wall2.x + wall2.width / 2 >= this.sprite.x - widthSprite &&
+            wall2.x + wall2.width / 2 <= this.sprite.x + widthSprite &&
+            wall2.y - wall2.height / 2 >= this.sprite.y - heightSprite &&
+            wall2.y - wall2.height / 2 <= this.sprite.y + heightSprite) ||
+          (wall2.x + wall2.width / 2 >= this.sprite.x - widthSprite &&
+            wall2.x + wall2.width / 2 <= this.sprite.x + widthSprite &&
+            wall2.y + wall2.height / 2 >= this.sprite.y - heightSprite &&
+            wall2.y + wall2.height / 2 <= this.sprite.y + heightSprite)
+        ) {
+          wall = true;
+        }
+      } else if (!width) {
+        if (
+          (this.sprite.x - widthSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x - widthSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y - heightSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y - heightSprite <= wall2.y + wall2.height / 2) ||
+          (this.sprite.x + widthSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x + widthSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y - heightSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y - heightSprite <= wall2.y + wall2.height / 2) ||
+          (this.sprite.x + widthSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x + widthSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y + heightSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y + heightSprite <= wall2.y + wall2.height / 2) ||
+          (this.sprite.x - widthSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x - widthSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y + heightSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y + heightSprite <= wall2.y + wall2.height / 2)
+        ) {
+          wall = true;
+        }
+      }
+    } else if (this.sprite.rotation % Math.PI !== 0) {
+      if (width) {
+        if (
+          (wall2.x - wall2.width / 2 >= this.sprite.x - heightSprite &&
+            wall2.x - wall2.width / 2 <= this.sprite.x + heightSprite &&
+            wall2.y - wall2.height / 2 >= this.sprite.y - widthSprite &&
+            wall2.y - wall2.height / 2 <= this.sprite.y + widthSprite) ||
+          (wall2.x - wall2.width / 2 >= this.sprite.x - heightSprite &&
+            wall2.x - wall2.width / 2 <= this.sprite.x + heightSprite &&
+            wall2.y + wall2.height / 2 >= this.sprite.y - widthSprite &&
+            wall2.y + wall2.height / 2 <= this.sprite.y + widthSprite) ||
+          (wall2.x + wall2.width / 2 >= this.sprite.x - heightSprite &&
+            wall2.x + wall2.width / 2 <= this.sprite.x + heightSprite &&
+            wall2.y - wall2.height / 2 >= this.sprite.y - widthSprite &&
+            wall2.y - wall2.height / 2 <= this.sprite.y + widthSprite) ||
+          (wall2.x + wall2.width / 2 >= this.sprite.x - heightSprite &&
+            wall2.x + wall2.width / 2 <= this.sprite.x + heightSprite &&
+            wall2.y + wall2.height / 2 >= this.sprite.y - widthSprite &&
+            wall2.y + wall2.height / 2 <= this.sprite.y + widthSprite)
+        ) {
+          wall = true;
+        }
+      } else if (!width) {
+        if (
+          (this.sprite.x - heightSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x - heightSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y - widthSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y - widthSprite <= wall2.y + wall2.height / 2) ||
+          (this.sprite.x + heightSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x + heightSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y - widthSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y - widthSprite <= wall2.y + wall2.height / 2) ||
+          (this.sprite.x + heightSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x + heightSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y + widthSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y + widthSprite <= wall2.y + wall2.height / 2) ||
+          (this.sprite.x - heightSprite >= wall2.x - wall2.width / 2 &&
+            this.sprite.x - heightSprite <= wall2.x + wall2.width / 2 &&
+            this.sprite.y + widthSprite >= wall2.y - wall2.height / 2 &&
+            this.sprite.y + widthSprite <= wall2.y + wall2.height / 2)
+        ) {
+          wall = true;
+        }
+      }
+    }
+    return wall;
   };
 }
 
