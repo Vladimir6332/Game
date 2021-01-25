@@ -19,9 +19,6 @@ import brownbulletBigBoom from '../../assets/images/weapons/brown/bigBOOM/bullet
 import brownbulletSpeed from '../../assets/images/weapons/brown/speed/bullet.png';
 import brownbulletStandart from '../../assets/images/weapons/brown/standart/bullet.png';
 import brownbulletSniper from '../../assets/images/weapons/brown/sniper/bullet.png';
-import breakBlock from '../../assets/images/blocks/break.png';
-import hiddenBlock from '../../assets/images/blocks/hidden.png';
-import immortalBlock from '../../assets/images/blocks/immortal.png';
 import TankPlayer from './TankPlayer';
 import TankComputer from './TankComputer';
 
@@ -50,9 +47,6 @@ app.loader
     { name: 'assets/images/red/speed/bullet.png', url: redbulletSpeed },
     { name: 'assets/images/red/standart/bullet.png', url: redbulletStandart },
     { name: 'assets/images/red/sniper/bullet.png', url: redbulletSniper },
-    { name: 'assets/images/blocks/break.png', url: breakBlock },
-    { name: 'assets/images/blocks/hidden.png', url: hiddenBlock },
-    { name: 'assets/images/blocks/immortal.png', url: immortalBlock },
   ])
   .load(onAssetsLoaded);
 
