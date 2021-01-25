@@ -48,3 +48,30 @@
 .game__menu {
   border: none;
 }
+
+.game-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 5px;
+  button {
+    border: none;
+    outline: none;
+    width: auto;
+    height: auto;
+    background-color: darken($color: firebrick, $amount: 5%);
+    cursor: pointer;
+  }
+  button:active {
+    transform: scale(.9);
+  }
+  button:hover {
+    background-color: darken($color: firebrick, $amount: 10%);
+  }
+}
+
+@media(max-width: 800px) {
+  .game-menu {
+    font-size: 17px;
+  }
+}
