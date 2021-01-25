@@ -3,6 +3,7 @@ import GameCanvas from '../GameCanvas/GameCanvas';
 import GameWeapons from '../GameWeapon/GameWeapons';
 import GameLogs from '../GameLogs/GameLogs';
 import GameMenu from '../GameMenu/GameMenu';
+import Pause from '../Pause/Pause';
 
 interface Props {
   startOptions: PlayOptions | null;
@@ -17,6 +18,7 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
   console.log(isNewGame);
   return (
     <section className="game">
+      {isPause ? <Pause setPause={setPause} /> : ''}
       <div className="game__view">
         <GameCanvas />
       </div>
