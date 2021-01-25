@@ -1,5 +1,3 @@
-// import { Stage, Sprite } from '@inlet/react-pixi';
-// import React from 'react';
 import * as PIXI from 'pixi.js-legacy';
 import tankUrl from '../../assets/images/weapons/red/tank.png';
 import tankUrlGood from '../../assets/images/weapons/brown/tank.png';

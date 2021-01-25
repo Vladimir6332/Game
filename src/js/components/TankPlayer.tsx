@@ -42,6 +42,7 @@ function TankPlayer(
   this.arrMap = map;
 
   this.init = () => {
+    console.log('render init');
     this.renderStart();
     this.renderGan();
     this.time = setInterval(this.render, 17);
