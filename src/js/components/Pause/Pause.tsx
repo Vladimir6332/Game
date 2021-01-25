@@ -15,7 +15,7 @@ const Pause: React.FC<Props> = ({ setPause }: Props) => {
         onClick={setPauseFalse}
         onKeyUp={setPauseFalse}
       >
-        Press for continue
+        Press to continue
       </button>
     </div>
   );
