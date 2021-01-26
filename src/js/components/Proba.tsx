@@ -17,6 +17,13 @@ import brownbulletBigBoom from '../../assets/images/weapons/brown/bigBOOM/bullet
 import brownbulletSpeed from '../../assets/images/weapons/brown/speed/bullet.png';
 import brownbulletStandart from '../../assets/images/weapons/brown/standart/bullet.png';
 import brownbulletSniper from '../../assets/images/weapons/brown/sniper/bullet.png';
+import imgMap from '../../assets/images/maps/map.png';
+import imgBreak1 from '../../assets/images/blocks/break1.png';
+import imgBreak2 from '../../assets/images/blocks/break2.png';
+import imgBreak3 from '../../assets/images/blocks/break3.png';
+import imgHidden from '../../assets/images/blocks/hidden.png';
+import imgImmortal1 from '../../assets/images/blocks/immortal1.png';
+import imgImmortal2 from '../../assets/images/blocks/immortal2.png';
 import TankPlayer from './TankPlayer';
 import TankComputer from './TankComputer';
 
@@ -45,13 +52,25 @@ app.loader
     { name: 'assets/images/red/speed/bullet.png', url: redbulletSpeed },
     { name: 'assets/images/red/standart/bullet.png', url: redbulletStandart },
     { name: 'assets/images/red/sniper/bullet.png', url: redbulletSniper },
+    { name: 'assets/images/maps/map.png', url: imgMap },
+    { name: 'assets/images/blocks/break1.png', url: imgBreak1 },
+    { name: 'assets/images/blocks/break2.png', url: imgBreak2 },
+    { name: 'assets/images/blocks/break3.png', url: imgBreak3 },
+    { name: 'assets/images/blocks/hidden.png', url: imgHidden },
+    { name: 'assets/images/blocks/immortal1.png', url: imgImmortal1 },
+    { name: 'assets/images/blocks/immortal2.png', url: imgImmortal2 },
   ])
   .load(onAssetsLoaded);
 
 function onAssetsLoaded() {
   const reelContainer = new PIXI.Container();
   const musTankBad: Array<any> = [];
-  const musMap: Array<any> = [];
+  const map = new PIXI.Sprite(PIXI.Texture.from('assets/images/maps/map.png'));
+  map.width = app.screen.width;
+  map.height = app.screen.height;
+  const musImmortalBlocks: Array<any> = [];
+  const musBreakBlocks: Array<any> = [];
+  const musHiddenBlocks: Array<any> = [];
   const tank = new (TankPlayer as any)(
     0,
     app.screen.height / 2,
@@ -62,7 +81,8 @@ function onAssetsLoaded() {
     app.screen.height,
     reelContainer,
     musTankBad,
-    musMap
+    musImmortalBlocks,
+    musBreakBlocks
   );
   const arrImages = [
     'assets/images/red/bigBOOM/bigBOOM.png',
@@ -75,15 +95,15 @@ function onAssetsLoaded() {
     let x = randomeNumber(app.screen.width / 2 - 100);
     let y = randomeNumber(app.screen.height);
     x += app.screen.width / 2 + 100;
-    if (x > app.screen.width - (app.screen.width * 0.1) / 2) {
-      x -= (app.screen.width * 0.1) / 2;
-    } else if (x < (app.screen.width * 0.1) / 2) {
-      x += (app.screen.width * 0.1) / 2;
+    if (x > app.screen.width - app.screen.width * 0.1) {
+      x -= app.screen.width * 0.1;
+    } else if (x < app.screen.width * 0.1) {
+      x += app.screen.width * 0.1;
     }
-    if (y > app.screen.height - (app.screen.height * 0.1) / 2) {
-      y -= (app.screen.height * 0.1) / 2;
-    } else if (y < (app.screen.height * 0.1) / 2) {
-      y += (app.screen.height * 0.1) / 2;
+    if (y > app.screen.height - app.screen.height * 0.1) {
+      y -= app.screen.height * 0.1;
+    } else if (y < app.screen.height * 0.1) {
+      y += app.screen.height * 0.1;
     }
     const tankBad = new (TankComputer as any)(
       x,
@@ -95,67 +115,86 @@ function onAssetsLoaded() {
       app.screen.height,
       reelContainer,
       tank,
-      musMap
+      musImmortalBlocks,
+      musBreakBlocks
     );
     musTankBad.push(tankBad);
   }
-  const arrOptionMap = [
-    'assets/images/blocks/break.png',
-    'assets/images/blocks/hidden.png',
-    'assets/images/blocks/immortal.png',
+  const arrImmortalMap = [
+    'assets/images/blocks/immortal1.png',
+    'assets/images/blocks/immortal2.png',
   ];
-  for (let i = 0; i < 10; i += 1) {
-    const block = new PIXI.Sprite(
-      PIXI.Texture.from(arrOptionMap[randomeNumber(arrOptionMap.length)])
-    );
-    block.pivot.x = block.width / 2;
-    block.pivot.y = block.height / 2;
-    block.width = 40;
-    block.height = 40;
-    const x = randomeNumber(app.screen.width);
-    const y = randomeNumber(app.screen.height);
-    if (x > app.screen.width - block.width / 2) {
-      block.x = x - block.width / 2;
-    } else if (x < block.width / 2) {
-      block.x = x + block.width / 2;
-    } else {
-      block.x = x;
-    }
-    if (y > app.screen.height - block.height / 2) {
-      block.y = y - block.height / 2;
-    } else if (y < block.height / 2) {
-      block.y = y + block.height / 2;
-    } else {
-      block.y = y;
-    }
-    musMap.push(block);
-  }
+  const arrBreakMap = [
+    'assets/images/blocks/break1.png',
+    'assets/images/blocks/break2.png',
+    'assets/images/blocks/break3.png',
+  ];
+  const musRender: Array<any> = [];
+  const musRenderGanAndHealth: Array<any> = [];
+  musTankBad.forEach((tankBad) => {
+    tankBad.init();
+    musRender.push(tankBad.sprite);
+    musRenderGanAndHealth.push(tankBad.gan, tankBad.healthRender);
+  });
+  tank.init();
+
+  musImmortalBlocks.push(
+    ...ckeateMapBlock(
+      arrImmortalMap,
+      [[tank.sprite], musTankBad.map((tankB) => tankB.sprite)],
+      randomeNumber(5) + 1
+    )
+  );
+  musBreakBlocks.push(
+    ...ckeateMapBlock(
+      arrBreakMap,
+      [
+        [tank.sprite],
+        musTankBad.map((tankB) => tankB.sprite),
+        musImmortalBlocks,
+      ],
+      randomeNumber(5) + 1
+    )
+  );
+  musHiddenBlocks.push(
+    ...ckeateMapBlock(
+      ['assets/images/blocks/hidden.png'],
+      [musBreakBlocks, musImmortalBlocks],
+      randomeNumber(7) + 5
+    )
+  );
 
   app.view.addEventListener('mousemove', (e) => {
+    if (tank.checkPause) return;
     tank.moveGan(e.offsetX, e.offsetY);
   });
 
-  window.addEventListener('keypress', (e) => {
+  window.addEventListener('keydown', (e) => {
+    if (tank.checkPause) return;
     tank.moveTank(e.code);
   });
 
   app.view.addEventListener('click', (e) => {
+    if (tank.checkPause) {
+      tank.continue();
+    } else {
+      tank.pause();
+    }
+    if (tank.checkPause) return;
     tank.shut(e.offsetX, e.offsetY);
   });
-  const musRender: Array<any> = [];
-  musTankBad.forEach((tankBad) => {
-    tankBad.init();
-    musRender.push(tankBad.sprite, tankBad.gan, tankBad.healthRender);
-  });
 
-  tank.init();
   reelContainer.addChild(
-    tank.aimRender,
+    map,
     tank.sprite,
+    ...musRender,
+    ...musImmortalBlocks,
+    ...musBreakBlocks,
+    tank.aimRender,
     tank.gan,
     tank.healthRender,
-    ...musRender,
-    ...musMap
+    ...musRenderGanAndHealth,
+    ...musHiddenBlocks
   );
   app.stage.addChild(reelContainer);
 }
@@ -164,4 +203,166 @@ export default app;
 
 function randomeNumber(x: number) {
   return Math.floor(Math.random() * x);
+}
+
+function checkMap(
+  wall2: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    rotation: number;
+  },
+  r2: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    rotation: number;
+  }
+) {
+  let wall = false;
+  const width = wall2.width < r2.height;
+  const widthSprite = r2.width / 2;
+  const heightSprite = r2.height / 2;
+  if (r2.rotation % Math.PI === 0) {
+    if (width) {
+      if (
+        (wall2.x - wall2.width / 2 >= r2.x - widthSprite &&
+          wall2.x - wall2.width / 2 <= r2.x + widthSprite &&
+          wall2.y - wall2.height / 2 >= r2.y - heightSprite &&
+          wall2.y - wall2.height / 2 <= r2.y + heightSprite) ||
+        (wall2.x - wall2.width / 2 >= r2.x - widthSprite &&
+          wall2.x - wall2.width / 2 <= r2.x + widthSprite &&
+          wall2.y + wall2.height / 2 >= r2.y - heightSprite &&
+          wall2.y + wall2.height / 2 <= r2.y + heightSprite) ||
+        (wall2.x + wall2.width / 2 >= r2.x - widthSprite &&
+          wall2.x + wall2.width / 2 <= r2.x + widthSprite &&
+          wall2.y - wall2.height / 2 >= r2.y - heightSprite &&
+          wall2.y - wall2.height / 2 <= r2.y + heightSprite) ||
+        (wall2.x + wall2.width / 2 >= r2.x - widthSprite &&
+          wall2.x + wall2.width / 2 <= r2.x + widthSprite &&
+          wall2.y + wall2.height / 2 >= r2.y - heightSprite &&
+          wall2.y + wall2.height / 2 <= r2.y + heightSprite)
+      ) {
+        wall = true;
+      }
+    } else if (!width) {
+      if (
+        (r2.x - widthSprite >= wall2.x - wall2.width / 2 &&
+          r2.x - widthSprite <= wall2.x + wall2.width / 2 &&
+          r2.y - heightSprite >= wall2.y - wall2.height / 2 &&
+          r2.y - heightSprite <= wall2.y + wall2.height / 2) ||
+        (r2.x + widthSprite >= wall2.x - wall2.width / 2 &&
+          r2.x + widthSprite <= wall2.x + wall2.width / 2 &&
+          r2.y - heightSprite >= wall2.y - wall2.height / 2 &&
+          r2.y - heightSprite <= wall2.y + wall2.height / 2) ||
+        (r2.x + widthSprite >= wall2.x - wall2.width / 2 &&
+          r2.x + widthSprite <= wall2.x + wall2.width / 2 &&
+          r2.y + heightSprite >= wall2.y - wall2.height / 2 &&
+          r2.y + heightSprite <= wall2.y + wall2.height / 2) ||
+        (r2.x - widthSprite >= wall2.x - wall2.width / 2 &&
+          r2.x - widthSprite <= wall2.x + wall2.width / 2 &&
+          r2.y + heightSprite >= wall2.y - wall2.height / 2 &&
+          r2.y + heightSprite <= wall2.y + wall2.height / 2)
+      ) {
+        wall = true;
+      }
+    }
+  } else if (r2.rotation % Math.PI !== 0) {
+    if (width) {
+      if (
+        (wall2.x - wall2.width / 2 >= r2.x - heightSprite &&
+          wall2.x - wall2.width / 2 <= r2.x + heightSprite &&
+          wall2.y - wall2.height / 2 >= r2.y - widthSprite &&
+          wall2.y - wall2.height / 2 <= r2.y + widthSprite) ||
+        (wall2.x - wall2.width / 2 >= r2.x - heightSprite &&
+          wall2.x - wall2.width / 2 <= r2.x + heightSprite &&
+          wall2.y + wall2.height / 2 >= r2.y - widthSprite &&
+          wall2.y + wall2.height / 2 <= r2.y + widthSprite) ||
+        (wall2.x + wall2.width / 2 >= r2.x - heightSprite &&
+          wall2.x + wall2.width / 2 <= r2.x + heightSprite &&
+          wall2.y - wall2.height / 2 >= r2.y - widthSprite &&
+          wall2.y - wall2.height / 2 <= r2.y + widthSprite) ||
+        (wall2.x + wall2.width / 2 >= r2.x - heightSprite &&
+          wall2.x + wall2.width / 2 <= r2.x + heightSprite &&
+          wall2.y + wall2.height / 2 >= r2.y - widthSprite &&
+          wall2.y + wall2.height / 2 <= r2.y + widthSprite)
+      ) {
+        wall = true;
+      }
+    } else if (!width) {
+      if (
+        (r2.x - heightSprite >= wall2.x - wall2.width / 2 &&
+          r2.x - heightSprite <= wall2.x + wall2.width / 2 &&
+          r2.y - widthSprite >= wall2.y - wall2.height / 2 &&
+          r2.y - widthSprite <= wall2.y + wall2.height / 2) ||
+        (r2.x + heightSprite >= wall2.x - wall2.width / 2 &&
+          r2.x + heightSprite <= wall2.x + wall2.width / 2 &&
+          r2.y - widthSprite >= wall2.y - wall2.height / 2 &&
+          r2.y - widthSprite <= wall2.y + wall2.height / 2) ||
+        (r2.x + heightSprite >= wall2.x - wall2.width / 2 &&
+          r2.x + heightSprite <= wall2.x + wall2.width / 2 &&
+          r2.y + widthSprite >= wall2.y - wall2.height / 2 &&
+          r2.y + widthSprite <= wall2.y + wall2.height / 2) ||
+        (r2.x - heightSprite >= wall2.x - wall2.width / 2 &&
+          r2.x - heightSprite <= wall2.x + wall2.width / 2 &&
+          r2.y + widthSprite >= wall2.y - wall2.height / 2 &&
+          r2.y + widthSprite <= wall2.y + wall2.height / 2)
+      ) {
+        wall = true;
+      }
+    }
+  }
+  return wall;
+}
+
+function ckeateMapBlock(
+  arrMap: Array<string>,
+  arrCheck: Array<any>,
+  numTo: number
+) {
+  const arr: Array<any> = [];
+  for (let i = 0; i < numTo; i += 1) {
+    const block = new PIXI.Sprite(
+      PIXI.Texture.from(arrMap[randomeNumber(arrMap.length)])
+    );
+    block.pivot.x = block.width / 2;
+    block.pivot.y = block.height / 2;
+    block.width = app.screen.height * 0.08;
+    block.height = app.screen.height * 0.08;
+    block.x = randomeNumber(app.screen.width);
+    block.y = randomeNumber(app.screen.height);
+    if (block.x > app.screen.width - block.width / 2) {
+      block.x -= block.width / 2;
+    } else if (block.x < block.width / 2) {
+      block.x += block.width / 2;
+    }
+    if (block.y > app.screen.height - block.height / 2) {
+      block.y -= block.height / 2;
+    } else if (block.y < block.height / 2) {
+      block.y += block.height / 2;
+    }
+    while (
+      arrCheck.some((arr1) =>
+        arr1.some((elem: any) => checkMap(block, elem))
+      ) ||
+      arr.some((blok) => checkMap(blok, block))
+    ) {
+      block.x = randomeNumber(app.screen.width);
+      block.y = randomeNumber(app.screen.height);
+      if (block.x > app.screen.width - block.width / 2) {
+        block.x -= block.width / 2;
+      } else if (block.x < block.width / 2) {
+        block.x += block.width / 2;
+      }
+      if (block.y > app.screen.height - block.height / 2) {
+        block.y -= block.height / 2;
+      } else if (block.y < block.height / 2) {
+        block.y += block.height / 2;
+      }
+    }
+    arr.push(block);
+  }
+  return arr;
 }

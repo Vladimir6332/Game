@@ -11,7 +11,8 @@ function TankPlayer(
   appHeigth: number,
   conteiner: any,
   evil: Array<{ arr: any }>,
-  map: Array<{ arr: any }>
+  musImmoptalBlocks: Array<{ arr: any }>,
+  musBreakBlocks: Array<{ arr: any }>
 ) {
   this.x = x;
   this.y = y;
@@ -39,7 +40,9 @@ function TankPlayer(
   this.checkDead = false;
   this.time = 0;
   this.arrEvil = evil;
-  this.arrMap = map;
+  this.musBreakBlocks = musBreakBlocks;
+  this.musImmoptalBlocks = musImmoptalBlocks;
+  this.checkPause = false;
 
   this.init = () => {
     console.log('render init');
@@ -94,15 +97,13 @@ function TankPlayer(
     if (this.angleX !== 0 && this.angleY !== 0) {
       this.angleGan = anglee(this.gan.x, this.gan.y, this.angleX, this.angleY);
     }
-    this.gan.y = this.y + this.sprite.height / 2;
-    this.gan.x = this.x + this.sprite.width / 2;
+    this.gan.y = this.sprite.y;
+    this.gan.x = this.sprite.x;
     this.gan.rotation = this.angleGan;
   };
   this.render = () => {
     this.aimRender.clear();
     this.healthRender.clear();
-    this.sprite.y = this.y + this.sprite.height / 2;
-    this.sprite.x = this.x + this.sprite.width / 2;
     this.aimRender.lineStyle(4, 0x00ff00, 1, 0.5, true);
     this.aimRender.drawCircle(this.sprite.x, this.sprite.y, this.aim);
     this.healthRender.lineStyle(4, 0x000000, 1, 0.5, true);
@@ -135,32 +136,32 @@ function TankPlayer(
   this.moveTank = (keyCode: string) => {
     if (this.checkDead) return;
     if (keyCode === 'KeyW') {
-      if (this.y < this.sprite.width / 2 - 10) return;
+      if (this.sprite.y < this.sprite.width / 2 + 10) return;
       this.sprite.rotation = (Math.PI * 3) / 2;
-      this.y -= 10;
+      this.sprite.y -= 10;
       if (this.turn()) {
-        this.y += 10;
+        this.sprite.y += 10;
       }
     } else if (keyCode === 'KeyS') {
-      if (this.y > appHeigth - this.sprite.width + 10) return;
+      if (this.sprite.y > appHeigth - this.sprite.width / 2 - 10) return;
       this.sprite.rotation = Math.PI / 2;
-      this.y += 10;
+      this.sprite.y += 10;
       if (this.turn()) {
-        this.y -= 10;
+        this.sprite.y -= 10;
       }
     } else if (keyCode === 'KeyA') {
-      if (this.x < 10) return;
+      if (this.sprite.x < this.sprite.width / 2 + 10) return;
       this.sprite.rotation = Math.PI;
-      this.x -= 10;
+      this.sprite.x -= 10;
       if (this.turn()) {
-        this.x += 10;
+        this.sprite.x += 10;
       }
     } else if (keyCode === 'KeyD') {
-      if (this.x > appWidth - this.sprite.width - 10) return;
+      if (this.sprite.x > appWidth - this.sprite.width / 2 - 10) return;
       this.sprite.rotation = 0;
-      this.x += 10;
+      this.sprite.x += 10;
       if (this.turn()) {
-        this.x -= 10;
+        this.sprite.x -= 10;
       }
     }
   };
@@ -172,7 +173,7 @@ function TankPlayer(
     rotation: number;
     health: number;
   }) => {
-    let hit = false;
+    let checkBatter = false;
     const r1 = this.sprite;
     const r2 = r;
     if (r1.rotation % Math.PI === 0 && r2.rotation % Math.PI === 0) {
@@ -194,9 +195,9 @@ function TankPlayer(
           r2.y + r2.height / 2 >= r1.y - r1.height / 2 &&
           r2.y + r2.height / 2 <= r1.y + r1.height / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     } else if (r1.rotation % Math.PI !== 0 && r2.rotation % Math.PI === 0) {
       if (
@@ -217,9 +218,9 @@ function TankPlayer(
           r2.y + r2.width / 2 >= r1.y - r1.height / 2 &&
           r2.y + r2.width / 2 <= r1.y + r1.height / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     } else if (r1.rotation % Math.PI === 0 && r2.rotation % Math.PI !== 0) {
       if (
@@ -240,9 +241,9 @@ function TankPlayer(
           r2.y + r2.height / 2 >= r1.y - r1.width / 2 &&
           r2.y + r2.height / 2 <= r1.y + r1.width / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     } else if (r1.rotation % Math.PI !== 0 && r2.rotation % Math.PI !== 0) {
       if (
@@ -263,12 +264,12 @@ function TankPlayer(
           r2.y + r2.width / 2 >= r1.y - r1.width / 2 &&
           r2.y + r2.width / 2 <= r1.y + r1.width / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     }
-    return hit;
+    return checkBatter;
   };
   this.moveGan = (offsetX: number, offsetY: number) => {
     this.angleX = offsetX;
@@ -285,6 +286,8 @@ function TankPlayer(
     const my = posY;
     const clonConteiner = this.conteiner;
     const clonArrEvil = this.arrEvil;
+    const clonMusBreakBlocks = this.musBreakBlocks;
+    const clonMusImmoptalBlocks = this.musImmoptalBlocks;
     const dy = createNaprv(mx, my, this.sprite.x, this.sprite.y);
     const dx =
       Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) * 10;
@@ -306,12 +309,27 @@ function TankPlayer(
       let checkHit = false;
       r.x = startX;
       r.y = startY;
+      clonMusBreakBlocks.forEach((block: any, index: number) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(block);
+          clonMusBreakBlocks.splice(index, 1);
+          clonConteiner.removeChild(r);
+          checkHit = true;
+        }
+      });
+      clonMusImmoptalBlocks.forEach((block: any) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(r);
+          checkHit = true;
+        }
+      });
       clonArrEvil.forEach(
         (tankBund: {
           sprite: any;
           health: number;
           checkFind: boolean;
           findPlayer: any;
+          time: any;
         }) => {
           if (hitBill(tankBund.sprite, startX, startY)) {
             const tank = tankBund;
@@ -319,7 +337,8 @@ function TankPlayer(
             clonConteiner.removeChild(r);
             if (!tank.checkFind) {
               tank.checkFind = true;
-              tank.findPlayer();
+              clearInterval(tank.time);
+              tank.time = setInterval(tank.findPlayer, 50);
             }
             checkHit = true;
           }
@@ -358,12 +377,14 @@ function TankPlayer(
     this.checkDead = true;
   };
   this.turn = () => {
-    const musMap = this.arrMap;
-    return musMap.some(
-      (mapI: { x: number; y: number; width: number; height: number }) => {
-        return this.checkWall(mapI);
-      }
-    );
+    let result = false;
+    if (
+      this.musImmoptalBlocks.some((mapI: any) => this.checkWall(mapI)) ||
+      this.musBreakBlocks.some((mapI: any) => this.checkWall(mapI))
+    ) {
+      result = true;
+    }
+    return result;
   };
   this.checkWall = (wall2: {
     x: number;
@@ -372,7 +393,7 @@ function TankPlayer(
     height: number;
   }) => {
     let wall = false;
-    const width = wall2.width < this.sprite.width;
+    const width = wall2.width < this.sprite.height;
     const widthSprite = this.sprite.width / 2;
     const heightSprite = this.sprite.height / 2;
     if (this.sprite.rotation % Math.PI === 0) {
@@ -466,6 +487,12 @@ function TankPlayer(
     }
     return wall;
   };
+  this.pause = () => {
+    this.checkPause = true;
+  };
+  this.continue = () => {
+    this.checkPause = false;
+  };
 }
 
 export default TankPlayer;
@@ -491,7 +518,7 @@ function hitBill(
   x1: number,
   y1: number
 ) {
-  let hit = false;
+  let checkHit = false;
   const angle = r1.rotation;
   if (angle % Math.PI === 0) {
     if (
@@ -500,9 +527,9 @@ function hitBill(
       y1 >= r1.y - r1.height / 2 &&
       y1 <= r1.y + r1.height / 2
     ) {
-      hit = true;
+      checkHit = true;
     } else {
-      hit = false;
+      checkHit = false;
     }
   } else if (angle % Math.PI !== 0) {
     if (
@@ -511,10 +538,10 @@ function hitBill(
       y1 >= r1.y - r1.width / 2 &&
       y1 <= r1.y + r1.width / 2
     ) {
-      hit = true;
+      checkHit = true;
     } else {
-      hit = false;
+      checkHit = false;
     }
   }
-  return hit;
+  return checkHit;
 }

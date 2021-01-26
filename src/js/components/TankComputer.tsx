@@ -11,7 +11,8 @@ function TankComputer(
   appHeigth: number,
   conteiner: any,
   player: any,
-  map: Array<{ arr: any }>
+  musImmoptalBlocks: Array<{ arr: any }>,
+  musBreakBlocks: Array<{ arr: any }>
 ) {
   this.x = x;
   this.y = y;
@@ -44,7 +45,8 @@ function TankComputer(
   this.check = false;
   this.time = 0;
   this.timeRender = 0;
-  this.map = map;
+  this.musBreakBlocks = musBreakBlocks;
+  this.musImmoptalBlocks = musImmoptalBlocks;
   this.taran = false;
 
   this.init = () => {
@@ -135,15 +137,47 @@ function TankComputer(
     if (this.sprite.rotation === 0) {
       this.sprite.x += 5;
       this.gan.x += 5;
+      if (this.turn()) {
+        this.sprite.x -= 5;
+        this.gan.x -= 5;
+        this.sprite.y += 5;
+        this.gan.y += 5;
+        this.sprite.rotation = Math.PI / 2;
+        this.gan.rotation = Math.PI / 2;
+      }
     } else if (this.sprite.rotation === Math.PI) {
       this.sprite.x -= 5;
       this.gan.x -= 5;
+      if (this.turn()) {
+        this.sprite.x += 5;
+        this.gan.x += 5;
+        this.sprite.y -= 5;
+        this.gan.y -= 5;
+        this.sprite.rotation = (3 * Math.PI) / 2;
+        this.gan.rotation = (3 * Math.PI) / 2;
+      }
     } else if (this.sprite.rotation === (3 * Math.PI) / 2) {
       this.sprite.y -= 5;
       this.gan.y -= 5;
+      if (this.turn()) {
+        this.sprite.x += 5;
+        this.gan.x += 5;
+        this.sprite.y += 5;
+        this.gan.y += 5;
+        this.sprite.rotation = 0;
+        this.gan.rotation = 0;
+      }
     } else {
       this.sprite.y += 5;
       this.gan.y += 5;
+      if (this.turn()) {
+        this.sprite.x -= 5;
+        this.gan.x -= 5;
+        this.sprite.y -= 5;
+        this.gan.y -= 5;
+        this.sprite.rotation = Math.PI;
+        this.gan.rotation = Math.PI;
+      }
     }
     this.count += 1;
     if (this.count === 50) {
@@ -155,7 +189,6 @@ function TankComputer(
         this.gan.rotation = 0;
       }
     }
-    this.turn();
     if (
       checkLenght(this.player.sprite, this.sprite) &&
       !this.player.checkDead
@@ -279,6 +312,9 @@ function TankComputer(
     this.callDown = true;
     const tankBund = this.player;
     const clonConteiner = this.conteiner;
+    const clonMusBreakBlocks = this.musBreakBlocks;
+    const clonMusImmoptalBlocks = this.musImmoptalBlocks;
+    let checkHit = false;
     setTimeout(() => {
       this.callDown = false;
     }, this.timeCallDown);
@@ -304,6 +340,21 @@ function TankComputer(
     function paint() {
       r.x = startX;
       r.y = startY;
+      clonMusBreakBlocks.forEach((block: any, index: number) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(block);
+          clonMusBreakBlocks.splice(index, 1);
+          clonConteiner.removeChild(r);
+          checkHit = true;
+        }
+      });
+      clonMusImmoptalBlocks.forEach((block: any) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(r);
+          checkHit = true;
+        }
+      });
+      if (checkHit) return;
       if (hitBill(tankBund.sprite, startX, startY)) {
         clonConteiner.removeChild(r);
         tankBund.health -= 100;
@@ -352,7 +403,7 @@ function TankComputer(
         this.sprite.rotation = 0;
         this.gan.x += 7;
         this.gan.rotation = 0;
-        if (this.turnFind()) {
+        if (this.turn()) {
           this.sprite.y += 7;
           this.sprite.x -= 7;
           this.sprite.rotation = Math.PI / 2;
@@ -365,7 +416,7 @@ function TankComputer(
         this.sprite.rotation = Math.PI;
         this.gan.x -= 7;
         this.gan.rotation = Math.PI;
-        if (this.turnFind()) {
+        if (this.turn()) {
           this.sprite.y -= 7;
           this.sprite.x += 7;
           this.sprite.rotation = (Math.PI * 3) / 2;
@@ -380,7 +431,7 @@ function TankComputer(
         this.sprite.rotation = Math.PI / 2;
         this.gan.y += 7;
         this.gan.rotation = Math.PI / 2;
-        if (this.turnFind()) {
+        if (this.turn()) {
           this.sprite.y -= 7;
           this.sprite.x -= 7;
           this.sprite.rotation = Math.PI;
@@ -393,7 +444,7 @@ function TankComputer(
         this.sprite.rotation = (Math.PI * 3) / 2;
         this.gan.y -= 7;
         this.gan.rotation = (Math.PI * 3) / 2;
-        if (this.turnFind()) {
+        if (this.turn()) {
           this.sprite.y += 7;
           this.sprite.x += 7;
           this.sprite.rotation = 0;
@@ -425,7 +476,7 @@ function TankComputer(
     height: number;
   }) => {
     let wall = false;
-    const width = wall2.width < this.sprite.width;
+    const width = wall2.width < this.sprite.height;
     const widthSprite = this.sprite.width / 2;
     const heightSprite = this.sprite.height / 2;
     if (this.sprite.rotation % Math.PI === 0) {
@@ -536,22 +587,7 @@ function TankComputer(
     return wall;
   };
   this.turn = () => {
-    const musMap = this.map;
-    musMap.forEach(
-      (mapI: { x: number; y: number; width: number; height: number }) => {
-        if (this.checkWall(mapI)) {
-          this.sprite.rotation += Math.PI / 2;
-          this.gan.rotation = this.sprite.rotation;
-          if (this.sprite.rotation === Math.PI * 2) {
-            this.sprite.rotation = 0;
-            this.gan.rotation = 0;
-          }
-        }
-      }
-    );
-  };
-  this.turnFind = () => {
-    const musMap = this.map;
+    const musMap = [...this.musBreakBlocks, ...this.musImmoptalBlocks];
     return musMap.some(
       (mapI: { x: number; y: number; width: number; height: number }) => {
         return this.checkWall(mapI);
@@ -615,5 +651,5 @@ function checkLenght(
   tank: { x: number; y: number },
   tank2: { x: number; y: number }
 ) {
-  return Math.sqrt((tank.x - tank2.x) ** 2 + (tank.y - tank2.y) ** 2) < 400;
+  return Math.sqrt((tank.x - tank2.x) ** 2 + (tank.y - tank2.y) ** 2) < 10;
 }
