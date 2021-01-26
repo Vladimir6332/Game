@@ -13,6 +13,8 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
   const [isPause, setPause] = useState(false);
   const [isEsc, setEsc] = useState(false);
   const [isNewGame, setNewGame] = useState(false);
+  const [log, setLog] = useState({ typeMessage: 'null', message: 50 });
+  console.log(setLog);
   console.log(isPause);
   console.log(isEsc);
   console.log(isNewGame);
@@ -27,7 +29,7 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
           <GameWeapons startOptions={startOptions} />
         </div>
         <div className="game__logs">
-          <GameLogs />
+          <GameLogs log={log} />
         </div>
         <div className="game__menu">
           <GameMenu
