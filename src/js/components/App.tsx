@@ -6,7 +6,7 @@ import Garage from './garage';
 import Game from './Game/Game';
 
 const ALL_POINTS = 100;
-
+// comment
 const App: React.FC = () => {
   const [currentProfile, setCurrentProfile] = useState<ProfileOfUser | null>(
     null

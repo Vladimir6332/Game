@@ -9,14 +9,14 @@ import redBigBoom from '../../assets/images/weapons/red/bigBOOM/bigBOOM.png';
 import redSpeed from '../../assets/images/weapons/red/speed/speed.png';
 import redStandart from '../../assets/images/weapons/red/standart/standart.png';
 import redSniper from '../../assets/images/weapons/red/sniper/sniper.png';
-import redbulletBigBoom from '../../assets/images/weapons/red/bigBOOM/bullet.png';
-import redbulletSpeed from '../../assets/images/weapons/red/speed/bullet.png';
-import redbulletStandart from '../../assets/images/weapons/red/standart/bullet.png';
-import redbulletSniper from '../../assets/images/weapons/red/sniper/bullet.png';
-import brownbulletBigBoom from '../../assets/images/weapons/brown/bigBOOM/bullet.png';
-import brownbulletSpeed from '../../assets/images/weapons/brown/speed/bullet.png';
-import brownbulletStandart from '../../assets/images/weapons/brown/standart/bullet.png';
-import brownbulletSniper from '../../assets/images/weapons/brown/sniper/bullet.png';
+import redBulletBigBoom from '../../assets/images/weapons/red/bigBOOM/bullet.png';
+import redBulletSpeed from '../../assets/images/weapons/red/speed/bullet.png';
+import redBulletStandard from '../../assets/images/weapons/red/standart/bullet.png';
+import redBulletSniper from '../../assets/images/weapons/red/sniper/bullet.png';
+import brownBulletBigBoom from '../../assets/images/weapons/brown/bigBOOM/bullet.png';
+import brownBulletSpeed from '../../assets/images/weapons/brown/speed/bullet.png';
+import brownBulletStandard from '../../assets/images/weapons/brown/standart/bullet.png';
+import brownBulletSniper from '../../assets/images/weapons/brown/sniper/bullet.png';
 import imgMap from '../../assets/images/maps/map.png';
 import imgBreak1 from '../../assets/images/blocks/break1.png';
 import imgBreak2 from '../../assets/images/blocks/break2.png';
@@ -28,41 +28,48 @@ import TankPlayer from './TankPlayer';
 import TankComputer from './TankComputer';
 
 const app = new PIXI.Application({ backgroundColor: 0xffffff });
+interface Start {
+  (): void;
+}
+const loadAssets = (startCallback: Start): void => {
+  app.loader
+    .add([
+      { name: 'assets/images/red/tank.png', url: tankUrl },
+      { name: 'assets/images/brown/tank.png', url: tankUrlGood },
+      { name: 'assets/images/brown/speed/speed.png', url: brownSpeed },
+      { name: 'assets/images/brown/standart/standart.png', url: brownStandart },
+      { name: 'assets/images/brown/sniper/sniper.png', url: brownSniper },
+      { name: 'assets/images/brown/bigBOOM/bigBOOM.png', url: brownBigBoom },
+      { name: 'assets/images/red/bigBOOM/bigBOOM.png', url: redBigBoom },
+      { name: 'assets/images/red/speed/speed.png', url: redSpeed },
+      { name: 'assets/images/red/standart/standart.png', url: redStandart },
+      { name: 'assets/images/red/sniper/sniper.png', url: redSniper },
+      { name: 'assets/images/brown/speed/bullet.png', url: brownBulletSpeed },
+      {
+        name: 'assets/images/brown/standart/bullet.png',
+        url: brownBulletStandard,
+      },
+      { name: 'assets/images/brown/sniper/bullet.png', url: brownBulletSniper },
+      {
+        name: 'assets/images/brown/bigBOOM/bullet.png',
+        url: brownBulletBigBoom,
+      },
+      { name: 'assets/images/red/bigBOOM/bullet.png', url: redBulletBigBoom },
+      { name: 'assets/images/red/speed/bullet.png', url: redBulletSpeed },
+      { name: 'assets/images/red/standart/bullet.png', url: redBulletStandard },
+      { name: 'assets/images/red/sniper/bullet.png', url: redBulletSniper },
+      { name: 'assets/images/maps/map.png', url: imgMap },
+      { name: 'assets/images/blocks/break1.png', url: imgBreak1 },
+      { name: 'assets/images/blocks/break2.png', url: imgBreak2 },
+      { name: 'assets/images/blocks/break3.png', url: imgBreak3 },
+      { name: 'assets/images/blocks/hidden.png', url: imgHidden },
+      { name: 'assets/images/blocks/immortal1.png', url: imgImmortal1 },
+      { name: 'assets/images/blocks/immortal2.png', url: imgImmortal2 },
+    ])
+    .load(startCallback);
+};
 
-app.loader
-  .add([
-    { name: 'assets/images/red/tank.png', url: tankUrl },
-    { name: 'assets/images/brown/tank.png', url: tankUrlGood },
-    { name: 'assets/images/brown/speed/speed.png', url: brownSpeed },
-    { name: 'assets/images/brown/standart/standart.png', url: brownStandart },
-    { name: 'assets/images/brown/sniper/sniper.png', url: brownSniper },
-    { name: 'assets/images/brown/bigBOOM/bigBOOM.png', url: brownBigBoom },
-    { name: 'assets/images/red/bigBOOM/bigBOOM.png', url: redBigBoom },
-    { name: 'assets/images/red/speed/speed.png', url: redSpeed },
-    { name: 'assets/images/red/standart/standart.png', url: redStandart },
-    { name: 'assets/images/red/sniper/sniper.png', url: redSniper },
-    { name: 'assets/images/brown/speed/bullet.png', url: brownbulletSpeed },
-    {
-      name: 'assets/images/brown/standart/bullet.png',
-      url: brownbulletStandart,
-    },
-    { name: 'assets/images/brown/sniper/bullet.png', url: brownbulletSniper },
-    { name: 'assets/images/brown/bigBOOM/bullet.png', url: brownbulletBigBoom },
-    { name: 'assets/images/red/bigBOOM/bullet.png', url: redbulletBigBoom },
-    { name: 'assets/images/red/speed/bullet.png', url: redbulletSpeed },
-    { name: 'assets/images/red/standart/bullet.png', url: redbulletStandart },
-    { name: 'assets/images/red/sniper/bullet.png', url: redbulletSniper },
-    { name: 'assets/images/maps/map.png', url: imgMap },
-    { name: 'assets/images/blocks/break1.png', url: imgBreak1 },
-    { name: 'assets/images/blocks/break2.png', url: imgBreak2 },
-    { name: 'assets/images/blocks/break3.png', url: imgBreak3 },
-    { name: 'assets/images/blocks/hidden.png', url: imgHidden },
-    { name: 'assets/images/blocks/immortal1.png', url: imgImmortal1 },
-    { name: 'assets/images/blocks/immortal2.png', url: imgImmortal2 },
-  ])
-  .load(onAssetsLoaded);
-
-function onAssetsLoaded() {
+function start() {
   const reelContainer = new PIXI.Container();
   const musTankBad: Array<any> = [];
   const map = new PIXI.Sprite(PIXI.Texture.from('assets/images/maps/map.png'));
@@ -92,8 +99,8 @@ function onAssetsLoaded() {
   ];
 
   for (let i = 0; i < 3; i += 1) {
-    let x = randomeNumber(app.screen.width / 2 - 100);
-    let y = randomeNumber(app.screen.height);
+    let x = randomNumber(app.screen.width / 2 - 100);
+    let y = randomNumber(app.screen.height);
     x += app.screen.width / 2 + 100;
     if (x > app.screen.width - app.screen.width * 0.1) {
       x -= app.screen.width * 0.1;
@@ -108,7 +115,7 @@ function onAssetsLoaded() {
     const tankBad = new (TankComputer as any)(
       x,
       y,
-      arrImages[randomeNumber(arrImages.length)],
+      arrImages[randomNumber(arrImages.length)],
       400,
       500,
       app.screen.width,
@@ -139,28 +146,28 @@ function onAssetsLoaded() {
   tank.init();
 
   musImmortalBlocks.push(
-    ...ckeateMapBlock(
+    ...createMapBlock(
       arrImmortalMap,
       [[tank.sprite], musTankBad.map((tankB) => tankB.sprite)],
-      randomeNumber(5) + 1
+      randomNumber(5) + 1
     )
   );
   musBreakBlocks.push(
-    ...ckeateMapBlock(
+    ...createMapBlock(
       arrBreakMap,
       [
         [tank.sprite],
         musTankBad.map((tankB) => tankB.sprite),
         musImmortalBlocks,
       ],
-      randomeNumber(5) + 1
+      randomNumber(5) + 1
     )
   );
   musHiddenBlocks.push(
-    ...ckeateMapBlock(
+    ...createMapBlock(
       ['assets/images/blocks/hidden.png'],
       [musBreakBlocks, musImmortalBlocks],
-      randomeNumber(7) + 5
+      randomNumber(7) + 5
     )
   );
 
@@ -199,9 +206,9 @@ function onAssetsLoaded() {
   app.stage.addChild(reelContainer);
 }
 
-export { app, start, onAssetsLoaded };
+export { app, start, loadAssets };
 
-function randomeNumber(x: number) {
+function randomNumber(x: number) {
   return Math.floor(Math.random() * x);
 }
 
@@ -317,7 +324,7 @@ function checkMap(
   return wall;
 }
 
-function ckeateMapBlock(
+function createMapBlock(
   arrMap: Array<string>,
   arrCheck: Array<any>,
   numTo: number
@@ -325,14 +332,14 @@ function ckeateMapBlock(
   const arr: Array<any> = [];
   for (let i = 0; i < numTo; i += 1) {
     const block = new PIXI.Sprite(
-      PIXI.Texture.from(arrMap[randomeNumber(arrMap.length)])
+      PIXI.Texture.from(arrMap[randomNumber(arrMap.length)])
     );
     block.pivot.x = block.width / 2;
     block.pivot.y = block.height / 2;
     block.width = app.screen.height * 0.08;
     block.height = app.screen.height * 0.08;
-    block.x = randomeNumber(app.screen.width);
-    block.y = randomeNumber(app.screen.height);
+    block.x = randomNumber(app.screen.width);
+    block.y = randomNumber(app.screen.height);
     if (block.x > app.screen.width - block.width / 2) {
       block.x -= block.width / 2;
     } else if (block.x < block.width / 2) {
@@ -349,8 +356,8 @@ function ckeateMapBlock(
       ) ||
       arr.some((blok) => checkMap(blok, block))
     ) {
-      block.x = randomeNumber(app.screen.width);
-      block.y = randomeNumber(app.screen.height);
+      block.x = randomNumber(app.screen.width);
+      block.y = randomNumber(app.screen.height);
       if (block.x > app.screen.width - block.width / 2) {
         block.x -= block.width / 2;
       } else if (block.x < block.width / 2) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { app, start, onAssetsLoaded } from '../Proba';
+import { app, start, loadAssets } from '../Proba';
 
 interface Props {
   startOptions: PlayOptions | null;
@@ -16,13 +16,13 @@ const GameCanvas: React.FC<Props> = ({ startOptions }: Props) => {
     console.log(app.stage);
     if (isAssetsLoaded) {
       // PIXIapp.stage.destroy({ children: true });
-      onAssetsLoaded();
+      start();
     }
   });
 
   React.useEffect(() => {
     canvasRef.current.appendChild(PIXIapp.view);
-    start();
+    loadAssets(start);
     isAssetsLoaded = true;
     return () => {
       console.log('appSTOP');
