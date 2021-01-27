@@ -3,6 +3,7 @@ import GameCanvas from '../GameCanvas/GameCanvas';
 import GameWeapons from '../GameWeapon/GameWeapons';
 import GameLogs from '../GameLogs/GameLogs';
 import GameMenu from '../GameMenu/GameMenu';
+import Pause from '../Pause/Pause';
 
 interface Props {
   startOptions: PlayOptions | null;
@@ -13,8 +14,14 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
   const [isEsc, setEsc] = useState(false);
   const [isNewGame, setNewGame] = useState(false);
 
+  const [log, setLog] = useState({ typeMessage: 'null', message: 50 });
+  console.log(setLog);
+  console.log(isPause);
+  console.log(isEsc);
+  console.log(isNewGame);
   return (
     <section className="game">
+      {isPause ? <Pause setPause={setPause} /> : ''}
       <div className="game__view">
         <GameCanvas startOptions={startOptions} />
       </div>
@@ -23,8 +30,7 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
           <GameWeapons startOptions={startOptions} />
         </div>
         <div className="game__logs">
-          {isEsc || isNewGame}
-          <GameLogs />
+          <GameLogs log={log} />
         </div>
         <div className="game__menu">
           <GameMenu
