@@ -7,6 +7,8 @@ function TankPlayer(
   gan: string,
   aim: number,
   timeCallDown: number,
+  speadBullet: number,
+  damage: number,
   appWidth: number,
   appHeigth: number,
   conteiner: any,
@@ -26,9 +28,11 @@ function TankPlayer(
     .join('/')}/bullet.png`;
   this.healthRender = new PIXI.Graphics();
   this.aimRender = new PIXI.Graphics();
-  this.health = 600;
-  this.fullHealth = 600;
+  this.health = 200;
+  this.fullHealth = 200;
   this.aim = aim;
+  this.speadBullet = speadBullet;
+  this.damage = damage;
   this.angleX = 0;
   this.angleY = 0;
   this.callDown = false;
@@ -292,8 +296,9 @@ function TankPlayer(
     const clonMusImmoptalBlocks = this.musImmoptalBlocks;
     const dy = createNaprv(mx, my, this.sprite.x, this.sprite.y);
     const dx =
-      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) * 10;
-    let startX = this.sprite.x + (dx * this.gan.width * 0.7) / 10;
+      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
+      this.speadBullet;
+    let startX = this.sprite.x + (dx * this.gan.width * 0.647) / 10;
     let startY =
       this.sprite.y -
       Math.cos(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
@@ -329,10 +334,10 @@ function TankPlayer(
           this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
-      clonArrEvil.forEach((tankBund: any, index: number) => {
+      clonArrEvil.forEach((tankBund: any) => {
         if (hitBill(tankBund.sprite, startX, startY)) {
           const tank = tankBund;
-          tank.health -= 100;
+          tank.health -= this.damage;
           clonConteiner.removeChild(r);
           if (!tank.checkFind) {
             tank.checkFind = true;
@@ -360,7 +365,7 @@ function TankPlayer(
         clearInterval(timeShut);
         this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
-      final -= 10;
+      final -= this.speadBullet;
     }
     clonConteiner.addChild(r);
   };
