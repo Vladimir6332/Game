@@ -48,6 +48,7 @@ function TankComputer(
   this.musBreakBlocks = musBreakBlocks;
   this.musImmoptalBlocks = musImmoptalBlocks;
   this.taran = false;
+  this.arrTimeShut = [];
 
   this.init = () => {
     this.renderStart();
@@ -133,7 +134,7 @@ function TankComputer(
     this.healthRender.endFill();
   };
   this.moveTank = () => {
-    if (this.checkFind) return;
+    if (this.checkFind || this.player.checkPause) return;
     if (this.sprite.rotation === 0) {
       this.sprite.x += 5;
       this.gan.x += 5;
@@ -303,6 +304,7 @@ function TankComputer(
     return hit;
   };
   this.moveGan = () => {
+    if (this.player.checkPause) return;
     this.angleX = this.player.sprite.x;
     this.angleY = this.player.sprite.y;
     this.renderGan();
@@ -314,7 +316,6 @@ function TankComputer(
     const clonConteiner = this.conteiner;
     const clonMusBreakBlocks = this.musBreakBlocks;
     const clonMusImmoptalBlocks = this.musImmoptalBlocks;
-    let checkHit = false;
     setTimeout(() => {
       this.callDown = false;
     }, this.timeCallDown);
@@ -337,7 +338,10 @@ function TankComputer(
     r.width = 30;
     r.height *= r.width / width;
     r.rotation = anglee(this.sprite.x, this.sprite.y, mx, my);
+    const timeShut = setInterval(() => paint.call(this), 17);
+    this.arrTimeShut.push(timeShut);
     function paint() {
+      if (tankBund.checkPause) return;
       r.x = startX;
       r.y = startY;
       clonMusBreakBlocks.forEach((block: any, index: number) => {
@@ -345,20 +349,22 @@ function TankComputer(
           clonConteiner.removeChild(block);
           clonMusBreakBlocks.splice(index, 1);
           clonConteiner.removeChild(r);
-          checkHit = true;
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
       clonMusImmoptalBlocks.forEach((block: any) => {
         if (hitBill(block, startX, startY)) {
           clonConteiner.removeChild(r);
-          checkHit = true;
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
-      if (checkHit) return;
       if (hitBill(tankBund.sprite, startX, startY)) {
         clonConteiner.removeChild(r);
         tankBund.health -= 100;
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       startX += dx;
       startY = dy(startX);
@@ -369,20 +375,20 @@ function TankComputer(
         startX < 0
       ) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       if (final <= 0) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       final -= 10;
-      setTimeout(paint, 17);
     }
     clonConteiner.addChild(r);
-    setTimeout(paint, 0);
   };
   this.findPlayer = () => {
-    if (this.checkDead || !this.checkFind) return;
+    if (this.checkDead || !this.checkFind || this.player.checkPause) return;
     if (this.player.checkDead) {
       this.checkFind = false;
       clearInterval(this.time);
@@ -464,10 +470,12 @@ function TankComputer(
     this.shut();
   };
   this.dead = () => {
+    const { arrEvil } = this.player;
     this.conteiner.removeChild(this.sprite, this.gan, this.healthRender);
     this.checkDead = true;
     clearInterval(this.time);
     clearInterval(this.timeRender);
+    arrEvil.splice(arrEvil.indexOf(this), 1);
   };
   this.checkWall = (wall2: {
     x: number;
@@ -593,6 +601,13 @@ function TankComputer(
         return this.checkWall(mapI);
       }
     );
+  };
+  this.stopGame = () => {
+    clearInterval(this.timeRender);
+    clearInterval(this.time);
+    this.arrTimeShut.forEach((time: any) => {
+      clearInterval(time);
+    });
   };
 }
 

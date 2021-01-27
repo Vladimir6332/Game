@@ -182,11 +182,7 @@ function start() {
   });
 
   app.view.addEventListener('click', (e) => {
-    if (tank.checkPause) {
-      tank.continue();
-    } else {
-      tank.pause();
-    }
+    tank.stopGame();
     if (tank.checkPause) return;
     tank.shut(e.offsetX, e.offsetY);
   });

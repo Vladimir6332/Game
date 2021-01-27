@@ -43,6 +43,7 @@ function TankPlayer(
   this.musBreakBlocks = musBreakBlocks;
   this.musImmoptalBlocks = musImmoptalBlocks;
   this.checkPause = false;
+  this.arrTimeShut = [];
 
   this.init = () => {
     console.log('render init');
@@ -272,12 +273,13 @@ function TankPlayer(
     return checkBatter;
   };
   this.moveGan = (offsetX: number, offsetY: number) => {
+    if (this.checkPause) return;
     this.angleX = offsetX;
     this.angleY = offsetY;
     this.renderGan();
   };
   this.shut = (posX: number, posY: number) => {
-    if (this.callDown || this.checkDead) return;
+    if (this.callDown || this.checkDead || this.checkPause) return;
     this.callDown = true;
     setTimeout(() => {
       this.callDown = false;
@@ -305,8 +307,10 @@ function TankPlayer(
     r.width = 30;
     r.height *= r.width / width;
     r.rotation = anglee(this.sprite.x, this.sprite.y, mx, my);
+    const timeShut = setInterval(() => paint.call(this), 17);
+    this.arrTimeShut.push(timeShut);
     function paint() {
-      let checkHit = false;
+      if (clonArrEvil[0].player.checkPause) return;
       r.x = startX;
       r.y = startY;
       clonMusBreakBlocks.forEach((block: any, index: number) => {
@@ -314,37 +318,31 @@ function TankPlayer(
           clonConteiner.removeChild(block);
           clonMusBreakBlocks.splice(index, 1);
           clonConteiner.removeChild(r);
-          checkHit = true;
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
       clonMusImmoptalBlocks.forEach((block: any) => {
         if (hitBill(block, startX, startY)) {
           clonConteiner.removeChild(r);
-          checkHit = true;
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
-      clonArrEvil.forEach(
-        (tankBund: {
-          sprite: any;
-          health: number;
-          checkFind: boolean;
-          findPlayer: any;
-          time: any;
-        }) => {
-          if (hitBill(tankBund.sprite, startX, startY)) {
-            const tank = tankBund;
-            tank.health -= 100;
-            clonConteiner.removeChild(r);
-            if (!tank.checkFind) {
-              tank.checkFind = true;
-              clearInterval(tank.time);
-              tank.time = setInterval(tank.findPlayer, 50);
-            }
-            checkHit = true;
+      clonArrEvil.forEach((tankBund: any, index: number) => {
+        if (hitBill(tankBund.sprite, startX, startY)) {
+          const tank = tankBund;
+          tank.health -= 100;
+          clonConteiner.removeChild(r);
+          if (!tank.checkFind) {
+            tank.checkFind = true;
+            clearInterval(tank.time);
+            tank.time = setInterval(tank.findPlayer, 50);
           }
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
-      );
-      if (checkHit) return;
+      });
       startX += dx;
       startY = dy(startX);
       if (
@@ -354,17 +352,17 @@ function TankPlayer(
         startX < 0
       ) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       if (final <= 0) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       final -= 10;
-      setTimeout(paint, 17);
     }
     clonConteiner.addChild(r);
-    setTimeout(paint, 0);
   };
   this.dead = () => {
     clearInterval(this.time);
@@ -492,6 +490,16 @@ function TankPlayer(
   };
   this.continue = () => {
     this.checkPause = false;
+  };
+  this.stopGame = () => {
+    this.checkPause = true;
+    this.arrEvil.forEach((tank: any) => {
+      tank.stopGame();
+    });
+    clearInterval(this.time);
+    this.arrTimeShut.forEach((time: any) => {
+      clearInterval(time);
+    });
   };
 }
 
