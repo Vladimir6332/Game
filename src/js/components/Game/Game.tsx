@@ -12,19 +12,18 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
   const [isPause, setPause] = useState(false);
   const [isEsc, setEsc] = useState(false);
   const [isNewGame, setNewGame] = useState(false);
-  console.log(isPause);
-  console.log(isEsc);
-  console.log(isNewGame);
+
   return (
     <section className="game">
       <div className="game__view">
-        <GameCanvas />
+        <GameCanvas startOptions={startOptions} />
       </div>
       <div className="game__control">
         <div className="game__weapon">
           <GameWeapons startOptions={startOptions} />
         </div>
         <div className="game__logs">
+          {isEsc || isNewGame}
           <GameLogs />
         </div>
         <div className="game__menu">

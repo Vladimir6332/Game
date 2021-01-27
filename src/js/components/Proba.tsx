@@ -27,34 +27,38 @@ import TankComputer from './TankComputer';
 
 const app = new PIXI.Application({ backgroundColor: 0xffffff });
 
-app.loader
-  .add([
-    { name: 'assets/images/red/tank.png', url: tankUrl },
-    { name: 'assets/images/brown/tank.png', url: tankUrlGood },
-    { name: 'assets/images/brown/speed/speed.png', url: brownSpeed },
-    { name: 'assets/images/brown/standart/standart.png', url: brownStandart },
-    { name: 'assets/images/brown/sniper/sniper.png', url: brownSniper },
-    { name: 'assets/images/brown/bigBOOM/bigBOOM.png', url: brownBigBoom },
-    { name: 'assets/images/red/bigBOOM/bigBOOM.png', url: redBigBoom },
-    { name: 'assets/images/red/speed/speed.png', url: redSpeed },
-    { name: 'assets/images/red/standart/standart.png', url: redStandart },
-    { name: 'assets/images/red/sniper/sniper.png', url: redSniper },
-    { name: 'assets/images/brown/speed/bullet.png', url: brownbulletSpeed },
-    {
-      name: 'assets/images/brown/standart/bullet.png',
-      url: brownbulletStandart,
-    },
-    { name: 'assets/images/brown/sniper/bullet.png', url: brownbulletSniper },
-    { name: 'assets/images/brown/bigBOOM/bullet.png', url: brownbulletBigBoom },
-    { name: 'assets/images/red/bigBOOM/bullet.png', url: redbulletBigBoom },
-    { name: 'assets/images/red/speed/bullet.png', url: redbulletSpeed },
-    { name: 'assets/images/red/standart/bullet.png', url: redbulletStandart },
-    { name: 'assets/images/red/sniper/bullet.png', url: redbulletSniper },
-    { name: 'assets/images/blocks/break.png', url: breakBlock },
-    { name: 'assets/images/blocks/hidden.png', url: hiddenBlock },
-    { name: 'assets/images/blocks/immortal.png', url: immortalBlock },
-  ])
-  .load(onAssetsLoaded);
+const start = () =>
+  app.loader
+    .add([
+      { name: 'assets/images/red/tank.png', url: tankUrl },
+      { name: 'assets/images/brown/tank.png', url: tankUrlGood },
+      { name: 'assets/images/brown/speed/speed.png', url: brownSpeed },
+      { name: 'assets/images/brown/standart/standart.png', url: brownStandart },
+      { name: 'assets/images/brown/sniper/sniper.png', url: brownSniper },
+      { name: 'assets/images/brown/bigBOOM/bigBOOM.png', url: brownBigBoom },
+      { name: 'assets/images/red/bigBOOM/bigBOOM.png', url: redBigBoom },
+      { name: 'assets/images/red/speed/speed.png', url: redSpeed },
+      { name: 'assets/images/red/standart/standart.png', url: redStandart },
+      { name: 'assets/images/red/sniper/sniper.png', url: redSniper },
+      { name: 'assets/images/brown/speed/bullet.png', url: brownbulletSpeed },
+      {
+        name: 'assets/images/brown/standart/bullet.png',
+        url: brownbulletStandart,
+      },
+      { name: 'assets/images/brown/sniper/bullet.png', url: brownbulletSniper },
+      {
+        name: 'assets/images/brown/bigBOOM/bullet.png',
+        url: brownbulletBigBoom,
+      },
+      { name: 'assets/images/red/bigBOOM/bullet.png', url: redbulletBigBoom },
+      { name: 'assets/images/red/speed/bullet.png', url: redbulletSpeed },
+      { name: 'assets/images/red/standart/bullet.png', url: redbulletStandart },
+      { name: 'assets/images/red/sniper/bullet.png', url: redbulletSniper },
+      { name: 'assets/images/blocks/break.png', url: breakBlock },
+      { name: 'assets/images/blocks/hidden.png', url: hiddenBlock },
+      { name: 'assets/images/blocks/immortal.png', url: immortalBlock },
+    ])
+    .load(onAssetsLoaded);
 
 function onAssetsLoaded() {
   const reelContainer = new PIXI.Container();
@@ -168,7 +172,7 @@ function onAssetsLoaded() {
   app.stage.addChild(reelContainer);
 }
 
-export default app;
+export { app, start, onAssetsLoaded };
 
 function randomeNumber(x: number) {
   return Math.floor(Math.random() * x);
