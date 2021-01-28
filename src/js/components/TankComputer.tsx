@@ -8,6 +8,8 @@ const TankComputer = function TankComputer(
   gan: string,
   aim: number,
   timeCallDown: number,
+  speadBullet: number,
+  damage: number,
   appWidth: number,
   appHeigth: number,
   conteiner: PIXI.Container,
@@ -26,9 +28,11 @@ const TankComputer = function TankComputer(
     .slice(0, gan.split('/').length - 1)
     .join('/')}/bullet.png`;
   this.healthRender = new PIXI.Graphics();
-  this.health = 600;
-  this.fullHealth = 600;
+  this.health = 200;
+  this.fullHealth = 200;
   this.aim = aim;
+  this.speadBullet = speadBullet;
+  this.damage = damage;
   this.angleX = 0;
   this.angleY = 0;
   this.callDown = false;
@@ -136,47 +140,48 @@ const TankComputer = function TankComputer(
   };
   this.moveTank = () => {
     if (this.checkFind || this.player.checkPause) return;
+    const step = 3;
     if (this.sprite.rotation === 0) {
-      this.sprite.x += 5;
-      this.gan.x += 5;
+      this.sprite.x += step;
+      this.gan.x += step;
       if (this.turn()) {
-        this.sprite.x -= 5;
-        this.gan.x -= 5;
-        this.sprite.y += 5;
-        this.gan.y += 5;
+        this.sprite.x -= step;
+        this.gan.x -= step;
+        this.sprite.y += step;
+        this.gan.y += step;
         this.sprite.rotation = Math.PI / 2;
         this.gan.rotation = Math.PI / 2;
       }
     } else if (this.sprite.rotation === Math.PI) {
-      this.sprite.x -= 5;
-      this.gan.x -= 5;
+      this.sprite.x -= step;
+      this.gan.x -= step;
       if (this.turn()) {
-        this.sprite.x += 5;
-        this.gan.x += 5;
-        this.sprite.y -= 5;
-        this.gan.y -= 5;
+        this.sprite.x += step;
+        this.gan.x += step;
+        this.sprite.y -= step;
+        this.gan.y -= step;
         this.sprite.rotation = (3 * Math.PI) / 2;
         this.gan.rotation = (3 * Math.PI) / 2;
       }
     } else if (this.sprite.rotation === (3 * Math.PI) / 2) {
-      this.sprite.y -= 5;
-      this.gan.y -= 5;
+      this.sprite.y -= step;
+      this.gan.y -= step;
       if (this.turn()) {
-        this.sprite.x += 5;
-        this.gan.x += 5;
-        this.sprite.y += 5;
-        this.gan.y += 5;
+        this.sprite.x += step;
+        this.gan.x += step;
+        this.sprite.y += step;
+        this.gan.y += step;
         this.sprite.rotation = 0;
         this.gan.rotation = 0;
       }
     } else {
-      this.sprite.y += 5;
-      this.gan.y += 5;
+      this.sprite.y += step;
+      this.gan.y += step;
       if (this.turn()) {
-        this.sprite.x -= 5;
-        this.gan.x -= 5;
-        this.sprite.y -= 5;
-        this.gan.y -= 5;
+        this.sprite.x -= step;
+        this.gan.x -= step;
+        this.sprite.y -= step;
+        this.gan.y -= step;
         this.sprite.rotation = Math.PI;
         this.gan.rotation = Math.PI;
       }
@@ -324,7 +329,8 @@ const TankComputer = function TankComputer(
     const my = this.player.sprite.y;
     const dy = createNaprv(mx, my, this.sprite.x, this.sprite.y);
     const dx =
-      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) * 10;
+      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
+      this.speadBullet;
     let startX = this.sprite.x + (dx * this.gan.width * 0.7) / 10;
     let startY =
       this.sprite.y -
@@ -363,7 +369,7 @@ const TankComputer = function TankComputer(
       });
       if (hitBill(tankBund.sprite, startX, startY)) {
         clonConteiner.removeChild(r);
-        tankBund.health -= 100;
+        tankBund.health -= this.damage;
         clearInterval(timeShut);
         this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
@@ -384,12 +390,13 @@ const TankComputer = function TankComputer(
         clearInterval(timeShut);
         this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
-      final -= 10;
+      final -= this.speadBullet;
     }
     clonConteiner.addChild(r);
   };
   this.findPlayer = () => {
     if (this.checkDead || !this.checkFind || this.player.checkPause) return;
+    const step = 5;
     if (this.player.checkDead) {
       this.checkFind = false;
       clearInterval(this.time);
@@ -406,62 +413,62 @@ const TankComputer = function TankComputer(
     }
     if (this.naprv) {
       if (dx > 0) {
-        this.sprite.x += 7;
+        this.sprite.x += step;
         this.sprite.rotation = 0;
-        this.gan.x += 7;
+        this.gan.x += step;
         this.gan.rotation = 0;
         if (this.turn()) {
-          this.sprite.y += 7;
-          this.sprite.x -= 7;
+          this.sprite.y += step;
+          this.sprite.x -= step;
           this.sprite.rotation = Math.PI / 2;
-          this.gan.y += 7;
-          this.gan.x -= 7;
+          this.gan.y += step;
+          this.gan.x -= step;
           this.gan.rotation = Math.PI / 2;
         }
       } else {
-        this.sprite.x -= 7;
+        this.sprite.x -= step;
         this.sprite.rotation = Math.PI;
-        this.gan.x -= 7;
+        this.gan.x -= step;
         this.gan.rotation = Math.PI;
         if (this.turn()) {
-          this.sprite.y -= 7;
-          this.sprite.x += 7;
+          this.sprite.y -= step;
+          this.sprite.x += step;
           this.sprite.rotation = (Math.PI * 3) / 2;
-          this.gan.y -= 7;
-          this.gan.x += 7;
+          this.gan.y -= step;
+          this.gan.x += step;
           this.gan.rotation = (Math.PI * 3) / 2;
         }
       }
     } else if (!this.naprv) {
       if (dy > 0) {
-        this.sprite.y += 7;
+        this.sprite.y += step;
         this.sprite.rotation = Math.PI / 2;
-        this.gan.y += 7;
+        this.gan.y += step;
         this.gan.rotation = Math.PI / 2;
         if (this.turn()) {
-          this.sprite.y -= 7;
-          this.sprite.x -= 7;
+          this.sprite.y -= step;
+          this.sprite.x -= step;
           this.sprite.rotation = Math.PI;
-          this.gan.y -= 7;
-          this.gan.x -= 7;
+          this.gan.y -= step;
+          this.gan.x -= step;
           this.gan.rotation = Math.PI;
         }
       } else {
-        this.sprite.y -= 7;
+        this.sprite.y -= step;
         this.sprite.rotation = (Math.PI * 3) / 2;
-        this.gan.y -= 7;
+        this.gan.y -= step;
         this.gan.rotation = (Math.PI * 3) / 2;
         if (this.turn()) {
-          this.sprite.y += 7;
-          this.sprite.x += 7;
+          this.sprite.y += step;
+          this.sprite.x += step;
           this.sprite.rotation = 0;
-          this.gan.y += 7;
-          this.gan.x += 7;
+          this.gan.y += step;
+          this.gan.x += step;
           this.gan.rotation = 0;
         }
       }
     }
-    this.stepBad -= 7;
+    this.stepBad -= step;
     if (this.batter(this.player.sprite) && !this.taran) {
       this.health -= 300;
       this.player.health -= 300;
@@ -667,5 +674,5 @@ function checkLenght(
   tank: { x: number; y: number },
   tank2: { x: number; y: number }
 ) {
-  return Math.sqrt((tank.x - tank2.x) ** 2 + (tank.y - tank2.y) ** 2) < 10;
+  return Math.sqrt((tank.x - tank2.x) ** 2 + (tank.y - tank2.y) ** 2) < 200;
 }

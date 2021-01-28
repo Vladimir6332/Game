@@ -5,6 +5,8 @@ import brownBigBoom from '../../assets/images/weapons/brown/bigBOOM/bigBOOM.png'
 import brownSpeed from '../../assets/images/weapons/brown/speed/speed.png';
 import brownStandart from '../../assets/images/weapons/brown/standart/standart.png';
 import brownSniper from '../../assets/images/weapons/brown/sniper/sniper.png';
+import brownRockets from '../../assets/images/weapons/brown/rockets/rockets.png';
+import redRockets from '../../assets/images/weapons/red/rockets/rockets.png';
 import redBigBoom from '../../assets/images/weapons/red/bigBOOM/bigBOOM.png';
 import redSpeed from '../../assets/images/weapons/red/speed/speed.png';
 import redStandart from '../../assets/images/weapons/red/standart/standart.png';
@@ -13,6 +15,8 @@ import redBulletBigBoom from '../../assets/images/weapons/red/bigBOOM/bullet.png
 import redBulletSpeed from '../../assets/images/weapons/red/speed/bullet.png';
 import redBulletStandard from '../../assets/images/weapons/red/standart/bullet.png';
 import redBulletSniper from '../../assets/images/weapons/red/sniper/bullet.png';
+import redBulletRockets from '../../assets/images/weapons/red/rockets/bullet.png';
+import brownBulletRockets from '../../assets/images/weapons/brown/rockets/bullet.png';
 import brownBulletBigBoom from '../../assets/images/weapons/brown/bigBOOM/bullet.png';
 import brownBulletSpeed from '../../assets/images/weapons/brown/speed/bullet.png';
 import brownBulletStandard from '../../assets/images/weapons/brown/standart/bullet.png';
@@ -78,6 +82,8 @@ class GameApp implements Game {
         { name: 'assets/images/red/speed/speed.png', url: redSpeed },
         { name: 'assets/images/red/standart/standart.png', url: redStandart },
         { name: 'assets/images/red/sniper/sniper.png', url: redSniper },
+        { name: 'assets/images/red/rockets/rockets.png', url: redRockets },
+        { name: 'assets/images/brown/rockets/rockets.png', url: brownRockets },
         { name: 'assets/images/brown/speed/bullet.png', url: brownBulletSpeed },
         {
           name: 'assets/images/brown/standart/bullet.png',
@@ -98,6 +104,11 @@ class GameApp implements Game {
           url: redBulletStandard,
         },
         { name: 'assets/images/red/sniper/bullet.png', url: redBulletSniper },
+        { name: 'assets/images/red/rockets/bullet.png', url: redBulletRockets },
+        {
+          name: 'assets/images/brown/rockets/bullet.png',
+          url: brownBulletRockets,
+        },
         { name: 'assets/images/maps/map.png', url: imgMap },
         { name: 'assets/images/blocks/break1.png', url: imgBreak1 },
         { name: 'assets/images/blocks/break2.png', url: imgBreak2 },
@@ -123,9 +134,11 @@ class GameApp implements Game {
     this.tank = new (TankPlayer as any)(
       0,
       this.pixi.screen.height / 2,
-      'assets/images/brown/sniper/sniper.png',
-      400,
-      500,
+      'assets/images/brown/sniper/sniper.png', // название пушки
+      400, // дальность пушки x * 4
+      500, // время перезорядки 5000 / x
+      20, // скорость пули x * 2.5
+      95, // урон
       this.pixi.screen.width,
       this.pixi.screen.height,
       reelContainer,
@@ -133,11 +146,43 @@ class GameApp implements Game {
       musImmortalBlocks,
       musBreakBlocks
     );
-    const arrImages = [
-      'assets/images/red/bigBOOM/bigBOOM.png',
-      'assets/images/red/speed/speed.png',
-      'assets/images/red/standart/standart.png',
-      'assets/images/red/sniper/sniper.png',
+
+    const arrGanBad = [
+      {
+        src: 'assets/images/red/bigBOOM/bigBOOM.png',
+        damage: 95,
+        range: 70 * 4,
+        speadBullet: 2.5 * 5,
+        speadGan: 5000 / 3,
+      },
+      {
+        src: 'assets/images/red/rockets/rockets.png',
+        damage: 40,
+        range: 75 * 4,
+        speadBullet: 2.5 * 3,
+        speadGan: 5000 / 10,
+      },
+      {
+        src: 'assets/images/red/sniper/sniper.png',
+        damage: 20,
+        range: 100 * 4,
+        speadBullet: 7 * 2.5,
+        speadGan: 5000 / 5,
+      },
+      {
+        src: 'assets/images/red/standart/standart.png',
+        damage: 10,
+        range: 55 * 4,
+        speadBullet: 2.5 * 2,
+        speadGan: 5000 / 5,
+      },
+      {
+        src: 'assets/images/red/speed/speed.png',
+        damage: 5,
+        range: 67 * 4,
+        speadBullet: 2.5 * 10,
+        speadGan: 5000 / 10,
+      },
     ];
 
     for (let i = 0; i < 3; i += 1) {
@@ -154,12 +199,15 @@ class GameApp implements Game {
       } else if (y < this.pixi.screen.height * 0.1) {
         y += this.pixi.screen.height * 0.1;
       }
+      const index = randomNumber(arrGanBad.length);
       const tankBad = new (TankComputer as any)(
         x,
         y,
-        arrImages[randomNumber(arrImages.length)],
-        400,
-        500,
+        arrGanBad[index].src,
+        arrGanBad[index].range,
+        arrGanBad[index].speadGan,
+        arrGanBad[index].speadBullet,
+        arrGanBad[index].damage,
         this.pixi.screen.width,
         this.pixi.screen.height,
         reelContainer,

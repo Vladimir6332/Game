@@ -7,6 +7,8 @@ declare interface TankPl {
     gan: string,
     aim: number,
     timeCallDown: number,
+    speadBullet: number,
+    damage: number,
     appWidth: number,
     appHeigth: number,
     conteiner: PIXI.Container,
