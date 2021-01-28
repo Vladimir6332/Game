@@ -4,7 +4,7 @@
   "description": "Game",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watchAll",
     "coverage": "jest --coverage",
     "style": "sass --watch src/sass/style.scss src/sass/style.css",
     "dev": "webpack --mode development",
@@ -61,7 +61,6 @@
     "prettier": "^2.2.1",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
-    "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.14",
     "typescript": "^4.1.3",
     "url-loader": "^4.1.1",
@@ -72,6 +71,7 @@
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "@inlet/react-pixi": "^6.0.7",
+    "@jest/globals": "^26.6.2",
     "@material-ui/core": "^4.11.2",
     "@material/slider": "^9.0.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -80,6 +80,8 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/react-test-renderer": "^17.0.0",
     "@types/testing-library__jest-dom": "^5.9.5",
+    "ts-jest": "^26.4.4",
+    "jest-canvas-mock": "^2.3.0",
     "normalize.css": "^8.0.1",
     "pixi.js": "^5.3.7",
     "pixi.js-legacy": "^5.3.7",
