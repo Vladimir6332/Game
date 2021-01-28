@@ -108,14 +108,14 @@ function start() {
     {
       src: 'assets/images/red/bigBOOM/bigBOOM.png',
       damage: 95,
-      range: 80 * 4,
+      range: 70 * 4,
       speadBullet: 2.5 * 5,
       speadGan: 5000 / 3,
     },
     {
       src: 'assets/images/red/rockets/rockets.png',
       damage: 40,
-      range: 40 * 4,
+      range: 75 * 4,
       speadBullet: 2.5 * 3,
       speadGan: 5000 / 10,
     },
@@ -129,14 +129,14 @@ function start() {
     {
       src: 'assets/images/red/standart/standart.png',
       damage: 10,
-      range: 30 * 4,
+      range: 55 * 4,
       speadBullet: 2.5 * 2,
       speadGan: 5000 / 5,
     },
     {
       src: 'assets/images/red/speed/speed.png',
       damage: 5,
-      range: 0.3 * 400,
+      range: 67 * 4,
       speadBullet: 2.5 * 10,
       speadGan: 5000 / 10,
     },
