@@ -3,9 +3,11 @@ import getCurrentLog from '../../servise/menu_logs_getCurrentLog';
 
 const logs: Array<Logs> = [];
 const GameLogs: React.FC<LogsProp> = ({ log }: LogsProp) => {
+  const copy = log;
   if (logs[logs.length - 1] !== log && log.typeMessage !== 'null') {
+    copy.id = `${Math.random() + log.message}`;
     if (logs.length === 4) logs.shift();
-    logs.push(log);
+    logs.push(copy);
   }
 
   const jsxArrLogs: Array<JSX.Element> = logs.map(getCurrentLog);
