@@ -23,7 +23,11 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
     <section className="game">
       {isPause ? <Pause setPause={setPause} /> : ''}
       <div className="game__view">
-        <GameCanvas startOptions={startOptions} />
+        <GameCanvas
+          startOptions={startOptions}
+          isNewGame={isNewGame}
+          setNewGame={setNewGame}
+        />
       </div>
       <div className="game__control">
         <div className="game__weapon">

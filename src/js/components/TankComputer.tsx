@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js-legacy';
+import { TankUnit } from '../custom_typings/Tanks.d';
 
-function TankComputer(
+const TankComputer = function TankComputer(
   this: any,
   x: number,
   y: number,
@@ -9,11 +10,11 @@ function TankComputer(
   timeCallDown: number,
   appWidth: number,
   appHeigth: number,
-  conteiner: any,
-  player: any,
-  musImmoptalBlocks: Array<{ arr: any }>,
-  musBreakBlocks: Array<{ arr: any }>
-) {
+  conteiner: PIXI.Container,
+  player: TankUnit,
+  musImmortalBlocks: Array<PIXI.Sprite>,
+  musBreakBlocks: Array<PIXI.Sprite>
+): void {
   this.x = x;
   this.y = y;
   this.sprite = new PIXI.Sprite(
@@ -46,7 +47,7 @@ function TankComputer(
   this.time = 0;
   this.timeRender = 0;
   this.musBreakBlocks = musBreakBlocks;
-  this.musImmoptalBlocks = musImmoptalBlocks;
+  this.musImmortalBlocks = musImmortalBlocks;
   this.taran = false;
   this.arrTimeShut = [];
 
@@ -315,7 +316,7 @@ function TankComputer(
     const tankBund = this.player;
     const clonConteiner = this.conteiner;
     const clonMusBreakBlocks = this.musBreakBlocks;
-    const clonMusImmoptalBlocks = this.musImmoptalBlocks;
+    const clonMusImmortalBlocks = this.musImmortalBlocks;
     setTimeout(() => {
       this.callDown = false;
     }, this.timeCallDown);
@@ -344,7 +345,7 @@ function TankComputer(
       if (tankBund.checkPause) return;
       r.x = startX;
       r.y = startY;
-      clonMusBreakBlocks.forEach((block: any, index: number) => {
+      clonMusBreakBlocks.forEach((block: PIXI.Sprite, index: number) => {
         if (hitBill(block, startX, startY)) {
           clonConteiner.removeChild(block);
           clonMusBreakBlocks.splice(index, 1);
@@ -353,7 +354,7 @@ function TankComputer(
           this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
-      clonMusImmoptalBlocks.forEach((block: any) => {
+      clonMusImmortalBlocks.forEach((block: PIXI.Sprite) => {
         if (hitBill(block, startX, startY)) {
           clonConteiner.removeChild(r);
           clearInterval(timeShut);
@@ -595,7 +596,7 @@ function TankComputer(
     return wall;
   };
   this.turn = () => {
-    const musMap = [...this.musBreakBlocks, ...this.musImmoptalBlocks];
+    const musMap = [...this.musBreakBlocks, ...this.musImmortalBlocks];
     return musMap.some(
       (mapI: { x: number; y: number; width: number; height: number }) => {
         return this.checkWall(mapI);
@@ -605,11 +606,11 @@ function TankComputer(
   this.stopGame = () => {
     clearInterval(this.timeRender);
     clearInterval(this.time);
-    this.arrTimeShut.forEach((time: any) => {
+    this.arrTimeShut.forEach((time: NodeJS.Timeout) => {
       clearInterval(time);
     });
   };
-}
+};
 
 export default TankComputer;
 
@@ -624,7 +625,7 @@ function anglee(x1: number, y1: number, x2: number, y2: number) {
 function createNaprv(x: number, y: number, x1: number, y1: number) {
   const b = (y * x1 - y1 * x) / (x1 - x);
   const a = (y1 - b) / x1;
-  return function (n: number) {
+  return function setDirection(n: number) {
     return n * a + b;
   };
 }

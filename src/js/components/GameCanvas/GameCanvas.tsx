@@ -1,31 +1,40 @@
 import React from 'react';
-import { app, start, loadAssets } from '../Proba';
+import GameApp from '../Proba';
 
 interface Props {
   startOptions: PlayOptions | null;
+  isNewGame: boolean;
+  setNewGame(isNewGame: boolean): void;
 }
 
-let isAssetsLoaded = false;
-
-const GameCanvas: React.FC<Props> = ({ startOptions }: Props) => {
+let game = new GameApp();
+const GameCanvas: React.FC<Props> = ({
+  startOptions,
+  isNewGame,
+  setNewGame,
+}: Props) => {
   const canvasRef = React.createRef<HTMLDivElement>();
-  const PIXIapp = app;
 
   React.useEffect(() => {
-    canvasRef.current.appendChild(PIXIapp.view);
-    console.log(app.stage);
-    if (isAssetsLoaded) {
-      // PIXIapp.stage.destroy({ children: true });
-      start();
+    if (isNewGame) {
+      game.stop();
+      game.pixi.stop();
+      canvasRef.current.removeChild(game.pixi.view);
+      game.pixi.stage.destroy({ children: true });
+      console.log(game.pixi.stage);
+      game = new GameApp();
+      canvasRef.current.appendChild(game.pixi.view);
+      game.start();
+      setNewGame(false);
     }
-  });
+  }, [isNewGame]);
 
   React.useEffect(() => {
-    canvasRef.current.appendChild(PIXIapp.view);
-    loadAssets(start);
-    isAssetsLoaded = true;
+    canvasRef.current.appendChild(game.pixi.view);
+    game.init(startOptions);
+
     return () => {
-      console.log('appSTOP');
+      console.log('appINIT');
     };
   }, []);
   return (

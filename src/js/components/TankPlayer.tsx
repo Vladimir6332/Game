@@ -1,19 +1,20 @@
 import * as PIXI from 'pixi.js-legacy';
+import { TankPl, TankUnit } from '../custom_typings/Tanks.d';
 
-function TankPlayer(
+const TankPlayer: TankPl = function TankPlayer(
   this: any,
-  x: number,
-  y: number,
-  gan: string,
-  aim: number,
-  timeCallDown: number,
-  appWidth: number,
-  appHeigth: number,
-  conteiner: any,
-  evil: Array<{ arr: any }>,
-  musImmoptalBlocks: Array<{ arr: any }>,
-  musBreakBlocks: Array<{ arr: any }>
-) {
+  x,
+  y,
+  gan,
+  aim,
+  timeCallDown,
+  appWidth,
+  appHeigth,
+  conteiner,
+  evil,
+  musImmortalBlocks,
+  musBreakBlocks
+): void {
   this.x = x;
   this.y = y;
   this.sprite = new PIXI.Sprite(
@@ -41,12 +42,11 @@ function TankPlayer(
   this.time = 0;
   this.arrEvil = evil;
   this.musBreakBlocks = musBreakBlocks;
-  this.musImmoptalBlocks = musImmoptalBlocks;
+  this.musImmortalBlocks = musImmortalBlocks;
   this.checkPause = false;
   this.arrTimeShut = [];
 
   this.init = () => {
-    console.log('render init');
     this.renderStart();
     this.renderGan();
     this.time = setInterval(this.render, 17);
@@ -289,7 +289,7 @@ function TankPlayer(
     const clonConteiner = this.conteiner;
     const clonArrEvil = this.arrEvil;
     const clonMusBreakBlocks = this.musBreakBlocks;
-    const clonMusImmoptalBlocks = this.musImmoptalBlocks;
+    const clonmusImmortalBlocks = this.musImmortalBlocks;
     const dy = createNaprv(mx, my, this.sprite.x, this.sprite.y);
     const dx =
       Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) * 10;
@@ -313,7 +313,7 @@ function TankPlayer(
       if (clonArrEvil[0].player.checkPause) return;
       r.x = startX;
       r.y = startY;
-      clonMusBreakBlocks.forEach((block: any, index: number) => {
+      clonMusBreakBlocks.forEach((block: PIXI.Sprite, index: number) => {
         if (hitBill(block, startX, startY)) {
           clonConteiner.removeChild(block);
           clonMusBreakBlocks.splice(index, 1);
@@ -322,14 +322,14 @@ function TankPlayer(
           this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
-      clonMusImmoptalBlocks.forEach((block: any) => {
+      clonmusImmortalBlocks.forEach((block: PIXI.Sprite) => {
         if (hitBill(block, startX, startY)) {
           clonConteiner.removeChild(r);
           clearInterval(timeShut);
           this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
       });
-      clonArrEvil.forEach((tankBund: any, index: number) => {
+      clonArrEvil.forEach((tankBund: TankUnit, index: number) => {
         if (hitBill(tankBund.sprite, startX, startY)) {
           const tank = tankBund;
           tank.health -= 100;
@@ -377,8 +377,10 @@ function TankPlayer(
   this.turn = () => {
     let result = false;
     if (
-      this.musImmoptalBlocks.some((mapI: any) => this.checkWall(mapI)) ||
-      this.musBreakBlocks.some((mapI: any) => this.checkWall(mapI))
+      this.musImmortalBlocks.some((mapI: PIXI.Sprite) =>
+        this.checkWall(mapI)
+      ) ||
+      this.musBreakBlocks.some((mapI: PIXI.Sprite) => this.checkWall(mapI))
     ) {
       result = true;
     }
@@ -493,15 +495,15 @@ function TankPlayer(
   };
   this.stopGame = () => {
     this.checkPause = true;
-    this.arrEvil.forEach((tank: any) => {
+    this.arrEvil.forEach((tank: TankUnit) => {
       tank.stopGame();
     });
     clearInterval(this.time);
-    this.arrTimeShut.forEach((time: any) => {
+    this.arrTimeShut.forEach((time: NodeJS.Timeout) => {
       clearInterval(time);
     });
   };
-}
+};
 
 export default TankPlayer;
 
@@ -516,7 +518,7 @@ function anglee(x1: number, y1: number, x2: number, y2: number) {
 function createNaprv(x: number, y: number, x1: number, y1: number) {
   const b = (y * x1 - y1 * x) / (x1 - x);
   const a = (y1 - b) / x1;
-  return function (n: number) {
+  return function setDirection(n: number) {
     return n * a + b;
   };
 }
