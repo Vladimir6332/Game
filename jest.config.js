@@ -5,8 +5,8 @@ module.exports = {
   testRegex: '/tests/.*\\.(test|spec)?\\.(ts|tsx)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-      './src/fileMock.js',
-    '\\.(css|less)$': './src/cssMock.js',
+    '\\.(png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      '<rootDir>/src/js/fileMock.ts',
+    '\\.(css|less)$': '<rootDir>/src/js/cssMock.ts',
   },
 };
