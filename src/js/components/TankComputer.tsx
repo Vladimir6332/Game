@@ -309,6 +309,13 @@ const TankComputer = function TankComputer(
     }
     return hit;
   };
+
+  this.setCoolDownAfterPause = () => {
+    this.callDown = true;
+    setTimeout(() => {
+      this.callDown = false;
+    }, this.timeCallDown);
+  };
   this.moveGan = () => {
     if (this.player.checkPause) return;
     this.angleX = this.player.sprite.x;

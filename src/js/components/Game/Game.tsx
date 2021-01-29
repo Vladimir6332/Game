@@ -26,6 +26,8 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
         <GameCanvas
           startOptions={startOptions}
           isNewGame={isNewGame}
+          isPause={isPause}
+          isEsc={isEsc}
           setNewGame={setNewGame}
         />
       </div>

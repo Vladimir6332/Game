@@ -295,6 +295,14 @@ class GameApp implements Game {
     this.tank.stopGame();
   }
 
+  pause(): void {
+    this?.tank.pause();
+  }
+
+  continue(): void {
+    this?.tank.continue();
+  }
+
   checkMap(
     wall2: {
       x: number;
@@ -463,3 +471,6 @@ export default GameApp;
 function randomNumber(x: number) {
   return Math.floor(Math.random() * x);
 }
+
+// Keyboard input with customisable repeat (set to 0 for no key repeat)
+//
