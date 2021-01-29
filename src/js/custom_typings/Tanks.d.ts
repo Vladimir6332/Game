@@ -33,4 +33,7 @@ declare interface TankUnit {
   checkFind: boolean;
   time: NodeJS.Timeout;
   findPlayer(): void;
+  pause(): void;
+  continue(): void;
+  setCoolDownAfterPause(): void;
 }

@@ -497,6 +497,9 @@ const TankPlayer: TankPl = function TankPlayer(
   };
   this.continue = () => {
     this.checkPause = false;
+    this.arrEvil.forEach((tank: TankUnit) => {
+      tank.setCoolDownAfterPause();
+    });
   };
   this.stopGame = () => {
     this.checkPause = true;
