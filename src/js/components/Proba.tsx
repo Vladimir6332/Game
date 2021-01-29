@@ -30,6 +30,7 @@ import imgImmortal1 from '../../assets/images/blocks/immortal1.png';
 import imgImmortal2 from '../../assets/images/blocks/immortal2.png';
 import TankPlayer from './TankPlayer';
 import TankComputer from './TankComputer';
+import KeyboardController from '../utils/KeyboardController';
 import { TankUnit } from '../custom_typings/Tanks.d';
 
 // const pixi = new PIXI.Application({ backgroundColor: 0xffffff });
@@ -266,9 +267,33 @@ class GameApp implements Game {
       this.tank.moveGan(e.offsetX, e.offsetY);
     });
 
+    const keyboardController = new KeyboardController(
+      {
+        KeyW: () => {
+          this.tank.moveTank('KeyW');
+        },
+        KeyS: () => {
+          this.tank.moveTank('KeyS');
+        },
+        KeyA: () => {
+          this.tank.moveTank('KeyA');
+        },
+        KeyD: () => {
+          this.tank.moveTank('KeyD');
+        },
+      },
+      50
+    );
+
     window.addEventListener('keydown', (e) => {
       if (this.tank.checkPause) return;
-      this.tank.moveTank(e.code);
+      keyboardController.keyDown(e);
+      // this.tank.moveTank(e.code);
+    });
+    window.addEventListener('keyup', (e) => {
+      if (this.tank.checkPause) return;
+      keyboardController.keyUp(e);
+      // this.tank.moveTank(e.code);
     });
 
     this.pixi.view.addEventListener('click', (e) => {

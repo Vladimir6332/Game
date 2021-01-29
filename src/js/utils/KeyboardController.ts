@@ -5,7 +5,7 @@ interface Keys {
   [key: string]: { (code: string): void };
 }
 
-class KeyboardController {
+export default class KeyboardController {
   timers: Timers;
 
   keys: Keys;
