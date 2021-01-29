@@ -296,7 +296,7 @@ class GameApp implements Game {
   }
 
   pause(): void {
-    this?.tank.pause();
+    if (this.tank) this.tank.pause();
   }
 
   continue(): void {
