@@ -1,18 +1,22 @@
 import * as PIXI from 'pixi.js-legacy';
+import { TankPl, TankUnit } from '../custom_typings/Tanks.d';
 
-function TankPlayer(
+const TankPlayer: TankPl = function TankPlayer(
   this: any,
-  x: number,
-  y: number,
-  gan: string,
-  aim: number,
-  timeCallDown: number,
-  appWidth: number,
-  appHeigth: number,
-  conteiner: any,
-  evil: Array<{ arr: any }>,
-  map: Array<{ arr: any }>
-) {
+  x,
+  y,
+  gan,
+  aim,
+  timeCallDown,
+  speadBullet,
+  damage,
+  appWidth,
+  appHeigth,
+  conteiner,
+  evil,
+  musImmortalBlocks,
+  musBreakBlocks
+): void {
   this.x = x;
   this.y = y;
   this.sprite = new PIXI.Sprite(
@@ -25,9 +29,11 @@ function TankPlayer(
     .join('/')}/bullet.png`;
   this.healthRender = new PIXI.Graphics();
   this.aimRender = new PIXI.Graphics();
-  this.health = 600;
-  this.fullHealth = 600;
+  this.health = 200;
+  this.fullHealth = 200;
   this.aim = aim;
+  this.speadBullet = speadBullet;
+  this.damage = damage;
   this.angleX = 0;
   this.angleY = 0;
   this.callDown = false;
@@ -39,10 +45,12 @@ function TankPlayer(
   this.checkDead = false;
   this.time = 0;
   this.arrEvil = evil;
-  this.arrMap = map;
+  this.musBreakBlocks = musBreakBlocks;
+  this.musImmortalBlocks = musImmortalBlocks;
+  this.checkPause = false;
+  this.arrTimeShut = [];
 
   this.init = () => {
-    console.log('render init');
     this.renderStart();
     this.renderGan();
     this.time = setInterval(this.render, 17);
@@ -94,15 +102,13 @@ function TankPlayer(
     if (this.angleX !== 0 && this.angleY !== 0) {
       this.angleGan = anglee(this.gan.x, this.gan.y, this.angleX, this.angleY);
     }
-    this.gan.y = this.y + this.sprite.height / 2;
-    this.gan.x = this.x + this.sprite.width / 2;
+    this.gan.y = this.sprite.y;
+    this.gan.x = this.sprite.x;
     this.gan.rotation = this.angleGan;
   };
   this.render = () => {
     this.aimRender.clear();
     this.healthRender.clear();
-    this.sprite.y = this.y + this.sprite.height / 2;
-    this.sprite.x = this.x + this.sprite.width / 2;
     this.aimRender.lineStyle(4, 0x00ff00, 1, 0.5, true);
     this.aimRender.drawCircle(this.sprite.x, this.sprite.y, this.aim);
     this.healthRender.lineStyle(4, 0x000000, 1, 0.5, true);
@@ -135,32 +141,32 @@ function TankPlayer(
   this.moveTank = (keyCode: string) => {
     if (this.checkDead) return;
     if (keyCode === 'KeyW') {
-      if (this.y < this.sprite.width / 2 - 10) return;
+      if (this.sprite.y < this.sprite.width / 2 + 10) return;
       this.sprite.rotation = (Math.PI * 3) / 2;
-      this.y -= 10;
+      this.sprite.y -= 10;
       if (this.turn()) {
-        this.y += 10;
+        this.sprite.y += 10;
       }
     } else if (keyCode === 'KeyS') {
-      if (this.y > appHeigth - this.sprite.width + 10) return;
+      if (this.sprite.y > appHeigth - this.sprite.width / 2 - 10) return;
       this.sprite.rotation = Math.PI / 2;
-      this.y += 10;
+      this.sprite.y += 10;
       if (this.turn()) {
-        this.y -= 10;
+        this.sprite.y -= 10;
       }
     } else if (keyCode === 'KeyA') {
-      if (this.x < 10) return;
+      if (this.sprite.x < this.sprite.width / 2 + 10) return;
       this.sprite.rotation = Math.PI;
-      this.x -= 10;
+      this.sprite.x -= 10;
       if (this.turn()) {
-        this.x += 10;
+        this.sprite.x += 10;
       }
     } else if (keyCode === 'KeyD') {
-      if (this.x > appWidth - this.sprite.width - 10) return;
+      if (this.sprite.x > appWidth - this.sprite.width / 2 - 10) return;
       this.sprite.rotation = 0;
-      this.x += 10;
+      this.sprite.x += 10;
       if (this.turn()) {
-        this.x -= 10;
+        this.sprite.x -= 10;
       }
     }
   };
@@ -172,7 +178,7 @@ function TankPlayer(
     rotation: number;
     health: number;
   }) => {
-    let hit = false;
+    let checkBatter = false;
     const r1 = this.sprite;
     const r2 = r;
     if (r1.rotation % Math.PI === 0 && r2.rotation % Math.PI === 0) {
@@ -194,9 +200,9 @@ function TankPlayer(
           r2.y + r2.height / 2 >= r1.y - r1.height / 2 &&
           r2.y + r2.height / 2 <= r1.y + r1.height / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     } else if (r1.rotation % Math.PI !== 0 && r2.rotation % Math.PI === 0) {
       if (
@@ -217,9 +223,9 @@ function TankPlayer(
           r2.y + r2.width / 2 >= r1.y - r1.height / 2 &&
           r2.y + r2.width / 2 <= r1.y + r1.height / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     } else if (r1.rotation % Math.PI === 0 && r2.rotation % Math.PI !== 0) {
       if (
@@ -240,9 +246,9 @@ function TankPlayer(
           r2.y + r2.height / 2 >= r1.y - r1.width / 2 &&
           r2.y + r2.height / 2 <= r1.y + r1.width / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     } else if (r1.rotation % Math.PI !== 0 && r2.rotation % Math.PI !== 0) {
       if (
@@ -263,20 +269,21 @@ function TankPlayer(
           r2.y + r2.width / 2 >= r1.y - r1.width / 2 &&
           r2.y + r2.width / 2 <= r1.y + r1.width / 2)
       ) {
-        hit = true;
+        checkBatter = true;
       } else {
-        hit = false;
+        checkBatter = false;
       }
     }
-    return hit;
+    return checkBatter;
   };
   this.moveGan = (offsetX: number, offsetY: number) => {
+    if (this.checkPause) return;
     this.angleX = offsetX;
     this.angleY = offsetY;
     this.renderGan();
   };
   this.shut = (posX: number, posY: number) => {
-    if (this.callDown || this.checkDead) return;
+    if (this.callDown || this.checkDead || this.checkPause) return;
     this.callDown = true;
     setTimeout(() => {
       this.callDown = false;
@@ -285,10 +292,13 @@ function TankPlayer(
     const my = posY;
     const clonConteiner = this.conteiner;
     const clonArrEvil = this.arrEvil;
+    const clonMusBreakBlocks = this.musBreakBlocks;
+    const clonmusImmortalBlocks = this.musImmortalBlocks;
     const dy = createNaprv(mx, my, this.sprite.x, this.sprite.y);
     const dx =
-      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) * 10;
-    let startX = this.sprite.x + (dx * this.gan.width * 0.7) / 10;
+      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
+      this.speadBullet;
+    let startX = this.sprite.x + (dx * this.gan.width * 0.647) / 10;
     let startY =
       this.sprite.y -
       Math.cos(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
@@ -302,30 +312,42 @@ function TankPlayer(
     r.width = 30;
     r.height *= r.width / width;
     r.rotation = anglee(this.sprite.x, this.sprite.y, mx, my);
+    const timeShut = setInterval(() => paint.call(this), 17);
+    this.arrTimeShut.push(timeShut);
     function paint() {
-      let checkHit = false;
+      if (clonArrEvil[0].player.checkPause) return;
       r.x = startX;
       r.y = startY;
-      clonArrEvil.forEach(
-        (tankBund: {
-          sprite: any;
-          health: number;
-          checkFind: boolean;
-          findPlayer: any;
-        }) => {
-          if (hitBill(tankBund.sprite, startX, startY)) {
-            const tank = tankBund;
-            tank.health -= 100;
-            clonConteiner.removeChild(r);
-            if (!tank.checkFind) {
-              tank.checkFind = true;
-              tank.findPlayer();
-            }
-            checkHit = true;
-          }
+      clonMusBreakBlocks.forEach((block: PIXI.Sprite, index: number) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(block);
+          clonMusBreakBlocks.splice(index, 1);
+          clonConteiner.removeChild(r);
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
         }
-      );
-      if (checkHit) return;
+      });
+      clonmusImmortalBlocks.forEach((block: PIXI.Sprite) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(r);
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+        }
+      });
+      clonArrEvil.forEach((tankBund: TankUnit, index: number) => {
+        if (hitBill(tankBund.sprite, startX, startY)) {
+          const tank = tankBund;
+          tank.health -= this.damage;
+          clonConteiner.removeChild(r);
+          if (!tank.checkFind) {
+            tank.checkFind = true;
+            clearInterval(tank.time);
+            tank.time = setInterval(tank.findPlayer, 50);
+          }
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+        }
+      });
       startX += dx;
       startY = dy(startX);
       if (
@@ -335,17 +357,17 @@ function TankPlayer(
         startX < 0
       ) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       if (final <= 0) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
-      final -= 10;
-      setTimeout(paint, 17);
+      final -= this.speadBullet;
     }
     clonConteiner.addChild(r);
-    setTimeout(paint, 0);
   };
   this.dead = () => {
     clearInterval(this.time);
@@ -358,12 +380,16 @@ function TankPlayer(
     this.checkDead = true;
   };
   this.turn = () => {
-    const musMap = this.arrMap;
-    return musMap.some(
-      (mapI: { x: number; y: number; width: number; height: number }) => {
-        return this.checkWall(mapI);
-      }
-    );
+    let result = false;
+    if (
+      this.musImmortalBlocks.some((mapI: PIXI.Sprite) =>
+        this.checkWall(mapI)
+      ) ||
+      this.musBreakBlocks.some((mapI: PIXI.Sprite) => this.checkWall(mapI))
+    ) {
+      result = true;
+    }
+    return result;
   };
   this.checkWall = (wall2: {
     x: number;
@@ -372,7 +398,7 @@ function TankPlayer(
     height: number;
   }) => {
     let wall = false;
-    const width = wall2.width < this.sprite.width;
+    const width = wall2.width < this.sprite.height;
     const widthSprite = this.sprite.width / 2;
     const heightSprite = this.sprite.height / 2;
     if (this.sprite.rotation % Math.PI === 0) {
@@ -466,7 +492,23 @@ function TankPlayer(
     }
     return wall;
   };
-}
+  this.pause = () => {
+    this.checkPause = true;
+  };
+  this.continue = () => {
+    this.checkPause = false;
+  };
+  this.stopGame = () => {
+    this.checkPause = true;
+    this.arrEvil.forEach((tank: TankUnit) => {
+      tank.stopGame();
+    });
+    clearInterval(this.time);
+    this.arrTimeShut.forEach((time: NodeJS.Timeout) => {
+      clearInterval(time);
+    });
+  };
+};
 
 export default TankPlayer;
 
@@ -481,7 +523,7 @@ function anglee(x1: number, y1: number, x2: number, y2: number) {
 function createNaprv(x: number, y: number, x1: number, y1: number) {
   const b = (y * x1 - y1 * x) / (x1 - x);
   const a = (y1 - b) / x1;
-  return function (n: number) {
+  return function setDirection(n: number) {
     return n * a + b;
   };
 }
@@ -491,7 +533,7 @@ function hitBill(
   x1: number,
   y1: number
 ) {
-  let hit = false;
+  let checkHit = false;
   const angle = r1.rotation;
   if (angle % Math.PI === 0) {
     if (
@@ -500,9 +542,9 @@ function hitBill(
       y1 >= r1.y - r1.height / 2 &&
       y1 <= r1.y + r1.height / 2
     ) {
-      hit = true;
+      checkHit = true;
     } else {
-      hit = false;
+      checkHit = false;
     }
   } else if (angle % Math.PI !== 0) {
     if (
@@ -511,10 +553,10 @@ function hitBill(
       y1 >= r1.y - r1.width / 2 &&
       y1 <= r1.y + r1.width / 2
     ) {
-      hit = true;
+      checkHit = true;
     } else {
-      hit = false;
+      checkHit = false;
     }
   }
-  return hit;
+  return checkHit;
 }

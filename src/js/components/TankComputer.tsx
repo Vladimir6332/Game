@@ -1,18 +1,22 @@
 import * as PIXI from 'pixi.js-legacy';
+import { TankUnit } from '../custom_typings/Tanks.d';
 
-function TankComputer(
+const TankComputer = function TankComputer(
   this: any,
   x: number,
   y: number,
   gan: string,
   aim: number,
   timeCallDown: number,
+  speadBullet: number,
+  damage: number,
   appWidth: number,
   appHeigth: number,
-  conteiner: any,
-  player: any,
-  map: Array<{ arr: any }>
-) {
+  conteiner: PIXI.Container,
+  player: TankUnit,
+  musImmortalBlocks: Array<PIXI.Sprite>,
+  musBreakBlocks: Array<PIXI.Sprite>
+): void {
   this.x = x;
   this.y = y;
   this.sprite = new PIXI.Sprite(
@@ -24,9 +28,11 @@ function TankComputer(
     .slice(0, gan.split('/').length - 1)
     .join('/')}/bullet.png`;
   this.healthRender = new PIXI.Graphics();
-  this.health = 600;
-  this.fullHealth = 600;
+  this.health = 200;
+  this.fullHealth = 200;
   this.aim = aim;
+  this.speadBullet = speadBullet;
+  this.damage = damage;
   this.angleX = 0;
   this.angleY = 0;
   this.callDown = false;
@@ -44,8 +50,10 @@ function TankComputer(
   this.check = false;
   this.time = 0;
   this.timeRender = 0;
-  this.map = map;
+  this.musBreakBlocks = musBreakBlocks;
+  this.musImmortalBlocks = musImmortalBlocks;
   this.taran = false;
+  this.arrTimeShut = [];
 
   this.init = () => {
     this.renderStart();
@@ -131,19 +139,52 @@ function TankComputer(
     this.healthRender.endFill();
   };
   this.moveTank = () => {
-    if (this.checkFind) return;
+    if (this.checkFind || this.player.checkPause) return;
+    const step = 3;
     if (this.sprite.rotation === 0) {
-      this.sprite.x += 5;
-      this.gan.x += 5;
+      this.sprite.x += step;
+      this.gan.x += step;
+      if (this.turn()) {
+        this.sprite.x -= step;
+        this.gan.x -= step;
+        this.sprite.y += step;
+        this.gan.y += step;
+        this.sprite.rotation = Math.PI / 2;
+        this.gan.rotation = Math.PI / 2;
+      }
     } else if (this.sprite.rotation === Math.PI) {
-      this.sprite.x -= 5;
-      this.gan.x -= 5;
+      this.sprite.x -= step;
+      this.gan.x -= step;
+      if (this.turn()) {
+        this.sprite.x += step;
+        this.gan.x += step;
+        this.sprite.y -= step;
+        this.gan.y -= step;
+        this.sprite.rotation = (3 * Math.PI) / 2;
+        this.gan.rotation = (3 * Math.PI) / 2;
+      }
     } else if (this.sprite.rotation === (3 * Math.PI) / 2) {
-      this.sprite.y -= 5;
-      this.gan.y -= 5;
+      this.sprite.y -= step;
+      this.gan.y -= step;
+      if (this.turn()) {
+        this.sprite.x += step;
+        this.gan.x += step;
+        this.sprite.y += step;
+        this.gan.y += step;
+        this.sprite.rotation = 0;
+        this.gan.rotation = 0;
+      }
     } else {
-      this.sprite.y += 5;
-      this.gan.y += 5;
+      this.sprite.y += step;
+      this.gan.y += step;
+      if (this.turn()) {
+        this.sprite.x -= step;
+        this.gan.x -= step;
+        this.sprite.y -= step;
+        this.gan.y -= step;
+        this.sprite.rotation = Math.PI;
+        this.gan.rotation = Math.PI;
+      }
     }
     this.count += 1;
     if (this.count === 50) {
@@ -155,7 +196,6 @@ function TankComputer(
         this.gan.rotation = 0;
       }
     }
-    this.turn();
     if (
       checkLenght(this.player.sprite, this.sprite) &&
       !this.player.checkDead
@@ -270,6 +310,7 @@ function TankComputer(
     return hit;
   };
   this.moveGan = () => {
+    if (this.player.checkPause) return;
     this.angleX = this.player.sprite.x;
     this.angleY = this.player.sprite.y;
     this.renderGan();
@@ -279,6 +320,8 @@ function TankComputer(
     this.callDown = true;
     const tankBund = this.player;
     const clonConteiner = this.conteiner;
+    const clonMusBreakBlocks = this.musBreakBlocks;
+    const clonMusImmortalBlocks = this.musImmortalBlocks;
     setTimeout(() => {
       this.callDown = false;
     }, this.timeCallDown);
@@ -286,7 +329,8 @@ function TankComputer(
     const my = this.player.sprite.y;
     const dy = createNaprv(mx, my, this.sprite.x, this.sprite.y);
     const dx =
-      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) * 10;
+      Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
+      this.speadBullet;
     let startX = this.sprite.x + (dx * this.gan.width * 0.7) / 10;
     let startY =
       this.sprite.y -
@@ -301,13 +345,33 @@ function TankComputer(
     r.width = 30;
     r.height *= r.width / width;
     r.rotation = anglee(this.sprite.x, this.sprite.y, mx, my);
+    const timeShut = setInterval(() => paint.call(this), 17);
+    this.arrTimeShut.push(timeShut);
     function paint() {
+      if (tankBund.checkPause) return;
       r.x = startX;
       r.y = startY;
+      clonMusBreakBlocks.forEach((block: PIXI.Sprite, index: number) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(block);
+          clonMusBreakBlocks.splice(index, 1);
+          clonConteiner.removeChild(r);
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+        }
+      });
+      clonMusImmortalBlocks.forEach((block: PIXI.Sprite) => {
+        if (hitBill(block, startX, startY)) {
+          clonConteiner.removeChild(r);
+          clearInterval(timeShut);
+          this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+        }
+      });
       if (hitBill(tankBund.sprite, startX, startY)) {
         clonConteiner.removeChild(r);
-        tankBund.health -= 100;
-        return;
+        tankBund.health -= this.damage;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       startX += dx;
       startY = dy(startX);
@@ -318,20 +382,21 @@ function TankComputer(
         startX < 0
       ) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
       if (final <= 0) {
         clonConteiner.removeChild(r);
-        return;
+        clearInterval(timeShut);
+        this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
       }
-      final -= 10;
-      setTimeout(paint, 17);
+      final -= this.speadBullet;
     }
     clonConteiner.addChild(r);
-    setTimeout(paint, 0);
   };
   this.findPlayer = () => {
-    if (this.checkDead || !this.checkFind) return;
+    if (this.checkDead || !this.checkFind || this.player.checkPause) return;
+    const step = 5;
     if (this.player.checkDead) {
       this.checkFind = false;
       clearInterval(this.time);
@@ -348,62 +413,62 @@ function TankComputer(
     }
     if (this.naprv) {
       if (dx > 0) {
-        this.sprite.x += 7;
+        this.sprite.x += step;
         this.sprite.rotation = 0;
-        this.gan.x += 7;
+        this.gan.x += step;
         this.gan.rotation = 0;
-        if (this.turnFind()) {
-          this.sprite.y += 7;
-          this.sprite.x -= 7;
+        if (this.turn()) {
+          this.sprite.y += step;
+          this.sprite.x -= step;
           this.sprite.rotation = Math.PI / 2;
-          this.gan.y += 7;
-          this.gan.x -= 7;
+          this.gan.y += step;
+          this.gan.x -= step;
           this.gan.rotation = Math.PI / 2;
         }
       } else {
-        this.sprite.x -= 7;
+        this.sprite.x -= step;
         this.sprite.rotation = Math.PI;
-        this.gan.x -= 7;
+        this.gan.x -= step;
         this.gan.rotation = Math.PI;
-        if (this.turnFind()) {
-          this.sprite.y -= 7;
-          this.sprite.x += 7;
+        if (this.turn()) {
+          this.sprite.y -= step;
+          this.sprite.x += step;
           this.sprite.rotation = (Math.PI * 3) / 2;
-          this.gan.y -= 7;
-          this.gan.x += 7;
+          this.gan.y -= step;
+          this.gan.x += step;
           this.gan.rotation = (Math.PI * 3) / 2;
         }
       }
     } else if (!this.naprv) {
       if (dy > 0) {
-        this.sprite.y += 7;
+        this.sprite.y += step;
         this.sprite.rotation = Math.PI / 2;
-        this.gan.y += 7;
+        this.gan.y += step;
         this.gan.rotation = Math.PI / 2;
-        if (this.turnFind()) {
-          this.sprite.y -= 7;
-          this.sprite.x -= 7;
+        if (this.turn()) {
+          this.sprite.y -= step;
+          this.sprite.x -= step;
           this.sprite.rotation = Math.PI;
-          this.gan.y -= 7;
-          this.gan.x -= 7;
+          this.gan.y -= step;
+          this.gan.x -= step;
           this.gan.rotation = Math.PI;
         }
       } else {
-        this.sprite.y -= 7;
+        this.sprite.y -= step;
         this.sprite.rotation = (Math.PI * 3) / 2;
-        this.gan.y -= 7;
+        this.gan.y -= step;
         this.gan.rotation = (Math.PI * 3) / 2;
-        if (this.turnFind()) {
-          this.sprite.y += 7;
-          this.sprite.x += 7;
+        if (this.turn()) {
+          this.sprite.y += step;
+          this.sprite.x += step;
           this.sprite.rotation = 0;
-          this.gan.y += 7;
-          this.gan.x += 7;
+          this.gan.y += step;
+          this.gan.x += step;
           this.gan.rotation = 0;
         }
       }
     }
-    this.stepBad -= 7;
+    this.stepBad -= step;
     if (this.batter(this.player.sprite) && !this.taran) {
       this.health -= 300;
       this.player.health -= 300;
@@ -413,10 +478,12 @@ function TankComputer(
     this.shut();
   };
   this.dead = () => {
+    const { arrEvil } = this.player;
     this.conteiner.removeChild(this.sprite, this.gan, this.healthRender);
     this.checkDead = true;
     clearInterval(this.time);
     clearInterval(this.timeRender);
+    arrEvil.splice(arrEvil.indexOf(this), 1);
   };
   this.checkWall = (wall2: {
     x: number;
@@ -425,7 +492,7 @@ function TankComputer(
     height: number;
   }) => {
     let wall = false;
-    const width = wall2.width < this.sprite.width;
+    const width = wall2.width < this.sprite.height;
     const widthSprite = this.sprite.width / 2;
     const heightSprite = this.sprite.height / 2;
     if (this.sprite.rotation % Math.PI === 0) {
@@ -536,29 +603,21 @@ function TankComputer(
     return wall;
   };
   this.turn = () => {
-    const musMap = this.map;
-    musMap.forEach(
-      (mapI: { x: number; y: number; width: number; height: number }) => {
-        if (this.checkWall(mapI)) {
-          this.sprite.rotation += Math.PI / 2;
-          this.gan.rotation = this.sprite.rotation;
-          if (this.sprite.rotation === Math.PI * 2) {
-            this.sprite.rotation = 0;
-            this.gan.rotation = 0;
-          }
-        }
-      }
-    );
-  };
-  this.turnFind = () => {
-    const musMap = this.map;
+    const musMap = [...this.musBreakBlocks, ...this.musImmortalBlocks];
     return musMap.some(
       (mapI: { x: number; y: number; width: number; height: number }) => {
         return this.checkWall(mapI);
       }
     );
   };
-}
+  this.stopGame = () => {
+    clearInterval(this.timeRender);
+    clearInterval(this.time);
+    this.arrTimeShut.forEach((time: NodeJS.Timeout) => {
+      clearInterval(time);
+    });
+  };
+};
 
 export default TankComputer;
 
@@ -573,7 +632,7 @@ function anglee(x1: number, y1: number, x2: number, y2: number) {
 function createNaprv(x: number, y: number, x1: number, y1: number) {
   const b = (y * x1 - y1 * x) / (x1 - x);
   const a = (y1 - b) / x1;
-  return function (n: number) {
+  return function setDirection(n: number) {
     return n * a + b;
   };
 }
@@ -615,5 +674,5 @@ function checkLenght(
   tank: { x: number; y: number },
   tank2: { x: number; y: number }
 ) {
-  return Math.sqrt((tank.x - tank2.x) ** 2 + (tank.y - tank2.y) ** 2) < 400;
+  return Math.sqrt((tank.x - tank2.x) ** 2 + (tank.y - tank2.y) ** 2) < 200;
 }

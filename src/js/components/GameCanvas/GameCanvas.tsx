@@ -1,16 +1,42 @@
 import React from 'react';
-import PixiApp from '../Proba';
+import GameApp from '../Proba';
 
-const GameCanvas: React.FC = () => {
+interface Props {
+  startOptions: PlayOptions | null;
+  isNewGame: boolean;
+  setNewGame(isNewGame: boolean): void;
+}
+
+let game = new GameApp();
+const GameCanvas: React.FC<Props> = ({
+  startOptions,
+  isNewGame,
+  setNewGame,
+}: Props) => {
   const canvasRef = React.createRef<HTMLDivElement>();
-  const app = PixiApp;
 
   React.useEffect(() => {
-    canvasRef.current.appendChild(app.view);
+    if (isNewGame) {
+      game.stop();
+      game.pixi.stop();
+      canvasRef.current.removeChild(game.pixi.view);
+      game.pixi.stage.destroy({ children: true });
+      console.log(game.pixi.stage);
+      game = new GameApp();
+      canvasRef.current.appendChild(game.pixi.view);
+      game.start();
+      setNewGame(false);
+    }
+  }, [isNewGame]);
+
+  React.useEffect(() => {
+    canvasRef.current.appendChild(game.pixi.view);
+    game.init(startOptions);
+
     return () => {
-      app.stop();
+      console.log('appINIT');
     };
-  });
+  }, []);
   return (
     <div className="game-canvas">
       <div ref={canvasRef} />
