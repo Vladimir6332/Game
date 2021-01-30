@@ -11,3 +11,7 @@ declare interface Logs {
   message: number;
   id?: string;
 }
+
+declare interface PropsNotCorrect {
+  type: 'login' | 'signUp' | 'reset';
+}
