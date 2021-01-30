@@ -25,7 +25,7 @@ const Weapons: React.FC<PropsType> = (props) => {
       <Weapon
         key={item.id}
         callback={setProperties}
-        path={item.path}
+        path={item.path2}
         name={item.name}
         points={item.points}
         setMinusPoints={setMinusPoints}
