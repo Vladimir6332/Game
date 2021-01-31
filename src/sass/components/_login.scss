@@ -1,3 +1,9 @@
+@keyframes popUpNotCorrect {
+  0% {top: 0%}
+  90% {top: 52%}
+  100%{top: 50%}
+}
+
 .login {
   display: flex;
   flex-direction: column;
@@ -128,4 +134,16 @@
   margin: 0 1rem;
   background-image: url('../assets/images/google.svg');
   background-size: contain;
+}
+
+.notCorrect {
+  position: absolute;
+  animation: popUpNotCorrect .5s;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  padding: 15px;
+  text-align: center;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: darken($color: $color-background1, $amount: 5%);
 }

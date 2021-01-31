@@ -4,6 +4,7 @@ import { GoogleLoginButton } from 'ts-react-google-login-component';
 import LoginTabs from './LoginTabs';
 import FormLogin from './FormLogin';
 import Button from '../../utils/Button';
+import NotCorrect from './notCorrect';
 
 interface Props {
   onLogin: (profile: ProfileOfUser) => void;
@@ -16,6 +17,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     setCurrentUserProfile,
   ] = useState<ProfileOfUser | null>(null);
   const [continueDisabled, setContinueDisabled] = useState<boolean>(true);
+  const [isNotCorrect, setNotCorrect] = useState<boolean>(false);
 
   const history = useHistory();
 
@@ -35,7 +37,15 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
       body: JSON.stringify(data),
     });
     const userProfile = await res.json();
-    setProfileOfUser(userProfile);
+    if (userProfile.status === false) {
+      setNotCorrect(true);
+      setTimeout(() => {
+        setNotCorrect(false);
+      }, 2000);
+    } else {
+      if (isNotCorrect) setNotCorrect(false);
+      setProfileOfUser(userProfile);
+    }
   };
 
   const continueHandler = () => {
@@ -84,7 +94,18 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
       setContinueDisabled(false);
     } else setContinueDisabled(true);
   };
-
+  const getCurrentEnter = (): 'login' | 'signUp' | 'reset' => {
+    const currentType = document.querySelector('.active').id;
+    let result: 'login' | 'signUp' | 'reset';
+    if (currentType === 'login') {
+      result = 'login';
+    } else if (currentType === 'reset') {
+      result = 'reset';
+    } else {
+      result = 'signUp';
+    }
+    return result;
+  };
   const clientConfig = {
     client_id:
       '666292902237-cd5e1ic284vkroaaunh467jerkra7fn4.apps.googleusercontent.com',
@@ -105,6 +126,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
   const signInOptions = { scope: 'profile' };
   return (
     <div className="login">
+      {isNotCorrect ? <NotCorrect type={getCurrentEnter()} /> : ''}
       <LoginTabs setType={setType} disabled={continueDisabled} />
       <div className="login-form-container">
         <h2 className="login__title">{getTitle(type)}</h2>
