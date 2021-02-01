@@ -4,6 +4,8 @@ declare interface LogsProp {
     message: number;
     id?: string;
   };
+  isNewGame: boolean;
+  isEsc: boolean;
 }
 
 declare interface Logs {

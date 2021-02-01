@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js-legacy';
-import { TankUnit } from '../custom_typings/Tanks.d';
+import { GameConfig, Statistics, TankUnit } from '../custom_typings/Tanks.d';
 
 const TankComputer = function TankComputer(
   this: any,
@@ -15,7 +15,9 @@ const TankComputer = function TankComputer(
   conteiner: PIXI.Container,
   player: TankUnit,
   musImmortalBlocks: Array<PIXI.Sprite>,
-  musBreakBlocks: Array<PIXI.Sprite>
+  musBreakBlocks: Array<PIXI.Sprite>,
+  config: GameConfig,
+  statisticsService: Statistics
 ): void {
   this.x = x;
   this.y = y;
@@ -54,6 +56,8 @@ const TankComputer = function TankComputer(
   this.musImmortalBlocks = musImmortalBlocks;
   this.taran = false;
   this.arrTimeShut = [];
+  this.config = config;
+  this.statisticsService = config.statisticsService;
 
   this.init = () => {
     this.renderStart();
@@ -379,6 +383,11 @@ const TankComputer = function TankComputer(
         tankBund.health -= this.damage;
         clearInterval(timeShut);
         this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+
+        this.config.setLog({
+          typeMessage: 'damage enemy',
+          message: this.damage,
+        });
       }
       startX += dx;
       startY = dy(startX);
@@ -477,8 +486,10 @@ const TankComputer = function TankComputer(
     }
     this.stepBad -= step;
     if (this.batter(this.player.sprite) && !this.taran) {
-      this.health -= 300;
-      this.player.health -= 300;
+      this.health -= 100;
+      this.player.health -= 100;
+      config.setLog({ typeMessage: 'damage enemy', message: 100 });
+      config.setLog({ typeMessage: 'damage me', message: 100 });
     }
     this.moveGan();
     this.renderGan();
@@ -491,6 +502,10 @@ const TankComputer = function TankComputer(
     clearInterval(this.time);
     clearInterval(this.timeRender);
     arrEvil.splice(arrEvil.indexOf(this), 1);
+    config.setLog({ typeMessage: 'death enemy', message: 0 });
+    const currentKills = this.statisticsService.statistics.kills + 1;
+    this.statisticsService.updateKills(currentKills);
+    this.statisticsService.send();
   };
   this.checkWall = (wall2: {
     x: number;

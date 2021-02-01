@@ -14,8 +14,29 @@ declare interface TankPl {
     conteiner: PIXI.Container,
     evil: Array<TankUnit>,
     musImmortalBlocks: Array<PIXI.Sprite>,
-    musBreakBlocks: Array<PIXI.Sprite>
+    musBreakBlocks: Array<PIXI.Sprite>,
+    config: GameConfig
   ): void;
+}
+
+interface LogMessage {
+  typeMessage: string;
+  message: number;
+}
+interface Statistics {
+  statistics: ProfileOfUser | null;
+  init(userProfile: ProfileOfUser): void;
+  updateKills(value: number): void;
+  updateDeaths(value: number): void;
+  updateShots(): void;
+  updateAccurateShots(): void;
+  send(): void;
+}
+
+interface GameConfig {
+  setLog(message: LogMessage): void;
+  startOptions: PlayOptions | null;
+  statisticsService: Statistics;
 }
 
 declare interface TankUnit {

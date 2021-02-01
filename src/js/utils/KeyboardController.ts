@@ -39,13 +39,20 @@ export default class KeyboardController {
 
   // Cancel timeout and mark key as released on keyup
   //
-  keyUp = function keyUpController(event: KeyboardEvent): void {
+  keyUp(event: KeyboardEvent): void {
     const key = event.code;
     if (key in this.timers) {
       if (this.timers[key] !== null) clearInterval(this.timers[key]);
       delete this.timers[key];
     }
-  };
+  }
+
+  clear(): void {
+    Object.keys(this.timers).forEach((key) => {
+      if (this.timers[key] !== null) clearInterval(this.timers[key]);
+      delete this.timers[key];
+    });
+  }
 
   // When window is unfocused we may not get key events. To prevent this
   // causing a key to 'get stuck down', cancel all held keys

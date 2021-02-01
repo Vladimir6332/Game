@@ -3,6 +3,8 @@ declare interface ProfileOfUser {
   deaths: number;
   lastVisit: Date;
   accuracy: number;
+  shots: number;
+  accurateShots: number;
   nickName: string;
   timeInGame: number;
   id: string;

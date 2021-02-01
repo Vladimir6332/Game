@@ -1,10 +1,18 @@
 import React from 'react';
 import getCurrentLog from '../../servise/menu_logs_getCurrentLog';
 
-const logs: Array<Logs> = [];
-const GameLogs: React.FC<LogsProp> = ({ log }: LogsProp) => {
+let logs: Array<Logs> = [];
+const GameLogs: React.FC<LogsProp> = ({ log, isNewGame, isEsc }: LogsProp) => {
   const copy = log;
-  if (logs[logs.length - 1] !== log && log.typeMessage !== 'null') {
+
+  if (isNewGame || isEsc) logs = [];
+  console.log('LOGS', logs);
+  if (
+    logs[logs.length - 1] !== log &&
+    log.typeMessage !== 'null' &&
+    !isNewGame &&
+    !isEsc
+  ) {
     copy.id = `${Math.random() + log.message}`;
     if (logs.length === 4) logs.shift();
     logs.push(copy);
