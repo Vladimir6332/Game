@@ -36,7 +36,7 @@ const Garage: React.FC<PropertyIndex> = (props: PropertyIndex) => {
       damage: 10,
       speedBullet: 2,
       speedGun: 5,
-      range: 15,
+      range: 55,
       countBullets: 10,
     },
   });

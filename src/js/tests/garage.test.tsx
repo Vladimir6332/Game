@@ -15,6 +15,8 @@ describe('Garage', () => {
     nickName: 'Sulti',
     timeInGame: 3502532,
     id: '2423',
+    shots: 10,
+    accurateShots: 3,
   };
   const startTrigger = () => {
     console.log('works');

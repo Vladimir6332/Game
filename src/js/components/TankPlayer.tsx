@@ -15,7 +15,8 @@ const TankPlayer: TankPl = function TankPlayer(
   conteiner,
   evil,
   musImmortalBlocks,
-  musBreakBlocks
+  musBreakBlocks,
+  config
 ): void {
   this.x = x;
   this.y = y;
@@ -49,6 +50,7 @@ const TankPlayer: TankPl = function TankPlayer(
   this.musImmortalBlocks = musImmortalBlocks;
   this.checkPause = false;
   this.arrTimeShut = [];
+  this.config = config;
 
   this.init = () => {
     this.renderStart();
@@ -315,7 +317,7 @@ const TankPlayer: TankPl = function TankPlayer(
     const timeShut = setInterval(() => paint.call(this), 17);
     this.arrTimeShut.push(timeShut);
     function paint() {
-      if (clonArrEvil[0].player.checkPause) return;
+      if (clonArrEvil[0]?.player.checkPause) return;
       r.x = startX;
       r.y = startY;
       clonMusBreakBlocks.forEach((block: PIXI.Sprite, index: number) => {
@@ -346,6 +348,12 @@ const TankPlayer: TankPl = function TankPlayer(
           }
           clearInterval(timeShut);
           this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+
+          this.config.setLog({
+            typeMessage: 'damage me',
+            message: this.damage,
+          });
+          this.config.statisticsService.updateAccurateShots();
         }
       });
       startX += dx;
@@ -378,6 +386,12 @@ const TankPlayer: TankPl = function TankPlayer(
       this.healthRender
     );
     this.checkDead = true;
+
+    config.setLog({ typeMessage: 'death me', message: 0 });
+    const currentStatKills =
+      this.config.statisticsService.statistics.deaths + 1;
+    this.config.statisticsService.updateDeaths(currentStatKills);
+    this.config.statisticsService.send();
   };
   this.turn = () => {
     let result = false;

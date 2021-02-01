@@ -31,13 +31,12 @@ import imgImmortal2 from '../../assets/images/blocks/immortal2.png';
 import TankPlayer from './TankPlayer';
 import TankComputer from './TankComputer';
 import KeyboardController from '../utils/KeyboardController';
-import { TankUnit } from '../custom_typings/Tanks.d';
+import { GameConfig, TankUnit } from '../custom_typings/Tanks.d';
 
 // const pixi = new PIXI.Application({ backgroundColor: 0xffffff });
 interface Start {
   (): void;
 }
-
 interface Game {
   options: PlayOptions | null;
   pixi: PIXI.Application;
@@ -47,7 +46,9 @@ interface Game {
   start(): void;
   stop(): void;
   loadAssets(startCallback: Start): void;
+  keyboardController: KeyboardController;
 }
+
 class GameApp implements Game {
   options: PlayOptions | null;
 
@@ -57,8 +58,13 @@ class GameApp implements Game {
 
   wall: boolean;
 
-  constructor() {
-    this.options = null;
+  config: GameConfig;
+
+  keyboardController: KeyboardController;
+
+  constructor(gameConfig: GameConfig) {
+    this.options = gameConfig.startOptions;
+    this.config = gameConfig;
     this.pixi = new PIXI.Application({ backgroundColor: 0xffffff });
   }
 
@@ -122,6 +128,7 @@ class GameApp implements Game {
   }
 
   start(): void {
+    console.log(this.options);
     const reelContainer = new PIXI.Container();
     const musTankBad: TankUnit[] = [];
     const map = new PIXI.Sprite(
@@ -135,17 +142,18 @@ class GameApp implements Game {
     this.tank = new (TankPlayer as any)(
       0,
       this.pixi.screen.height / 2,
-      'assets/images/brown/sniper/sniper.png', // название пушки
-      400, // дальность пушки x * 4
-      500, // время перезорядки 5000 / x
-      20, // скорость пули x * 2.5
-      95, // урон
+      `assets/images/brown/${this.options.str}/${this.options.str}.png`, // название пушки
+      this.options.options.range * 4, // дальность пушки x * 4
+      5000 / this.options.options.speedGun, // время перезорядки 5000 / x
+      this.options.options.speedBullet * 2.5, // скорость пули x * 2.5
+      this.options.options.damage, // урон
       this.pixi.screen.width,
       this.pixi.screen.height,
       reelContainer,
       musTankBad,
       musImmortalBlocks,
-      musBreakBlocks
+      musBreakBlocks,
+      this.config
     );
 
     const arrGanBad = [
@@ -214,7 +222,8 @@ class GameApp implements Game {
         reelContainer,
         this.tank,
         musImmortalBlocks,
-        musBreakBlocks
+        musBreakBlocks,
+        this.config
       );
       musTankBad.push(tankBad);
     }
@@ -267,7 +276,7 @@ class GameApp implements Game {
       this.tank.moveGan(e.offsetX, e.offsetY);
     });
 
-    const keyboardController = new KeyboardController(
+    this.keyboardController = new KeyboardController(
       {
         KeyW: () => {
           this.tank.moveTank('KeyW');
@@ -287,18 +296,20 @@ class GameApp implements Game {
 
     window.addEventListener('keydown', (e) => {
       if (this.tank.checkPause) return;
-      keyboardController.keyDown(e);
+      this.keyboardController.keyDown(e);
       // this.tank.moveTank(e.code);
     });
     window.addEventListener('keyup', (e) => {
       if (this.tank.checkPause) return;
-      keyboardController.keyUp(e);
+      this.keyboardController.keyUp(e);
       // this.tank.moveTank(e.code);
     });
 
     this.pixi.view.addEventListener('click', (e) => {
       if (this.tank.checkPause) return;
       this.tank.shut(e.offsetX, e.offsetY);
+      this.config.statisticsService.updateShots();
+      console.log(this.config.statisticsService.statistics);
     });
 
     reelContainer.addChild(
@@ -318,10 +329,12 @@ class GameApp implements Game {
 
   stop(): void {
     this.tank.stopGame();
+    this.keyboardController.clear();
   }
 
   pause(): void {
     if (this.tank) this.tank.pause();
+    this.keyboardController.clear();
   }
 
   continue(): void {

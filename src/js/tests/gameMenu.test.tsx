@@ -18,8 +18,20 @@ describe('Game menu', () => {
       cost: 10,
     },
   };
+
+  const userProfile = {
+    kills: 0,
+    deaths: 0,
+    lastVisit: new Date(),
+    accuracy: 0,
+    nickName: 'Player',
+    timeInGame: 0,
+    id: 'id',
+    shots: 10,
+    accurateShots: 3,
+  };
   beforeEach(() => {
-    render(<GameMenu startOptions={startOptions} />);
+    render(<GameMenu startOptions={startOptions} userProfile={userProfile} />);
   });
   it('Game Menu should be', () => {
     const weaponLi = document.querySelector('.game');

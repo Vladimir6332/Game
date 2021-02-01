@@ -1,34 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GameCanvas from '../GameCanvas/GameCanvas';
 import GameWeapons from '../GameWeapon/GameWeapons';
 import GameLogs from '../GameLogs/GameLogs';
 import GameMenu from '../GameMenu/GameMenu';
 import Pause from '../Pause/Pause';
+import StatisticsService from '../../servise/StatisticsService';
 
 interface Props {
   startOptions: PlayOptions | null;
+  userProfile: ProfileOfUser;
 }
-
-const Game: React.FC<Props> = ({ startOptions }: Props) => {
+const statService = new StatisticsService(null);
+const Game: React.FC<Props> = ({ startOptions, userProfile }: Props) => {
   const [isPause, setPause] = useState(false);
   const [isEsc, setEsc] = useState(false);
   const [isNewGame, setNewGame] = useState(false);
 
-  const [log, setLog] = useState({ typeMessage: 'null', message: 50 });
-  console.log(setLog);
-  console.log(isPause);
-  console.log(isEsc);
-  console.log(isNewGame);
+  const [log, setLog] = useState({ typeMessage: 'null', message: 0 });
+
+  useEffect(() => {
+    statService.init(userProfile);
+  }, []);
+
+  useEffect(() => {
+    if (isNewGame || isEsc) {
+      console.log('CLEARLOG');
+      setLog({ typeMessage: 'null', message: 0 });
+    }
+    if (isEsc) setEsc(false);
+  }, [isNewGame, isEsc]);
+
   return (
     <section className="game">
       {isPause ? <Pause setPause={setPause} /> : ''}
       <div className="game__view">
         <GameCanvas
+          userProfile={userProfile}
           startOptions={startOptions}
           isNewGame={isNewGame}
           isPause={isPause}
           isEsc={isEsc}
           setNewGame={setNewGame}
+          setLog={setLog}
+          statisticsService={statService}
         />
       </div>
       <div className="game__control">
@@ -36,7 +50,7 @@ const Game: React.FC<Props> = ({ startOptions }: Props) => {
           <GameWeapons startOptions={startOptions} />
         </div>
         <div className="game__logs">
-          <GameLogs log={log} />
+          <GameLogs log={log} isNewGame={isNewGame} isEsc={isEsc} />
         </div>
         <div className="game__menu">
           <GameMenu
