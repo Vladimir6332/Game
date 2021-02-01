@@ -342,12 +342,13 @@ const TankComputer = function TankComputer(
     const dx =
       Math.sin(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
       this.speadBullet;
-    let startX = this.sprite.x + (dx * this.gan.width * 0.7) / 10;
+    let startX =
+      this.sprite.x + (dx * this.gan.width * 0.647) / this.speadBullet;
     let startY =
       this.sprite.y -
       Math.cos(anglee(this.sprite.x, this.sprite.y, mx, my) + Math.PI / 2) *
         this.gan.width *
-        0.7;
+        0.647;
     const r = new PIXI.Sprite(PIXI.Texture.from(this.bullet));
     let final = this.aim - this.gan.width * 0.7;
     r.pivot.x = r.width / 2;
