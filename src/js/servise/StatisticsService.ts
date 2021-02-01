@@ -47,7 +47,7 @@ export default class StatisticsService implements Statistics {
     console.log('SEND STAT', this.statistics);
 
     const data = { ...this.statistics };
-    const url = `http://localhost:3000/statistics`;
+    const url = `https://rs-clone-wars-be.herokuapp.com/statistics`;
     const res = await fetch(url, {
       method: 'POST',
       mode: 'cors',
