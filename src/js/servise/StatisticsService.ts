@@ -59,4 +59,11 @@ export default class StatisticsService implements Statistics {
     const userProfile = await res.json();
     console.log('res STAT', userProfile);
   }
+
+  destroy(): ProfileOfUser {
+    this.timer.stop();
+    this.statistics.timeInGame = this.timer.getTime();
+    this.send();
+    return this.statistics;
+  }
 }

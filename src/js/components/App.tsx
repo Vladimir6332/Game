@@ -54,7 +54,11 @@ const App: React.FC = () => {
           />
           <Route
             render={() => (
-              <Game startOptions={playOptions} userProfile={currentProfile} />
+              <Game
+                startOptions={playOptions}
+                userProfile={currentProfile}
+                profileUpdater={setCurrentProfile}
+              />
             )}
             path="/play"
           />

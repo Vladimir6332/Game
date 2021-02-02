@@ -4,7 +4,7 @@ import { GoogleLoginButton } from 'ts-react-google-login-component';
 import LoginTabs from './LoginTabs';
 import FormLogin from './FormLogin';
 import Button from '../../utils/Button';
-import NotCorrect from './NotCorrect';
+import NotCorrect from './notCorrect';
 import Rotate from './Rotate';
 
 interface Props {
@@ -19,10 +19,12 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
   ] = useState<ProfileOfUser | null>(null);
   const [continueDisabled, setContinueDisabled] = useState<boolean>(true);
   const [isNotCorrect, setNotCorrect] = useState<boolean>(false);
+  const [isRequestHandling, setRequestHandling] = useState<boolean>(false);
 
   const history = useHistory();
 
   const submitHandler = async () => {
+    setRequestHandling(true);
     const userName = (document.getElementById('username') as HTMLInputElement)
       .value;
     const password = (document.getElementById('password') as HTMLInputElement)
@@ -47,6 +49,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
       if (isNotCorrect) setNotCorrect(false);
       setProfileOfUser(userProfile);
     }
+    setRequestHandling(false);
   };
 
   const continueHandler = () => {
@@ -64,6 +67,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
     url: string,
     propToken: { token: string }
   ) => {
+    setRequestHandling(true);
     const res = await fetch(url, {
       method: 'POST',
       mode: 'cors',
@@ -73,6 +77,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
       body: JSON.stringify(propToken),
     });
     const userProfile = await res.json();
+    setRequestHandling(false);
     return userProfile;
   };
 
@@ -127,8 +132,9 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
   const signInOptions = { scope: 'profile' };
   return (
     <div className="login">
-      {isNotCorrect ? <NotCorrect type={getCurrentEnter()} /> : ''}
-      <Rotate />
+      {isNotCorrect ? <NotCorrect type={getCurrentEnter()} /> : null}
+      {isRequestHandling ? <Rotate /> : null}
+
       <LoginTabs setType={setType} disabled={continueDisabled} />
       <div className="login-form-container">
         <h2 className="login__title">{getTitle(type)}</h2>

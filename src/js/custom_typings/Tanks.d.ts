@@ -31,6 +31,7 @@ interface Statistics {
   updateShots(): void;
   updateAccurateShots(): void;
   send(): void;
+  destroy(): ProfileOfUser;
 }
 
 interface GameConfig {

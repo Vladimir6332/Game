@@ -31,7 +31,13 @@ describe('Game menu', () => {
     accurateShots: 3,
   };
   beforeEach(() => {
-    render(<GameMenu startOptions={startOptions} userProfile={userProfile} />);
+    render(
+      <GameMenu
+        startOptions={startOptions}
+        userProfile={userProfile}
+        profileUpdater={() => userProfile}
+      />
+    );
   });
   it('Game Menu should be', () => {
     const weaponLi = document.querySelector('.game');

@@ -9,9 +9,14 @@ import StatisticsService from '../../servise/StatisticsService';
 interface Props {
   startOptions: PlayOptions | null;
   userProfile: ProfileOfUser;
+  profileUpdater: (profile: ProfileOfUser) => void;
 }
 const statService = new StatisticsService(null);
-const Game: React.FC<Props> = ({ startOptions, userProfile }: Props) => {
+const Game: React.FC<Props> = ({
+  startOptions,
+  userProfile,
+  profileUpdater,
+}: Props) => {
   const [isPause, setPause] = useState(false);
   const [isEsc, setEsc] = useState(false);
   const [isNewGame, setNewGame] = useState(false);
@@ -20,6 +25,12 @@ const Game: React.FC<Props> = ({ startOptions, userProfile }: Props) => {
 
   useEffect(() => {
     statService.init(userProfile);
+    return () => {
+      const statistics = statService.destroy();
+      const updatedProfile = { ...statistics };
+
+      profileUpdater(updatedProfile);
+    };
   }, []);
 
   useEffect(() => {

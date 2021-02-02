@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Statistics } from '../../custom_typings/Tanks.d';
 import GameApp from '../Proba';
@@ -37,7 +37,7 @@ const GameCanvas: React.FC<Props> = ({
     statisticsService,
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('1');
     game = new GameApp(gameConfig);
     canvasRef.current.appendChild(game.pixi.view);
@@ -48,7 +48,7 @@ const GameCanvas: React.FC<Props> = ({
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('2');
     if (isNewGame) {
       game.stop();
@@ -62,7 +62,7 @@ const GameCanvas: React.FC<Props> = ({
     }
   }, [isNewGame]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('PAUSE');
     console.log(gameConfig.statisticsService.statistics);
     if (isPause) {
@@ -74,7 +74,7 @@ const GameCanvas: React.FC<Props> = ({
     }
   }, [isPause]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isEsc) {
       game.stop();
       game.pixi.stop();
