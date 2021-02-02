@@ -6,6 +6,11 @@ import { cleanup, render, fireEvent } from '@testing-library/react';
 import Garage from '../components/garage';
 
 afterEach(cleanup);
+jest.mock('react-router-dom', () => ({
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
+}));
 describe('Garage', () => {
   const statisticsPerson: ProfileOfUser = {
     kills: 10,
@@ -68,7 +73,7 @@ describe('Garage', () => {
         ALL_POINTS={-10}
       />
     );
-    fireEvent.click(document.querySelector('.garage__button'));
+    fireEvent.click(document.querySelectorAll('.garage__button')[1]);
     const windowPoints = document.querySelector('.noPoints');
     expect(windowPoints).toBeInTheDocument();
   });
