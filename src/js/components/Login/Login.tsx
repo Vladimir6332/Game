@@ -4,7 +4,8 @@ import { GoogleLoginButton } from 'ts-react-google-login-component';
 import LoginTabs from './LoginTabs';
 import FormLogin from './FormLogin';
 import Button from '../../utils/Button';
-import NotCorrect from './notCorrect';
+import NotCorrect from './NotCorrect';
+import Rotate from './Rotate';
 
 interface Props {
   onLogin: (profile: ProfileOfUser) => void;
@@ -127,6 +128,7 @@ const Login: React.FC<Props> = ({ onLogin }: Props) => {
   return (
     <div className="login">
       {isNotCorrect ? <NotCorrect type={getCurrentEnter()} /> : ''}
+      <Rotate />
       <LoginTabs setType={setType} disabled={continueDisabled} />
       <div className="login-form-container">
         <h2 className="login__title">{getTitle(type)}</h2>
