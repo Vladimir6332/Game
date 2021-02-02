@@ -53,7 +53,9 @@ const App: React.FC = () => {
             path="/garage"
           />
           <Route
-            render={() => <Game startOptions={playOptions} />}
+            render={() => (
+              <Game startOptions={playOptions} userProfile={currentProfile} />
+            )}
             path="/play"
           />
         </Switch>
