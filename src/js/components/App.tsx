@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route } from 'react-router-dom';
 import Menu from './Menu/Menu';
 import Login from './Login/Login';
 import Garage from './garage';
@@ -33,7 +33,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="app">
         <Switch>
           <Route component={Menu} path="/" exact />
@@ -64,7 +64,7 @@ const App: React.FC = () => {
           />
         </Switch>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
