@@ -7,6 +7,22 @@ import Game from './Game/Game';
 
 const ALL_POINTS = 100;
 // comment
+document.onkeypress = (e: KeyboardEvent) => {
+  if (e.key === 'Enter') {
+    const allButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+      'button'
+    );
+    const currentButton: HTMLButtonElement = Array.from(allButtons).find(
+      (el) => {
+        const buttons = ['Continue', 'Start', 'Play'];
+        return buttons.includes(el.textContent);
+      }
+    );
+    if (currentButton) {
+      currentButton.click();
+    }
+  }
+};
 const App: React.FC = () => {
   const [currentProfile, setCurrentProfile] = useState<ProfileOfUser | null>(
     null
