@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import BackButton from './backButton';
 
 interface propsType {
   callback: (
@@ -64,12 +65,14 @@ const StartButton: React.FC<propsType> = (props) => {
     }
   };
   return (
-    <button type="button" className="garage__button" onClick={start}>
-      Start
-    </button>
+    <div className="garage__buttons">
+      <BackButton />
+      <button type="button" className="garage__button" onClick={start}>
+        Start
+      </button>
+    </div>
   );
 };
-
 StartButton.propTypes = {
   callback: PropTypes.func.isRequired,
   choisedWeapon: PropTypes.string.isRequired,

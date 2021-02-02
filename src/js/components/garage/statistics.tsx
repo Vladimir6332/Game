@@ -31,7 +31,7 @@ const Statistics: React.FC<PropsStatistics> = (props) => {
               <td>{deaths}</td>
             </tr>
             <tr>
-              <td>Hit percentage: </td>
+              <td>Accuracy: </td>
               <td>{`${accuracy}%`}</td>
             </tr>
             <tr>

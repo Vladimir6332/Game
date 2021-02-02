@@ -11,7 +11,7 @@ const Points: React.FC<propsType> = (props) => {
   return (
     <div className="garage__points-wrapper">
       <div className="garage__points">{`Points ${allPoints}`}</div>
-      <h2>{name}</h2>
+      <h2>{`Your nickname: ${name}`}</h2>
     </div>
   );
 };
