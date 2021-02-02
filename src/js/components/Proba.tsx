@@ -358,8 +358,8 @@ class GameApp implements Game {
     }
   ): boolean {
     this.wall = false;
-    const width = wall2.width < r2.height;
-    const widthSprite = r2.width / 2;
+    const width = wall2.height < r2.height;
+    const widthSprite = r2.height / 2;
     const heightSprite = r2.height / 2;
     if (r2.rotation % Math.PI === 0) {
       if (width) {
