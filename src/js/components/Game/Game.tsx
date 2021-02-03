@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
+
 import GameCanvas from '../GameCanvas/GameCanvas';
 import GameWeapons from '../GameWeapon/GameWeapons';
 import GameLogs from '../GameLogs/GameLogs';
 import GameMenu from '../GameMenu/GameMenu';
 import Pause from '../Pause/Pause';
 import StatisticsService from '../../servise/StatisticsService';
+import SoundService from '../../servise/SoundService';
+import SoundControl from '../Menu/SoundControl';
+
+const defaultVolume = +localStorage.getItem('gameVolume');
 
 interface Props {
   startOptions: PlayOptions | null;
@@ -12,6 +17,8 @@ interface Props {
   profileUpdater: (profile: ProfileOfUser) => void;
 }
 const statService = new StatisticsService(null);
+const soundService = new SoundService();
+
 const Game: React.FC<Props> = ({
   startOptions,
   userProfile,
@@ -23,8 +30,24 @@ const Game: React.FC<Props> = ({
 
   const [log, setLog] = useState({ typeMessage: 'null', message: 0 });
 
+  const [volume, setVolume] = useState<number>(
+    defaultVolume === 0 ? 0 : defaultVolume || 0
+  );
+
+  const handleVolume = (newVolume: number): void => {
+    setVolume(newVolume);
+    localStorage.setItem('gameVolume', newVolume.toString());
+    soundService.setVolume(newVolume / 100);
+  };
+
+  useEffect(() => {
+    if (soundService && soundService.audioList)
+      soundService.setVolume(volume / 100);
+  }, [volume]);
+
   useEffect(() => {
     statService.init(userProfile);
+    soundService.init();
     return () => {
       const statistics = statService.destroy();
       const updatedProfile = { ...statistics };
@@ -35,7 +58,6 @@ const Game: React.FC<Props> = ({
 
   useEffect(() => {
     if (isNewGame || isEsc) {
-      console.log('CLEARLOG');
       setLog({ typeMessage: 'null', message: 0 });
     }
     if (isEsc) setEsc(false);
@@ -54,6 +76,7 @@ const Game: React.FC<Props> = ({
           setNewGame={setNewGame}
           setLog={setLog}
           statisticsService={statService}
+          soundService={soundService}
         />
       </div>
       <div className="game__control">
@@ -72,6 +95,7 @@ const Game: React.FC<Props> = ({
           />
         </div>
       </div>
+      <SoundControl onChange={handleVolume} defaultVolume={defaultVolume} />
     </section>
   );
 };

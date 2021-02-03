@@ -384,6 +384,7 @@ const TankComputer = function TankComputer(
         tankBund.health -= this.damage;
         clearInterval(timeShut);
         this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+        this.config.soundService.play('hit');
 
         this.config.setLog({
           typeMessage: 'damage enemy',
@@ -489,6 +490,7 @@ const TankComputer = function TankComputer(
     if (this.batter(this.player.sprite) && !this.taran) {
       this.health -= 100;
       this.player.health -= 100;
+      this.config.soundService.play('explosion');
       config.setLog({ typeMessage: 'damage enemy', message: 100 });
       config.setLog({ typeMessage: 'damage me', message: 100 });
     }
@@ -503,6 +505,7 @@ const TankComputer = function TankComputer(
     clearInterval(this.time);
     clearInterval(this.timeRender);
     arrEvil.splice(arrEvil.indexOf(this), 1);
+    this.config.soundService.play('explosion');
     config.setLog({ typeMessage: 'death enemy', message: 0 });
     const currentKills = this.statisticsService.statistics.kills + 1;
     this.statisticsService.updateKills(currentKills);

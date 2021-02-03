@@ -6,7 +6,7 @@ const GameLogs: React.FC<LogsProp> = ({ log, isNewGame, isEsc }: LogsProp) => {
   const copy = log;
 
   if (isNewGame || isEsc) logs = [];
-  console.log('LOGS', logs);
+
   if (
     logs[logs.length - 1] !== log &&
     log.typeMessage !== 'null' &&

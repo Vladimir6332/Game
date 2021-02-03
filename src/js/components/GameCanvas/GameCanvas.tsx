@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Statistics } from '../../custom_typings/Tanks.d';
 import GameApp from '../Proba';
+import Rotate from '../Login/Rotate';
 
 interface LogMessage {
   typeMessage: string;
@@ -16,6 +17,7 @@ interface Props {
   setNewGame(isNewGame: boolean): void;
   setLog(message: LogMessage): void;
   statisticsService: Statistics;
+  soundService: SoundServiceInterface;
 }
 
 let game: GameApp;
@@ -28,6 +30,7 @@ const GameCanvas: React.FC<Props> = ({
   setNewGame,
   setLog,
   statisticsService,
+  soundService,
 }: Props) => {
   const canvasRef = React.createRef<HTMLDivElement>();
   const history = useHistory();
@@ -35,27 +38,28 @@ const GameCanvas: React.FC<Props> = ({
     setLog,
     startOptions,
     statisticsService,
+    soundService,
+  };
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const loadingHandler = () => {
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    console.log('1');
-    game = new GameApp(gameConfig);
+    game = new GameApp(gameConfig, loadingHandler);
     canvasRef.current.appendChild(game.pixi.view);
     game.init(startOptions);
-
-    return () => {
-      console.log('appINIT');
-    };
   }, []);
 
   useEffect(() => {
-    console.log('2');
     if (isNewGame) {
       game.stop();
       game.pixi.stop();
       canvasRef.current.removeChild(game.pixi.view);
       game.pixi.stage.destroy({ children: true });
-      game = new GameApp(gameConfig);
+      game = new GameApp(gameConfig, loadingHandler);
       canvasRef.current.appendChild(game.pixi.view);
       game.start();
       setNewGame(false);
@@ -63,8 +67,6 @@ const GameCanvas: React.FC<Props> = ({
   }, [isNewGame]);
 
   useEffect(() => {
-    console.log('PAUSE');
-    console.log(gameConfig.statisticsService.statistics);
     if (isPause) {
       game.pause();
       game.pixi.stop();
@@ -86,6 +88,7 @@ const GameCanvas: React.FC<Props> = ({
 
   return (
     <div className="game-canvas">
+      {isLoading ? <Rotate /> : null}
       <div ref={canvasRef} />
     </div>
   );

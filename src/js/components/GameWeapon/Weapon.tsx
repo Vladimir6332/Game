@@ -18,7 +18,6 @@ interface Props {
 }
 
 const Weapon: React.FC<Props> = ({ options }: Props) => {
-  console.log(options.str);
   const img = images[options.str];
   // useEffect(() => {
   //   const img = images.find((name) => name === options.str);

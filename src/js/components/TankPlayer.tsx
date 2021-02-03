@@ -142,6 +142,7 @@ const TankPlayer: TankPl = function TankPlayer(
   };
   this.moveTank = (keyCode: string) => {
     if (this.checkDead) return;
+    this.config.soundService.play('move');
     if (keyCode === 'KeyW') {
       if (this.sprite.y < this.sprite.width / 2 + 10) return;
       this.sprite.rotation = (Math.PI * 3) / 2;
@@ -286,6 +287,7 @@ const TankPlayer: TankPl = function TankPlayer(
   };
   this.shut = (posX: number, posY: number) => {
     if (this.callDown || this.checkDead || this.checkPause) return;
+    this.config.soundService.play('shot');
     this.callDown = true;
     setTimeout(() => {
       this.callDown = false;
@@ -348,6 +350,7 @@ const TankPlayer: TankPl = function TankPlayer(
             tank.time = setInterval(tank.findPlayer, 50);
           }
           clearInterval(timeShut);
+          this.config.soundService.play('hit');
           this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
 
           this.config.setLog({
@@ -380,6 +383,7 @@ const TankPlayer: TankPl = function TankPlayer(
   };
   this.dead = () => {
     clearInterval(this.time);
+    this.config.soundService.play('explosion');
     this.conteiner.removeChild(
       this.sprite,
       this.gan,

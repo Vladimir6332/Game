@@ -18,7 +18,7 @@ const Menu: React.FC = () => {
   const [mode, setMode] = useState<string>(defaultMode || 'single player');
 
   const [volume, setVolume] = useState<number>(
-    defaultVolume === 0 ? 0 : defaultVolume || 50
+    defaultVolume === 0 ? 0 : defaultVolume || 0
   );
 
   const handleVolume = (newVolume: number): void => {

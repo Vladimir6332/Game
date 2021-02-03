@@ -37,11 +37,15 @@ import { GameConfig, TankUnit } from '../custom_typings/Tanks.d';
 interface Start {
   (): void;
 }
+interface CallbackInit {
+  (): void;
+}
 interface Game {
   options: PlayOptions | null;
   pixi: PIXI.Application;
   tank: TankUnit;
   wall: boolean;
+  onLoaded: CallbackInit;
   init(options: PlayOptions): void;
   start(): void;
   stop(): void;
@@ -62,10 +66,13 @@ class GameApp implements Game {
 
   keyboardController: KeyboardController;
 
-  constructor(gameConfig: GameConfig) {
+  onLoaded: CallbackInit;
+
+  constructor(gameConfig: GameConfig, callback: CallbackInit) {
     this.options = gameConfig.startOptions;
     this.config = gameConfig;
     this.pixi = new PIXI.Application({ backgroundColor: 0xffffff });
+    this.onLoaded = callback;
   }
 
   init(options: PlayOptions | null): void {
@@ -128,7 +135,6 @@ class GameApp implements Game {
   }
 
   start(): void {
-    console.log(this.options);
     const reelContainer = new PIXI.Container();
     const musTankBad: TankUnit[] = [];
     const map = new PIXI.Sprite(
@@ -309,7 +315,6 @@ class GameApp implements Game {
       if (this.tank.checkPause) return;
       this.tank.shut(e.offsetX, e.offsetY);
       this.config.statisticsService.updateShots();
-      console.log(this.config.statisticsService.statistics);
     });
 
     reelContainer.addChild(
@@ -325,6 +330,8 @@ class GameApp implements Game {
       ...musHiddenBlocks
     );
     this.pixi.stage.addChild(reelContainer);
+
+    this.onLoaded();
   }
 
   stop(): void {

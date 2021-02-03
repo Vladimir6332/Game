@@ -38,6 +38,7 @@ interface GameConfig {
   setLog(message: LogMessage): void;
   startOptions: PlayOptions | null;
   statisticsService: Statistics;
+  soundService: SoundServiceInterface;
 }
 
 declare interface TankUnit {

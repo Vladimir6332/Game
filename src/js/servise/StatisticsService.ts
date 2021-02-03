@@ -17,7 +17,6 @@ export default class StatisticsService implements Statistics {
   }
 
   updateKills(value: number): void {
-    console.log('UPDATE KILLLLLLLLLSSSSSSSSSSSSSSSSSSSSSSSS');
     this.statistics.kills = value;
   }
 
@@ -44,11 +43,9 @@ export default class StatisticsService implements Statistics {
   // Send to backend
   async send(): Promise<void> {
     this.statistics.timeInGame = this.timer.getTime();
-    console.log('SEND STAT', this.statistics);
-
     const data = { ...this.statistics };
     const url = `https://rs-clone-wars-be.herokuapp.com/statistics`;
-    const res = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -56,8 +53,6 @@ export default class StatisticsService implements Statistics {
       },
       body: JSON.stringify(data),
     });
-    const userProfile = await res.json();
-    console.log('res STAT', userProfile);
   }
 
   destroy(): ProfileOfUser {
