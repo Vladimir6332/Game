@@ -50,7 +50,7 @@ export default class SoundService implements SoundServiceInterface {
             this.isMoving = false;
             audio.pause();
             audio.currentTime = 0;
-          }, 500);
+          }, 100);
         } else {
           audio.play();
           this.isMoving = true;
@@ -58,7 +58,7 @@ export default class SoundService implements SoundServiceInterface {
             this.isMoving = false;
             audio.pause();
             audio.currentTime = 0;
-          }, 500);
+          }, 100);
         }
       } else {
         audio.currentTime = 0;
