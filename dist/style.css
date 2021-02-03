@@ -1,0 +1,1553 @@
+@font-face {
+  font-family: 'Avenir Next Cyr';
+  src: url(assets/fonts/0e5cb5ef967e6bb30b208f781e7d85de.eot);
+  src: local('Avenir Next Cyr Bold'), local('AvenirNextCyr-Bold'),
+    url(assets/fonts/0e5cb5ef967e6bb30b208f781e7d85de.eot?#iefix) format('embedded-opentype'),
+    url(assets/fonts/cfcf1bcacc4a119802052b2b32750ed0.woff2) format('woff2'),
+    url(assets/fonts/cc045d78175fab1f3c226f6ffcfa5f08.woff) format('woff'),
+    url(assets/fonts/ae3b1e683a0c6a170a24548bd342238b.ttf) format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next Cyr';
+  src: url(assets/fonts/e701616ad0d2198e7b01b15ad5577c31.eot);
+  src: local('Avenir Next Cyr Thin Italic'), local('AvenirNextCyr-ThinItalic'),
+    url(assets/fonts/e701616ad0d2198e7b01b15ad5577c31.eot?#iefix) format('embedded-opentype'),
+    url(assets/fonts/439abb315661c05d4a07884ee1bdc578.woff2) format('woff2'),
+    url(assets/fonts/c7225af5d005693086b4b1f47ad7ca6f.woff) format('woff'),
+    url(assets/fonts/48d25d6e184d4a8db5d2fdc72b8ea4a1.ttf) format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir Next Cyr';
+  src: url(assets/fonts/fe30732cdd56d98aef2d9f1d80da638d.eot);
+  src: local('Avenir Next Cyr Italic'), local('AvenirNextCyr-Italic'),
+    url(assets/fonts/fe30732cdd56d98aef2d9f1d80da638d.eot?#iefix) format('embedded-opentype'),
+    url(assets/fonts/25cd19183822cf9e9f39728300ddad1e.woff2) format('woff2'),
+    url(assets/fonts/435a08082394ed9688c15268d2ae35d2.woff) format('woff'),
+    url(assets/fonts/284d109380dffb268a1dde098e343ca2.ttf) format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Avenir Next Cyr';
+  src: url(assets/fonts/eff64039eb8d32252e4e42b8028388dc.eot);
+  src: local('Avenir Next Cyr Heavy'), local('AvenirNextCyr-Heavy'),
+    url(assets/fonts/eff64039eb8d32252e4e42b8028388dc.eot?#iefix) format('embedded-opentype'),
+    url(assets/fonts/4f2fbcb32e0274cc86e955c101b577b4.woff2) format('woff2'),
+    url(assets/fonts/835dd0f2d9fd93e22d4ffa5f7bf49a8f.woff) format('woff'),
+    url(assets/fonts/747d90226a0b2cdfe114cb9447fcf8f2.ttf) format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next Cyr';
+  src: url(assets/fonts/75c3e691b520cb047fb573e38379b33d.eot);
+  src: local('Avenir Next Cyr Thin'), local('AvenirNextCyr-Thin'),
+    url(assets/fonts/75c3e691b520cb047fb573e38379b33d.eot?#iefix) format('embedded-opentype'),
+    url(assets/fonts/ff514bc92a85baed77ec3b3a10ea5dff.woff2) format('woff2'),
+    url(assets/fonts/ac93a7591d990406c67e947bf3924aae.woff) format('woff'),
+    url(assets/fonts/292db9aebc1a96befc15a0b88d2ab2d3.ttf) format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next Cyr';
+  src: url(assets/fonts/23c73619a6dfec6df293dfcb1b00cf1f.eot);
+  src: local('Avenir Next Cyr Medium'), local('AvenirNextCyr-Medium'),
+    url(assets/fonts/23c73619a6dfec6df293dfcb1b00cf1f.eot?#iefix) format('embedded-opentype'),
+    url(assets/fonts/ffcf7d262a9e4907e069df88bfd4a69b.woff2) format('woff2'),
+    url(assets/fonts/05182deab8be5ee92c17b187b4d8a29c.woff) format('woff'),
+    url(assets/fonts/679388dbda7c117a5d0098ff39fcaf6d.ttf) format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Avenir Next Cyr';
+  src: url(assets/fonts/5999ae22119eeca2e0e8560678b064e8.eot);
+  src: local('Avenir Next Cyr Regular'), local('AvenirNextCyr-Regular'),
+    url(assets/fonts/5999ae22119eeca2e0e8560678b064e8.eot?#iefix) format('embedded-opentype'),
+    url(assets/fonts/e4c3688a18585638ddff0f5a5a58376e.woff2) format('woff2'),
+    url(assets/fonts/5a885529c408366c5f8a9ba85229b7f2.woff) format('woff'),
+    url(assets/fonts/1b8ec2e9db931727ee180420cd82d7e0.ttf) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+
+/* Document
+   ========================================================================== */
+
+/**
+ * 1. Correct the line height in all browsers.
+ * 2. Prevent adjustments of font size after orientation changes in iOS.
+ */
+
+html {
+  line-height: 1.15; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+/* Sections
+   ========================================================================== */
+
+/**
+ * Remove the margin in all browsers.
+ */
+
+body {
+  margin: 0;
+}
+
+/**
+ * Render the `main` element consistently in IE.
+ */
+
+main {
+  display: block;
+}
+
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/* Grouping content
+   ========================================================================== */
+
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+
+hr {
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+}
+
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+
+pre {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+
+/* Text-level semantics
+   ========================================================================== */
+
+/**
+ * Remove the gray background on active links in IE 10.
+ */
+
+a {
+  background-color: transparent;
+}
+
+/**
+ * 1. Remove the bottom border in Chrome 57-
+ * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+ */
+
+abbr[title] {
+  border-bottom: none; /* 1 */
+  text-decoration: underline; /* 2 */
+  text-decoration: underline dotted; /* 2 */
+}
+
+/**
+ * Add the correct font weight in Chrome, Edge, and Safari.
+ */
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+
+code,
+kbd,
+samp {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+
+/**
+ * Add the correct font size in all browsers.
+ */
+
+small {
+  font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` elements from affecting the line height in
+ * all browsers.
+ */
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/* Embedded content
+   ========================================================================== */
+
+/**
+ * Remove the border on images inside links in IE 10.
+ */
+
+img {
+  border-style: none;
+}
+
+/* Forms
+   ========================================================================== */
+
+/**
+ * 1. Change the font styles in all browsers.
+ * 2. Remove the margin in Firefox and Safari.
+ */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+/**
+ * Show the overflow in IE.
+ * 1. Show the overflow in Edge.
+ */
+
+button,
+input { /* 1 */
+  overflow: visible;
+}
+
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of text transform in Firefox.
+ */
+
+button,
+select { /* 1 */
+  text-transform: none;
+}
+
+/**
+ * Correct the inability to style clickable types in iOS and Safari.
+ */
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+/**
+ * Remove the inner border and padding in Firefox.
+ */
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/**
+ * Restore the focus styles unset by the previous rule.
+ */
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/**
+ * Correct the padding in Firefox.
+ */
+
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+
+/**
+ * 1. Correct the text wrapping in Edge and IE.
+ * 2. Correct the color inheritance from `fieldset` elements in IE.
+ * 3. Remove the padding so developers are not caught out when they zero out
+ *    `fieldset` elements in all browsers.
+ */
+
+legend {
+  box-sizing: border-box; /* 1 */
+  color: inherit; /* 2 */
+  display: table; /* 1 */
+  max-width: 100%; /* 1 */
+  padding: 0; /* 3 */
+  white-space: normal; /* 1 */
+}
+
+/**
+ * Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ */
+
+progress {
+  vertical-align: baseline;
+}
+
+/**
+ * Remove the default vertical scrollbar in IE 10+.
+ */
+
+textarea {
+  overflow: auto;
+}
+
+/**
+ * 1. Add the correct box sizing in IE 10.
+ * 2. Remove the padding in IE 10.
+ */
+
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * Correct the cursor style of increment and decrement buttons in Chrome.
+ */
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+ * 1. Correct the odd appearance in Chrome and Safari.
+ * 2. Correct the outline style in Safari.
+ */
+
+[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/**
+ * Remove the inner padding in Chrome and Safari on macOS.
+ */
+
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+ * 1. Correct the inability to style clickable types in iOS and Safari.
+ * 2. Change font properties to `inherit` in Safari.
+ */
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/* Interactive
+   ========================================================================== */
+
+/*
+ * Add the correct display in Edge, IE 10+, and Firefox.
+ */
+
+details {
+  display: block;
+}
+
+/*
+ * Add the correct display in all browsers.
+ */
+
+summary {
+  display: list-item;
+}
+
+/* Misc
+   ========================================================================== */
+
+/**
+ * Add the correct display in IE 10+.
+ */
+
+template {
+  display: none;
+}
+
+/**
+ * Add the correct display in IE 10.
+ */
+
+[hidden] {
+  display: none;
+}
+
+html {
+  font-size: 10px; }
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100vh;
+  min-height: 600px;
+  color: #d8d8d8;
+  background-color: #1a1a1a; }
+
+h1 {
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 5rem;
+  line-height: 6rem;
+  font-weight: 400;
+  font-style: normal;
+  color: #d8d8d8; }
+
+h2 {
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 1.8rem;
+  line-height: 2rem;
+  font-weight: 400;
+  font-style: normal;
+  color: #d8d8d8; }
+
+p {
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 1.8rem;
+  line-height: 3rem;
+  font-weight: 400;
+  font-style: normal;
+  color: #d8d8d8; }
+
+span {
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 1.8rem;
+  line-height: 3rem;
+  font-weight: 400;
+  font-style: normal; }
+
+.logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  cursor: pointer;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.logo__picture {
+  position: relative;
+  width: 10rem;
+  height: 6rem;
+  color: white;
+  fill: white; }
+
+#svg2 {
+  width: 100%;
+  height: 100%; }
+
+.wheel {
+  position: absolute;
+  -webkit-animation: rotate-move 1s linear infinite;
+          animation: rotate-move 1s linear infinite; }
+  .wheel_1 {
+    width: 1.5rem;
+    height: 1.5rem;
+    top: 3.8rem;
+    left: 0.2rem; }
+  .wheel_2 {
+    width: 1.8rem;
+    height: 1.8rem;
+    top: 3.8rem;
+    left: 1.8rem; }
+  .wheel_3 {
+    width: 1.8rem;
+    height: 1.8rem;
+    top: 3.8rem;
+    left: 3.75rem; }
+  .wheel_4 {
+    width: 1.8rem;
+    height: 1.8rem;
+    top: 3.8rem;
+    left: 5.7rem; }
+  .wheel_5 {
+    width: 1.2rem;
+    height: 1.2rem;
+    top: 3.8rem;
+    left: 7.5rem; }
+
+.logo__title {
+  text-transform: uppercase;
+  margin: 0 2rem;
+  cursor: pointer; }
+
+.logo:hover .logo__title {
+  color: white; }
+
+@-webkit-keyframes rotate-move {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes rotate-move {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+.burger::before, .burger::after, .burger__line {
+  content: '';
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 0.24rem;
+  background: #d8d8d8;
+  border-radius: 5px; }
+
+.burger {
+  position: relative;
+  display: inline-block;
+  width: 2.5rem;
+  height: 2rem;
+  cursor: pointer; }
+  .burger:hover::before {
+    background-color: white; }
+  .burger:hover::after {
+    background-color: white; }
+  .burger:hover .burger__line {
+    background-color: white; }
+  .burger::before {
+    top: 0;
+    left: 0; }
+  .burger::after {
+    bottom: 0;
+    left: 0; }
+
+.burger__line {
+  top: calc(50% - 0.12rem); }
+
+.sound-control {
+  position: absolute;
+  top: 10rem;
+  right: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.sound-control__icon {
+  width: 2rem;
+  fill: firebrick; }
+
+.sound-control__volume .MuiSlider-rail,
+.sound-control__volume .MuiSlider-track,
+.sound-control__volume .MuiSlider-thumb {
+  background-color: firebrick; }
+
+.sound-control__volume .MuiSlider-valueLabel {
+  color: firebrick; }
+
+.button {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: firebrick;
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 3rem;
+  line-height: 4rem;
+  font-weight: 700;
+  font-style: normal;
+  color: #d8d8d8;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  padding: 1rem; }
+  .button:hover {
+    background-color: #871a1a;
+    color: white; }
+  .button_disabled {
+    background-color: #212121;
+    color: gray; }
+    .button_disabled:hover {
+      background-color: #212121;
+      color: gray; }
+  .button_sign-up {
+    background-color: #212121;
+    font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+    font-size: 2rem;
+    line-height: 3rem;
+    font-weight: 400;
+    font-style: normal;
+    margin: 1rem 0;
+    padding: 1rem; }
+    .button_sign-up:hover {
+      background-color: #151515; }
+
+.header {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding: 1rem 1rem;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #d8d8d8;
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  background-color: #2e2e2e; }
+
+.footer {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #d8d8d8;
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  background-color: #2e2e2e; }
+
+.footer__info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.github {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 300px; }
+
+.github__icon {
+  fill: white;
+  margin: 1rem; }
+
+.github__link {
+  text-decoration: none;
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  font-weight: 400;
+  font-style: normal;
+  color: #d8d8d8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+  .github__link:hover {
+    color: white; }
+
+.classes {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-right: 1rem; }
+
+.classes__year {
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  font-weight: 100;
+  font-style: normal;
+  margin-right: 2rem; }
+
+.classes__logo {
+  display: inline-block;
+  width: 80px; }
+
+.app-wrapper {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
+  padding: 0.5vh 1vw; }
+
+.app {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  grid-gap: 1vw;
+  gap: 1vw; }
+  @media (max-width: 1023px) {
+    .app {
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+      grid-gap: 0;
+      gap: 0;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between; } }
+
+@-webkit-keyframes popUp {
+  0% {
+    -webkit-transform: scale(0) translate(0%, 0%);
+            transform: scale(0) translate(0%, 0%);
+    top: 0;
+    right: 0; }
+  100% {
+    -webkit-transform: scale(1) translate(-50%, -50%);
+            transform: scale(1) translate(-50%, -50%);
+    top: 50%; } }
+
+@keyframes popUp {
+  0% {
+    -webkit-transform: scale(0) translate(0%, 0%);
+            transform: scale(0) translate(0%, 0%);
+    top: 0;
+    right: 0; }
+  100% {
+    -webkit-transform: scale(1) translate(-50%, -50%);
+            transform: scale(1) translate(-50%, -50%);
+    top: 50%; } }
+
+.garage__tank, .garage__weapon-img {
+  -o-object-fit: contain;
+     object-fit: contain;
+  height: 100%;
+  width: 100%; }
+
+.garage {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #2e2e2e;
+  font-size: 10px;
+  color: #d8d8d8; }
+  .garage button {
+    font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+    border: none;
+    outline: none;
+    cursor: pointer; }
+  .garage button:active {
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9); }
+  .garage__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr .5fr .5fr;
+    grid-template-rows: -webkit-max-content;
+    grid-template-rows: max-content;
+    grid-template-areas: 'points points points points' 'tank weapon-list statistics statistics' 'tank weapon-list infoBullet infoBullet' 'tank weapon-list changeBullet button';
+    grid-gap: 5px;
+    width: 100%;
+    height: 100%; }
+  .garage__points-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    grid-area: points; }
+  .garage__points {
+    font-size: 2em; }
+  .garage__tank-wrapper {
+    grid-area: tank;
+    position: relative;
+    width: 100%;
+    height: 70vh; }
+  .garage__weapon-list {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin: 10px 0;
+    grid-area: weapon-list; }
+  .garage__weapon {
+    cursor: pointer;
+    z-index: 10;
+    width: 100%;
+    height: 8vh;
+    margin: 2px;
+    border: 1px solid black; }
+  .garage__weapon-wrapper {
+    height: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin: 5px;
+    background-color: #2e2e2e;
+    -webkit-transition: .5s;
+    transition: .5s; }
+  .garage__weapon-wrapper:hover {
+    -webkit-transition: .5s;
+    transition: .5s;
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1); }
+  .garage__weapon-text {
+    margin: 0;
+    padding: 0;
+    line-height: 1em;
+    font-size: 1em; }
+  .garage__statistics {
+    grid-area: statistics;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+  .garage__statistics-title {
+    font-size: 3em;
+    text-align: center; }
+  .garage__statistics-table {
+    font-size: 2em; }
+  .garage__buttons {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end; }
+  .garage__button {
+    width: 100%;
+    height: 30%;
+    margin: 0 5px 5px 0;
+    color: #fff;
+    justify-self: center;
+    background-color: #9d1e1e;
+    font-size: 1.5em;
+    grid-area: button; }
+  .garage__button:hover {
+    background-color: #871a1a; }
+  .garage__bullet-button {
+    outline: none;
+    background-color: #212121;
+    color: #d8d8d8; }
+  .garage__bullet-button:hover {
+    background-color: #151515; }
+  .garage__bullet-info {
+    justify-self: center;
+    align-self: center;
+    grid-area: infoBullet; }
+  .garage__bullet-info-title {
+    font-size: 3em !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    text-align: center; }
+  .garage__bullet-info-title {
+    font-size: 2em; }
+  .garage__bullet-change {
+    justify-self: center;
+    align-self: center;
+    grid-area: changeBullet; }
+  .garage__bullet-buttons {
+    text-align: center; }
+
+.noPoints {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 50%;
+  height: 10%;
+  top: 50%;
+  left: 50%;
+  z-index: 15;
+  border-radius: 5px;
+  -webkit-animation: popUp 1s;
+          animation: popUp 1s;
+  -webkit-transform: scale(1) translate(-50%, -50%);
+          transform: scale(1) translate(-50%, -50%);
+  background-color: #1e1e1e; }
+
+.choisedWeapon {
+  border: 1px solid #fff; }
+
+.menu-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0 4rem;
+  width: 50%;
+  min-width: 350px; }
+
+.menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.menu__list {
+  width: 100%;
+  list-style: none;
+  padding: 0; }
+
+.menu__item,
+.menu__play {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 8rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-transform: uppercase;
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 3rem;
+  line-height: 4rem;
+  font-weight: 700;
+  font-style: normal;
+  color: #d8d8d8;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer; }
+  .menu__item:hover,
+  .menu__play:hover {
+    color: white; }
+  .menu__item_active,
+  .menu__play_active {
+    background-color: rgba(47, 79, 79, 0.2); }
+
+.arrow-down {
+  position: absolute;
+  top: 2.75rem;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.arrow-down span {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  border-top: 0.5rem solid #337ab7;
+  border-right: 0.5rem solid #337ab7;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  opacity: 0;
+  -webkit-animation: arrow-down 2s infinite;
+          animation: arrow-down 2s infinite; }
+
+.arrow-down span:nth-child(1) {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s; }
+
+.arrow-down span:nth-child(2) {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+
+.arrow-down span:nth-child(3) {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s; }
+
+@-webkit-keyframes arrow-down {
+  0% {
+    opacity: 0;
+    -webkit-transform: rotate(45deg) translate(0, 0);
+            transform: rotate(45deg) translate(0, 0); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    -webkit-transform: rotate(45deg) translate(2rem, -2rem);
+            transform: rotate(45deg) translate(2rem, -2rem); } }
+
+@keyframes arrow-down {
+  0% {
+    opacity: 0;
+    -webkit-transform: rotate(45deg) translate(0, 0);
+            transform: rotate(45deg) translate(0, 0); }
+  50% {
+    opacity: 1; }
+  100% {
+    opacity: 0;
+    -webkit-transform: rotate(45deg) translate(2rem, -2rem);
+            transform: rotate(45deg) translate(2rem, -2rem); } }
+
+.menu__play {
+  margin-top: 8rem;
+  border: none;
+  outline: none;
+  background-color: firebrick; }
+  .menu__play:hover {
+    background-color: #871a1a; }
+
+@-webkit-keyframes popUpNotCorrect {
+  0% {
+    top: 0%; }
+  90% {
+    top: 52%; }
+  100% {
+    top: 50%; } }
+
+@keyframes popUpNotCorrect {
+  0% {
+    top: 0%; }
+  90% {
+    top: 52%; }
+  100% {
+    top: 50%; } }
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+.login {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: auto;
+  background: #2e2e2e;
+  color: white;
+  margin: 1rem;
+  position: relative;
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif; }
+
+.login__tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  background: #212121;
+  width: 100%;
+  height: 4rem;
+  margin: 0;
+  margin-bottom: 2rem;
+  padding: 0;
+  position: relative; }
+
+.login__tabs li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background: #212121;
+  color: #d8d8d8;
+  text-decoration: none;
+  font-size: 1.6rem;
+  padding: 0 2.2rem;
+  height: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer; }
+  .login__tabs li.active {
+    background: #2e2e2e;
+    border-right: none; }
+  .login__tabs li:hover {
+    color: white; }
+  .login__tabs li:last-child a {
+    text-align: center;
+    width: 174px;
+    padding-left: 0;
+    padding-right: 0;
+    border-right: none; }
+
+.login-form-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  min-height: 305px;
+  padding: 1rem; }
+
+.login__title {
+  margin: 1rem; }
+
+.auth__form {
+  width: 100%;
+  max-width: 500px; }
+
+.auth__field {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border-color: firebrick; }
+  .auth__field_active {
+    border-color: green; }
+
+.auth__label {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  padding: 0.5rem;
+  font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif;
+  font-size: 1.4rem;
+  line-height: 3rem;
+  font-weight: 400;
+  font-style: normal; }
+
+.auth__input {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  color: #d8d8d8;
+  height: 4rem;
+  border: none;
+  outline: none;
+  background-color: #212121; }
+
+.login__google {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 80%;
+  padding: 1rem;
+  margin: 0 1rem;
+  margin-bottom: 2rem;
+  background-color: #212121;
+  cursor: pointer; }
+  .login__google:hover {
+    background-color: #151515;
+    color: white; }
+
+.google__icon {
+  width: 2rem;
+  height: 2rem;
+  margin: 0 1rem;
+  background-image: url(6a4a3529e1113ea7b8eaea9cac92c436.svg);
+  background-size: contain; }
+
+.notCorrect {
+  position: absolute;
+  -webkit-animation: popUpNotCorrect .5s;
+          animation: popUpNotCorrect .5s;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  padding: 15px;
+  text-align: center;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%);
+  background-color: #212121; }
+
+.spinWheel {
+  z-index: 30;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%);
+  background-color: rgba(46, 46, 46, 0.5); }
+
+.spinWheel__img-wrap {
+  width: 50%;
+  height: 50%; }
+  .spinWheel__img-wrap img {
+    -o-object-fit: contain;
+       object-fit: contain;
+    width: 100%;
+    height: 100%; }
+
+.loading {
+  -webkit-animation: spin 3s infinite;
+          animation: spin 3s infinite; }
+
+.game-menu button {
+  border: none;
+  outline: none;
+  width: auto;
+  height: auto;
+  background-color: #9d1e1e;
+  cursor: pointer; }
+
+.game {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  max-width: 1024px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.game__view {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 600px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: gray;
+  border: 2px solid #d8d8d8;
+  font-size: 2rem; }
+
+.game__control {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100px;
+  width: 100%;
+  background-color: #2e2e2e;
+  border: 2px solid #d8d8d8; }
+
+.game__weapon,
+.game__logs,
+.game__menu {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 20%;
+  padding: 0.5rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #2e2e2e;
+  border-right: 2px solid #d8d8d8;
+  font-size: 2rem; }
+
+.game__logs {
+  width: 60%; }
+
+.game__menu {
+  border: none; }
+
+.game-menu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  grid-row-gap: 5px;
+  row-gap: 5px;
+  font-size: 17px; }
+  .game-menu button {
+    font-family: "Avenir Next Cyr", "Avenir Next", Avenir, "Helvetica", sans-serif; }
+  .game-menu button:active {
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9); }
+  .game-menu button:hover {
+    background-color: #871a1a; }
+
+.pause {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.4); }
+  .pause button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 25;
+    -webkit-transform: translate(-50%);
+            transform: translate(-50%); }
+
+.weapons {
+  width: 100%; }
+
+.weapons__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  list-style: none;
+  padding: 0;
+  margin: 0; }
+
+.weapons__item {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 4rem;
+  height: 4rem;
+  padding: 0.2rem;
+  border: 1px solid #d8d8d8;
+  background-color: black;
+  cursor: pointer; }
+
+.weapon {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+.logs {
+  width: 100%; }
+  .logs .logs__ul {
+    margin: 0;
+    padding: 0;
+    font-size: 14px; }
+    .logs .logs__ul li {
+      margin: 2px;
+      padding: 2px;
+      list-style-type: none; }
+
+.red {
+  background-color: rgba(178, 34, 34, 0.5); }
+
+.green {
+  background-color: rgba(0, 128, 0, 0.5); }
+
+.black {
+  background-color: rgba(0, 0, 0, 0.5); }
+
+.orange {
+  background-color: rgba(255, 165, 0, 0.5); }
+
+
+/*# sourceMappingURL=style.css.map*/
