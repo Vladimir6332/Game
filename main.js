@@ -46800,6 +46800,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/assets/sounds/explosion.mp3":
+/*!*****************************************!*\
+  !*** ./src/assets/sounds/explosion.mp3 ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/sounds/explosion.mp3");
+
+/***/ }),
+
+/***/ "./src/assets/sounds/hit.mp3":
+/*!***********************************!*\
+  !*** ./src/assets/sounds/hit.mp3 ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/sounds/hit.mp3");
+
+/***/ }),
+
 /***/ "./src/assets/sounds/menu_select.mp3":
 /*!*******************************************!*\
   !*** ./src/assets/sounds/menu_select.mp3 ***!
@@ -46812,6 +46842,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/sounds/menu_select.mp3");
+
+/***/ }),
+
+/***/ "./src/assets/sounds/move.mp3":
+/*!************************************!*\
+  !*** ./src/assets/sounds/move.mp3 ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/sounds/move.mp3");
+
+/***/ }),
+
+/***/ "./src/assets/sounds/shot.mp3":
+/*!************************************!*\
+  !*** ./src/assets/sounds/shot.mp3 ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/sounds/shot.mp3");
 
 /***/ }),
 
@@ -88881,41 +88941,40 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 var react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 var react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 var Proba_1 = __importDefault(__webpack_require__(/*! ../Proba */ "./src/js/components/Proba.tsx"));
+var Rotate_1 = __importDefault(__webpack_require__(/*! ../Login/Rotate */ "./src/js/components/Login/Rotate.tsx"));
 var game;
 var GameCanvas = function (_a) {
-    var userProfile = _a.userProfile, startOptions = _a.startOptions, isNewGame = _a.isNewGame, isPause = _a.isPause, isEsc = _a.isEsc, setNewGame = _a.setNewGame, setLog = _a.setLog, statisticsService = _a.statisticsService;
+    var userProfile = _a.userProfile, startOptions = _a.startOptions, isNewGame = _a.isNewGame, isPause = _a.isPause, isEsc = _a.isEsc, setNewGame = _a.setNewGame, setLog = _a.setLog, statisticsService = _a.statisticsService, soundService = _a.soundService;
     var canvasRef = react_1.default.createRef();
     var history = react_router_dom_1.useHistory();
     var gameConfig = {
         setLog: setLog,
         startOptions: startOptions,
         statisticsService: statisticsService,
+        soundService: soundService,
+    };
+    var _b = react_1.useState(true), isLoading = _b[0], setIsLoading = _b[1];
+    var loadingHandler = function () {
+        setIsLoading(false);
     };
     react_1.useEffect(function () {
-        console.log('1');
-        game = new Proba_1.default(gameConfig);
+        game = new Proba_1.default(gameConfig, loadingHandler);
         canvasRef.current.appendChild(game.pixi.view);
         game.init(startOptions);
-        return function () {
-            console.log('appINIT');
-        };
     }, []);
     react_1.useEffect(function () {
-        console.log('2');
         if (isNewGame) {
             game.stop();
             game.pixi.stop();
             canvasRef.current.removeChild(game.pixi.view);
             game.pixi.stage.destroy({ children: true });
-            game = new Proba_1.default(gameConfig);
+            game = new Proba_1.default(gameConfig, loadingHandler);
             canvasRef.current.appendChild(game.pixi.view);
             game.start();
             setNewGame(false);
         }
     }, [isNewGame]);
     react_1.useEffect(function () {
-        console.log('PAUSE');
-        console.log(gameConfig.statisticsService.statistics);
         if (isPause) {
             game.pause();
             game.pixi.stop();
@@ -88935,6 +88994,7 @@ var GameCanvas = function (_a) {
         }
     }, [isEsc]);
     return (react_1.default.createElement("div", { className: "game-canvas" },
+        isLoading ? react_1.default.createElement(Rotate_1.default, null) : null,
         react_1.default.createElement("div", { ref: canvasRef })));
 };
 exports.default = GameCanvas;
@@ -88962,7 +89022,6 @@ var GameLogs = function (_a) {
     var copy = log;
     if (isNewGame || isEsc)
         logs = [];
-    console.log('LOGS', logs);
     if (logs[logs.length - 1] !== log &&
         log.typeMessage !== 'null' &&
         !isNewGame &&
@@ -89069,7 +89128,6 @@ var images = {
 };
 var Weapon = function (_a) {
     var options = _a.options;
-    console.log(options.str);
     var img = images[options.str];
     return react_1.default.createElement("div", { className: "weapon", style: { backgroundImage: "url(" + img + ")" } });
 };
@@ -89127,15 +89185,30 @@ var GameLogs_1 = __importDefault(__webpack_require__(/*! ../GameLogs/GameLogs */
 var GameMenu_1 = __importDefault(__webpack_require__(/*! ../GameMenu/GameMenu */ "./src/js/components/GameMenu/GameMenu.tsx"));
 var Pause_1 = __importDefault(__webpack_require__(/*! ../Pause/Pause */ "./src/js/components/Pause/Pause.tsx"));
 var StatisticsService_1 = __importDefault(__webpack_require__(/*! ../../servise/StatisticsService */ "./src/js/servise/StatisticsService.ts"));
+var SoundService_1 = __importDefault(__webpack_require__(/*! ../../servise/SoundService */ "./src/js/servise/SoundService.tsx"));
+var SoundControl_1 = __importDefault(__webpack_require__(/*! ../Menu/SoundControl */ "./src/js/components/Menu/SoundControl.tsx"));
+var defaultVolume = +localStorage.getItem('gameVolume');
 var statService = new StatisticsService_1.default(null);
+var soundService = new SoundService_1.default();
 var Game = function (_a) {
     var startOptions = _a.startOptions, userProfile = _a.userProfile, profileUpdater = _a.profileUpdater;
     var _b = react_1.useState(false), isPause = _b[0], setPause = _b[1];
     var _c = react_1.useState(false), isEsc = _c[0], setEsc = _c[1];
     var _d = react_1.useState(false), isNewGame = _d[0], setNewGame = _d[1];
     var _e = react_1.useState({ typeMessage: 'null', message: 0 }), log = _e[0], setLog = _e[1];
+    var _f = react_1.useState(defaultVolume === 0 ? 0 : defaultVolume || 0), volume = _f[0], setVolume = _f[1];
+    var handleVolume = function (newVolume) {
+        setVolume(newVolume);
+        localStorage.setItem('gameVolume', newVolume.toString());
+        soundService.setVolume(newVolume / 100);
+    };
+    react_1.useEffect(function () {
+        if (soundService && soundService.audioList)
+            soundService.setVolume(volume / 100);
+    }, [volume]);
     react_1.useEffect(function () {
         statService.init(userProfile);
+        soundService.init();
         return function () {
             var statistics = statService.destroy();
             var updatedProfile = __assign({}, statistics);
@@ -89144,7 +89217,6 @@ var Game = function (_a) {
     }, []);
     react_1.useEffect(function () {
         if (isNewGame || isEsc) {
-            console.log('CLEARLOG');
             setLog({ typeMessage: 'null', message: 0 });
         }
         if (isEsc)
@@ -89153,14 +89225,15 @@ var Game = function (_a) {
     return (react_1.default.createElement("section", { className: "game" },
         isPause ? react_1.default.createElement(Pause_1.default, { setPause: setPause }) : '',
         react_1.default.createElement("div", { className: "game__view" },
-            react_1.default.createElement(GameCanvas_1.default, { userProfile: userProfile, startOptions: startOptions, isNewGame: isNewGame, isPause: isPause, isEsc: isEsc, setNewGame: setNewGame, setLog: setLog, statisticsService: statService })),
+            react_1.default.createElement(GameCanvas_1.default, { userProfile: userProfile, startOptions: startOptions, isNewGame: isNewGame, isPause: isPause, isEsc: isEsc, setNewGame: setNewGame, setLog: setLog, statisticsService: statService, soundService: soundService })),
         react_1.default.createElement("div", { className: "game__control" },
             react_1.default.createElement("div", { className: "game__weapon" },
                 react_1.default.createElement(GameWeapons_1.default, { startOptions: startOptions })),
             react_1.default.createElement("div", { className: "game__logs" },
                 react_1.default.createElement(GameLogs_1.default, { log: log, isNewGame: isNewGame, isEsc: isEsc })),
             react_1.default.createElement("div", { className: "game__menu" },
-                react_1.default.createElement(GameMenu_1.default, { setPause: setPause, isPause: isPause, setEsc: setEsc, setNewGame: setNewGame })))));
+                react_1.default.createElement(GameMenu_1.default, { setPause: setPause, isPause: isPause, setEsc: setEsc, setNewGame: setNewGame }))),
+        react_1.default.createElement(SoundControl_1.default, { onChange: handleVolume, defaultVolume: defaultVolume })));
 };
 exports.default = Game;
 
@@ -89599,7 +89672,7 @@ var Menu = function () {
     ];
     var history = react_router_dom_1.useHistory();
     var _a = react_1.useState(defaultMode || 'single player'), mode = _a[0], setMode = _a[1];
-    var _b = react_1.useState(defaultVolume === 0 ? 0 : defaultVolume || 50), volume = _b[0], setVolume = _b[1];
+    var _b = react_1.useState(defaultVolume === 0 ? 0 : defaultVolume || 0), volume = _b[0], setVolume = _b[1];
     var handleVolume = function (newVolume) {
         setVolume(newVolume);
         localStorage.setItem('menuVolume', newVolume.toString());
@@ -89781,10 +89854,11 @@ var TankPlayer_1 = __importDefault(__webpack_require__(/*! ./TankPlayer */ "./sr
 var TankComputer_1 = __importDefault(__webpack_require__(/*! ./TankComputer */ "./src/js/components/TankComputer.tsx"));
 var KeyboardController_1 = __importDefault(__webpack_require__(/*! ../utils/KeyboardController */ "./src/js/utils/KeyboardController.ts"));
 var GameApp = (function () {
-    function GameApp(gameConfig) {
+    function GameApp(gameConfig, callback) {
         this.options = gameConfig.startOptions;
         this.config = gameConfig;
         this.pixi = new PIXI.Application({ backgroundColor: 0xffffff });
+        this.onLoaded = callback;
     }
     GameApp.prototype.init = function (options) {
         this.options = options;
@@ -89845,7 +89919,6 @@ var GameApp = (function () {
     };
     GameApp.prototype.start = function () {
         var _this = this;
-        console.log(this.options);
         var reelContainer = new PIXI.Container();
         var musTankBad = [];
         var map = new PIXI.Sprite(PIXI.Texture.from('assets/images/maps/map.png'));
@@ -89970,13 +90043,13 @@ var GameApp = (function () {
                 return;
             _this.tank.shut(e.offsetX, e.offsetY);
             _this.config.statisticsService.updateShots();
-            console.log(_this.config.statisticsService.statistics);
         });
         reelContainer.addChild.apply(reelContainer, __spreadArrays([map,
             this.tank.sprite], musRender, musImmortalBlocks, musBreakBlocks, [this.tank.aimRender,
             this.tank.gan,
             this.tank.healthRender], musRenderGanAndHealth, musHiddenBlocks));
         this.pixi.stage.addChild(reelContainer);
+        this.onLoaded();
     };
     GameApp.prototype.stop = function () {
         this.tank.stopGame();
@@ -90520,6 +90593,7 @@ var TankComputer = function TankComputer(x, y, gan, aim, timeCallDown, speadBull
                 tankBund.health -= this.damage;
                 clearInterval(timeShut);
                 this.arrTimeShut.splice(this.arrTimeShut.indexOf(timeShut), 1);
+                this.config.soundService.play('hit');
                 this.config.setLog({
                     typeMessage: 'damage enemy',
                     message: this.damage,
@@ -90626,6 +90700,7 @@ var TankComputer = function TankComputer(x, y, gan, aim, timeCallDown, speadBull
         if (_this.batter(_this.player.sprite) && !_this.taran) {
             _this.health -= 100;
             _this.player.health -= 100;
+            _this.config.soundService.play('explosion');
             config.setLog({ typeMessage: 'damage enemy', message: 100 });
             config.setLog({ typeMessage: 'damage me', message: 100 });
         }
@@ -90640,6 +90715,7 @@ var TankComputer = function TankComputer(x, y, gan, aim, timeCallDown, speadBull
         clearInterval(_this.time);
         clearInterval(_this.timeRender);
         arrEvil.splice(arrEvil.indexOf(_this), 1);
+        _this.config.soundService.play('explosion');
         config.setLog({ typeMessage: 'death enemy', message: 0 });
         var currentKills = _this.statisticsService.statistics.kills + 1;
         _this.statisticsService.updateKills(currentKills);
@@ -90948,6 +91024,7 @@ var TankPlayer = function TankPlayer(x, y, gan, aim, timeCallDown, speadBullet, 
     this.moveTank = function (keyCode) {
         if (_this.checkDead)
             return;
+        _this.config.soundService.play('move');
         if (keyCode === 'KeyW') {
             if (_this.sprite.y < _this.sprite.width / 2 + 10)
                 return;
@@ -91093,6 +91170,7 @@ var TankPlayer = function TankPlayer(x, y, gan, aim, timeCallDown, speadBullet, 
     this.shut = function (posX, posY) {
         if (_this.callDown || _this.checkDead || _this.checkPause)
             return;
+        _this.config.soundService.play('shot');
         _this.callDown = true;
         setTimeout(function () {
             _this.callDown = false;
@@ -91155,6 +91233,7 @@ var TankPlayer = function TankPlayer(x, y, gan, aim, timeCallDown, speadBullet, 
                         tank.time = setInterval(tank.findPlayer, 50);
                     }
                     clearInterval(timeShut);
+                    _this.config.soundService.play('hit');
                     _this.arrTimeShut.splice(_this.arrTimeShut.indexOf(timeShut), 1);
                     _this.config.setLog({
                         typeMessage: 'damage me',
@@ -91184,6 +91263,7 @@ var TankPlayer = function TankPlayer(x, y, gan, aim, timeCallDown, speadBullet, 
     };
     this.dead = function () {
         clearInterval(_this.time);
+        _this.config.soundService.play('explosion');
         _this.conteiner.removeChild(_this.sprite, _this.gan, _this.aimRender, _this.healthRender);
         _this.checkDead = true;
         config.setLog({ typeMessage: 'death me', message: 0 });
@@ -92013,6 +92093,79 @@ react_dom_1.default.render(react_1.default.createElement(App_1.default, null), d
 
 /***/ }),
 
+/***/ "./src/js/servise/SoundService.tsx":
+/*!*****************************************!*\
+  !*** ./src/js/servise/SoundService.tsx ***!
+  \*****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var move_mp3_1 = __importDefault(__webpack_require__(/*! ../../assets/sounds/move.mp3 */ "./src/assets/sounds/move.mp3"));
+var hit_mp3_1 = __importDefault(__webpack_require__(/*! ../../assets/sounds/hit.mp3 */ "./src/assets/sounds/hit.mp3"));
+var shot_mp3_1 = __importDefault(__webpack_require__(/*! ../../assets/sounds/shot.mp3 */ "./src/assets/sounds/shot.mp3"));
+var explosion_mp3_1 = __importDefault(__webpack_require__(/*! ../../assets/sounds/explosion.mp3 */ "./src/assets/sounds/explosion.mp3"));
+var SoundService = (function () {
+    function SoundService() {
+        this.audioContext = null;
+        this.isSupportAudioContext = false;
+        this.isMoving = false;
+        this.timerID = null;
+    }
+    SoundService.prototype.init = function () {
+        this.audioList = {
+            move: new Audio(move_mp3_1.default),
+            hit: new Audio(hit_mp3_1.default),
+            shot: new Audio(shot_mp3_1.default),
+            explosion: new Audio(explosion_mp3_1.default),
+        };
+    };
+    SoundService.prototype.play = function (sound) {
+        var _this = this;
+        var audio = this.audioList[sound];
+        if (audio) {
+            if (sound === 'move') {
+                if (this.isMoving) {
+                    clearTimeout(this.timerID);
+                    this.timerID = setTimeout(function () {
+                        _this.isMoving = false;
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }, 100);
+                }
+                else {
+                    audio.play();
+                    this.isMoving = true;
+                    this.timerID = setTimeout(function () {
+                        _this.isMoving = false;
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }, 100);
+                }
+            }
+            else {
+                audio.currentTime = 0;
+                audio.play();
+            }
+        }
+    };
+    SoundService.prototype.setVolume = function (volume) {
+        Object.values(this.audioList).forEach(function (clip) {
+            var audio = clip;
+            audio.volume = volume;
+        });
+    };
+    return SoundService;
+}());
+exports.default = SoundService;
+
+
+/***/ }),
+
 /***/ "./src/js/servise/StatisticsService.ts":
 /*!*********************************************!*\
   !*** ./src/js/servise/StatisticsService.ts ***!
@@ -92083,7 +92236,6 @@ var StatisticsService = (function () {
         this.timer.start();
     };
     StatisticsService.prototype.updateKills = function (value) {
-        console.log('UPDATE KILLLLLLLLLSSSSSSSSSSSSSSSSSSSSSSSS');
         this.statistics.kills = value;
     };
     StatisticsService.prototype.updateDeaths = function (value) {
@@ -92104,12 +92256,11 @@ var StatisticsService = (function () {
     };
     StatisticsService.prototype.send = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var data, url, res, userProfile;
+            var data, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.statistics.timeInGame = this.timer.getTime();
-                        console.log('SEND STAT', this.statistics);
                         data = __assign({}, this.statistics);
                         url = "https://rs-clone-wars-be.herokuapp.com/statistics";
                         return [4, fetch(url, {
@@ -92121,11 +92272,7 @@ var StatisticsService = (function () {
                                 body: JSON.stringify(data),
                             })];
                     case 1:
-                        res = _a.sent();
-                        return [4, res.json()];
-                    case 2:
-                        userProfile = _a.sent();
-                        console.log('res STAT', userProfile);
+                        _a.sent();
                         return [2];
                 }
             });
