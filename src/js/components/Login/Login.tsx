@@ -4,7 +4,7 @@ import { GoogleLoginButton } from 'ts-react-google-login-component';
 import LoginTabs from './LoginTabs';
 import FormLogin from './FormLogin';
 import Button from '../../utils/Button';
-import NotCorrect from './notCorrect';
+import NotCorrect from './NotCorrect';
 import Rotate from './Rotate';
 
 interface Props {
