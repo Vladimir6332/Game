@@ -1,0 +1,29 @@
+//Font
+@import '../assets/fonts/font/stylesheet.css';
+
+//Abstract
+@import '../../node_modules/normalize.css/normalize.css';
+@import 'abstract/constants';
+@import 'abstract/mixins';
+@import 'abstract/placeholders';
+@import 'abstract/functions';
+
+//Base
+@import 'base/base';
+@import 'base/logo';
+@import 'base/navigation';
+@import 'base/sound_control';
+@import 'base/button';
+
+//Layouts
+@import 'layouts/header';
+@import 'layouts/footer';
+
+//Components
+@import 'components/app';
+@import 'components/garage';
+@import 'components/menu';
+@import 'components/login';
+@import 'components/game';
+@import 'components/weapons';
+@import 'components/logs'

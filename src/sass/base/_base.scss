@@ -1,0 +1,31 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 600px;
+  color: $color-text;
+  background-color: $color-background2;
+}
+
+h1 {
+  @include font($size: 5rem, $height: 6rem, $weight: 400);
+  color: $color-text;
+}
+
+h2 {
+  @include font($size: 1.8rem, $height: 2rem, $weight: 400);
+  color: $color-text;
+}
+
+p {
+  @include font();
+  color: $color-text;
+}
+
+span {
+  @include font();
+}

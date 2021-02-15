@@ -1,0 +1,37 @@
+@mixin flex-x-y($main-axis: center, $cross-axis: center) {
+  display: flex;
+  justify-content: $main-axis;
+  align-items: $cross-axis;
+}
+
+@mixin font($size: 1.8rem, $height: 3rem, $weight: 400, $style: normal) {
+  font-family: $font-primary;
+  font-size: $size;
+  line-height: $height;
+  font-weight: $weight;
+  font-style: $style;
+}
+
+@mixin media-laptop {
+  @media (max-width: $content-width) {
+    @content;
+  }
+}
+
+@mixin media-tablet {
+  @media (max-width: $tablet-max-width) {
+    @content;
+  }
+}
+
+// @mixin media-tablet-small {
+//   @media (max-width: $tablet-small-width) {
+//     @content;
+//   }
+// }
+
+@mixin media-mobile {
+  @media (max-width: $mobile-max-width) {
+    @content;
+  }
+}

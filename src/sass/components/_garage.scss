@@ -1,0 +1,179 @@
+@keyframes popUp {
+  0% {
+    transform: scale(0) translate(0%, 0%);
+    top: 0;
+    right: 0;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    top: 50%;
+  }
+}
+%img {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+}
+.garage {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #2e2e2e;
+  font-size: 10px;
+  color: #d8d8d8;
+    button {
+      font-family: $font-primary;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+    button:active {
+      transform: scale(.9);
+    }
+    &__wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr .5fr .5fr;
+      grid-template-rows: max-content;
+      grid-template-areas: 
+      'points points points points'
+      'tank weapon-list statistics statistics'
+      'tank weapon-list infoBullet infoBullet'
+      'tank weapon-list changeBullet button';
+      grid-gap: 5px;
+      width: 100%;
+      height: 100%;
+    }
+    &__points-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      grid-area: points;
+    }
+    &__points {
+      font-size: 2em;
+    }
+    &__tank-wrapper {
+      grid-area: tank;
+      position: relative;
+      width: 100%;
+      height: 70vh;
+    }
+    &__tank {
+      @extend %img;
+    }
+    &__weapon-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0;
+      grid-area: weapon-list;
+    }
+    &__weapon {
+      cursor: pointer;
+      z-index: 10;
+      width: 100%;
+      height: 8vh;
+      margin: 2px;
+      border: 1px solid black;
+    }
+    &__weapon-wrapper {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      margin: 5px;
+      background-color: rgb(46, 46, 46);
+      transition: .5s;
+    }
+    &__weapon-wrapper:hover {
+      transition: .5s;
+      transform: scale(1.1);
+    }
+    &__weapon-text {
+      margin: 0;
+      padding: 0;
+      line-height: 1em;
+      font-size: 1em;
+    }
+    &__weapon-img {
+      @extend %img;
+    }
+    &__statistics {
+      grid-area: statistics;
+      display: flex;
+      justify-content: center;
+    }
+    &__statistics-title {
+      font-size: 3em;
+      text-align: center;
+    }
+    &__statistics-table {
+      font-size: 2em;
+    }
+
+    &__buttons {
+      display: flex;
+      align-items: flex-end;
+    }
+    &__button {
+      width: 100%;
+      height: 30%;
+      margin: 0 5px 5px 0;
+      color: #fff;
+      justify-self: center;
+      background-color: darken($color: firebrick, $amount: 5%);
+      font-size: 1.5em;
+      grid-area: button;
+    }
+    &__button:hover {
+      background-color: darken($color: firebrick, $amount: 10%);
+    }
+    &__bullet-button {
+      outline: none;
+      background-color: darken($color: rgb(46, 46, 46), $amount: 5%);
+      color: #d8d8d8;
+    }
+    &__bullet-button:hover {
+      background-color: darken($color: rgb(46, 46, 46), $amount: 10%);
+    }
+    &__bullet-info {
+      justify-self: center;
+      align-self: center;
+      grid-area: infoBullet;
+    }
+    &__bullet-info-title {
+      font-size: 3em!important;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+    &__bullet-info-title {
+      font-size: 2em;
+    }
+    &__bullet-change {
+      justify-self: center;
+      align-self: center;
+      grid-area: changeBullet;
+    } 
+    &__bullet-buttons {
+      text-align: center;
+    }
+}
+.noPoints {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 10%;
+  top: 50%;
+  left: 50%;
+  z-index: 15;
+  border-radius: 5px;
+  animation: popUp 1s;
+  transform: scale(1) translate(-50%, -50%);
+  background-color: #1e1e1e;
+}
+.choisedWeapon {
+  border: 1px solid #fff;
+}

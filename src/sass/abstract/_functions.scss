@@ -1,0 +1,3 @@
+@function responsive-size($size) {
+  @return $size * 100vw / $content-width;
+}

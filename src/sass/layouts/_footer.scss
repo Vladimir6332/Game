@@ -1,0 +1,57 @@
+.footer {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  width: $content-width;
+  padding: 0.5rem 1rem;
+  justify-content: center;
+  align-items: center;
+  color: $color-text;
+  font-family: $font-primary;
+  background-color: $color-background1;
+}
+
+.footer__info {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.github {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+}
+.github__icon {
+  fill: white;
+  margin: 1rem;
+}
+
+.github__link {
+  text-decoration: none;
+  @include font($size: 1.4rem, $height: 1.8rem, $weight: 400);
+  color: $color-text;
+  display: flex;
+  justify-content: space-between;
+  &:hover {
+    color: white;
+  }
+}
+
+.classes {
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+}
+
+.classes__year {
+  @include font($size: 1.4rem, $height: 1.8rem, $weight: 100);
+  margin-right: 2rem;
+}
+
+.classes__logo {
+  display: inline-block;
+  width: 80px;
+}
